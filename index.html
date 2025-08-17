@@ -17,29 +17,42 @@
       --shadow:0 12px 28px rgba(20,40,70,.08);
       --maxw:1120px;
       --radius:16px;
+      --header-h: 72px; /* wird per JS exakt gesetzt */
     }
+
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
     body{font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial; background:var(--page); color:var(--text); line-height:1.6; overflow-x:hidden}
     a{color:inherit;text-decoration:none}
     img{max-width:100%; display:block}
 
+    /* Verhindere, dass die Sticky-Navbar Anker verdeckt */
+    section{scroll-margin-top: calc(var(--header-h) + 10px)}
+
     /* ===== Navbar (weiß, Pill auf aktiv) ===== */
-    header{position:sticky; top:0; z-index:1000; background:#fff; box-shadow:0 6px 18px rgba(18,35,60,.06)}
-    .nav{max-width:var(--maxw); margin:0 auto; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; gap:16px}
+    header{position:fixed; top:0; left:0; right:0; z-index:1000; background:#fff; box-shadow:0 6px 18px rgba(18,35,60,.06)}
+    .nav{width:100%; padding:14px clamp(10px,2vw,20px); display:flex; align-items:center; justify-content:space-between; gap:16px}
     .brand{display:flex; align-items:center; gap:10px}
-    .brand .logo{font-weight:800; letter-spacing:.3px}
+    .brand .logo{font-weight:800; letter-spacing:.3px; font-size:clamp(14px,1.9vw,20px)}
     .menu{display:flex; gap:6px; align-items:center}
     .menu a{padding:8px 14px; border-radius:999px; color:#2b3a49}
     .menu a.active{background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; box-shadow:0 0 0 6px var(--ring)}
     .sun{width:16px; height:16px; border-radius:50%; background:#ffcc4d; margin-left:8px; box-shadow:0 0 0 3px rgba(255,204,77,.28)}
 
-    /* ===== Hero mit Wolken‑BG ===== */
-    .hero{
-      position:relative; isolation:isolate;
-      background:url('bg.jpg') center/cover no-repeat;
+    /* ===== Vollbild-Layout für JEDEN Abschnitt ===== */
+    /* Füllt die sichtbare Höhe abzüglich Sticky-Header */
+    .hero, .section{
+      min-height: calc(100svh - var(--header-h)); /* moderne Viewport-Einheit */
+      display:grid; align-items:center; /* vertikal zentrieren */
     }
-    .heroInner{max-width:var(--maxw); margin:0 auto; padding:110px 20px 120px; display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:center}
+    @supports not (height: 1svh){
+      .hero, .section{ min-height: calc(100vh - var(--header-h)); }
+    }
+
+    /* ===== Hero mit Wolken‑BG ===== */
+    .hero{ position:relative; isolation:isolate; background:url('bg.jpg') center/cover no-repeat; }
+    .heroInner{max-width:var(--maxw); margin:0 auto; padding:90px 20px 110px; display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:center; min-height:100%;}
+    /* Auf 1-Spalten-Layout umstellen (immer im bisherigen Code so vorgesehen) */
     @media (max-width:10000px){.heroInner{grid-template-columns:1fr; padding:90px 20px 110px}}
 
     .intro{max-width:560px}
@@ -64,8 +77,9 @@
     .visual{display:flex; align-items:center; justify-content:center}
     .visual img{width:min(560px, 92%)}
 
-    /* ===== Platzhaltersektionen (für Scroll/Active/Reveal) ===== */
-    section.section{max-width:var(--maxw); margin:0 auto; padding:90px 20px}
+    /* ===== Sektionen (vollbild + zentriert) ===== */
+    section.section{max-width:none; margin:0; padding:32px 20px} /* weniger vertikal, damit wirklich in 1 Screen passt */
+    .section > .inner{max-width:var(--maxw); margin:0 auto; width:100%}
     h2{font-size:28px; margin:0 0 12px}
     .muted{color:var(--muted)}
 
@@ -82,7 +96,8 @@
   <header id="top">
     <nav class="nav">
       <div class="brand">
-        <div class="logo">&lt;oliwier urbanski/&gt;</div>
+        <div class="logo">&lt;ꪮꪶ𝒾ꪝ𝒾ꫀꪹ ꪊꪹɓꪖ𝘯ѕƙ𝒾
+          /&gt;</div>
       </div>
       <div class="menu">
         <a href="#home" class="active">Home</a>
@@ -120,22 +135,33 @@
     </div>
   </section>
 
-  <!-- ===== Dummy‑Sektionen für Scroll/Active/Reveal (passen zur Nav) ===== -->
+  <!-- ===== Vollbild-Sektionen passend zur Nav ===== -->
   <section id="about" class="section reveal">
-    <h2>About</h2>
-    <p class="muted">Kurzer Abschnitt zum Scrollen. Inhalte kommen später.</p>
+    <div class="inner">
+      <h2>About</h2>
+      <p class="muted">Kurzer Abschnitt zum Scrollen. Inhalte kommen später.</p>
+    </div>
   </section>
+
   <section id="services" class="section reveal">
-    <h2>Services</h2>
-    <p class="muted">Frontend, UI‑Code, Performance, a11y.</p>
+    <div class="inner">
+      <h2>Services</h2>
+      <p class="muted">Frontend, UI‑Code, Performance, a11y.</p>
+    </div>
   </section>
+
   <section id="projects" class="section reveal">
-    <h2>Projects</h2>
-    <p class="muted">Projekte folgen.</p>
+    <div class="inner">
+      <h2>Projects</h2>
+      <p class="muted">Projekte folgen.</p>
+    </div>
   </section>
+
   <section id="contact" class="section reveal">
-    <h2>Contact</h2>
-    <p class="muted">Mail: oli@example.com</p>
+    <div class="inner">
+      <h2>Contact</h2>
+      <p class="muted">Mail: oli@example.com</p>
+    </div>
   </section>
 
   <footer>
@@ -146,7 +172,15 @@
   </footer>
 
   <script>
-    // ===== Smooth Scroll =====
+    // ===== Header-Höhe als CSS-Variable setzen, damit 100% Sichtfläche sauber passt
+    function setHeaderHeight(){
+      const h = document.querySelector('header')?.offsetHeight || 0;
+      document.documentElement.style.setProperty('--header-h', h + 'px');
+    }
+    setHeaderHeight();
+    addEventListener('resize', setHeaderHeight);
+
+    // ===== Smooth Scroll (beibehalten) =====
     document.addEventListener('click', (e) => {
       const a = e.target.closest('a[href^="#"]');
       if(!a) return;
