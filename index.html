@@ -294,12 +294,73 @@
 </section>
 
 
-  <section id="services" class="section reveal">
-    <div class="inner">
-      <h2>Services</h2>
-      <p class="muted">Frontend, UI‑Code, Performance, a11y.</p>
+  <!-- 🔧 CSS: ans **Ende** deines <style>-Blocks anhängen -->
+<style>
+  /* === SERVICES: Section-Layout === */
+  #services{ background:#f4f6fb; align-items:start; } /* Top-Start & helles Grau wie im Screenshot */
+  #services .inner{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: calc(var(--header-h) + 32px) clamp(16px,3vw,40px) 88px;
+  }
+
+  .svcTitle{ text-align:center; margin: 0 0 26px; font-size: clamp(28px, 3.6vw, 48px); font-weight: 900; }
+  .svcSub{ color: var(--pill); font-weight: 800; font-size: clamp(20px, 2.2vw, 28px); margin: 12px 0 22px; }
+
+  /* === Grid der Karten === */
+  .svcGrid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 28px; }
+  @media (max-width: 1024px){ .svcGrid{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px){ .svcGrid{ grid-template-columns: 1fr; } }
+
+  .svcCard{
+    background:#fff; border:1px solid rgba(0,0,0,.06);
+    border-radius:16px; padding:28px; 
+    box-shadow: 0 1px 0 rgba(0,0,0,.03), 0 14px 26px rgba(0,0,0,.06);
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+  }
+  .svcIcon{ width:56px; height:56px; border-radius:14px; display:grid; place-items:center; font-size:30px; margin-bottom:10px; }
+  .ico-web{    background:#e0f2fe; color:#075985; }
+  .ico-mobile{ background:#e0e7ff; color:#3730a3; }
+  .ico-back{   background:#ede9fe; color:#6d28d9; }
+
+  .svcCard h3{ font-size: clamp(18px, 1.8vw, 22px); font-weight: 800; margin:8px 0 12px; }
+  .svcCard p{ color:#2a3a4a; line-height:1.65; text-align:justify; text-justify: inter-word; }
+</style>
+
+<!-- 🔧 HTML: Ersetzt deinen aktuellen Services-Block in der index.html -->
+<section id="services" class="section reveal">
+  <div class="inner">
+    <h2 class="svcTitle">Services</h2>
+    <h3 class="svcSub">What I Provide</h3>
+
+    <div class="svcGrid">
+      <article class="svcCard">
+        <div class="svcIcon ico-web">🧩</div>
+        <h3>Web Application Development</h3>
+        <p>
+          Web design encompasses many different skills and disciplines in the production and maintenance of websites. The different areas include web graphic design, user interface design, authoring (including standardized code), and user‑experience design.
+        </p>
+      </article>
+
+      <article class="svcCard">
+        <div class="svcIcon ico-mobile">📱</div>
+        <h3>Mobile Application Development</h3>
+        <p>
+          We provide a range of mobile application development services including custom development on Android platforms, building cross‑platform apps, designing user experience, and integrating novel mobile interfaces such as chat and voice.
+        </p>
+      </article>
+
+      <article class="svcCard">
+        <div class="svcIcon ico-back">🧠</div>
+        <h3>Backend Development</h3>
+        <p>
+          We design and implement reliable, scalable backend systems and APIs, focusing on performance, security, and clean architectures that support delightful user experiences.
+        </p>
+      </article>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <section id="projects" class="section reveal">
     <div class="inner">
@@ -308,12 +369,104 @@
     </div>
   </section>
 
+<!-- 🔧 CSS: Diesen Block ans **Ende** deines <style> in index.html einfügen -->
+  <style>
+    /* Contact: oben starten & grauer Hintergrund wie im Beispiel */
+    #contact{ align-items:start; background:#f4f6fb; }
+    #contact .inner{ max-width: var(--maxw); margin:0 auto; padding: calc(var(--header-h) + 32px) clamp(16px,3vw,40px) 88px; }
+    .contactTitle{ text-align:center; margin:0 0 28px; font-size: clamp(28px,3.6vw,48px); font-weight:900; }
+    .contactSub{ color: var(--pill); font-weight:800; font-size: clamp(20px,2.2vw,28px); margin: 8px 0 10px; }
+    .contactLead{ color:#6b7b8b; max-width: 70ch; }
+  
+    /* 2‑Spalten Layout */
+    .contactGrid{ display:grid; grid-template-columns: 2fr 1fr; gap: 36px; align-items:start; margin-top: 12px; }
+    @media (max-width: 900px){ .contactGrid{ grid-template-columns: 1fr; } }
+  
+    /* Form */
+    .contactForm{ display:grid; gap:14px; }
+    .field label{ display:block; color:#8a98a8; font-size:12px; text-transform:uppercase; margin: 2px 0 6px; }
+    .field input, .field textarea{
+      width:100%; padding:14px 16px; border-radius:12px; border:1px solid rgba(0,0,0,.08);
+      background:#3a4250; color:#eef3f9; outline:none;
+    }
+    .field textarea{ min-height:160px; resize:vertical; }
+    .field input::placeholder, .field textarea::placeholder{ color:#aeb7c2; }
+    .contactActions{ display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
+    .mailDirect{ color:#6b7b8b; text-decoration:underline; }
+    .btnSubmit{ composes: btn; } /* nutzt deine vorhandene .btn Styles */
+  
+    /* Rechte Infospalte */
+    .infoBlock{ display:flex; flex-direction:column; gap:26px; }
+    .infoGroup .label{ color:#8a98a8; text-transform:uppercase; font-size:12px; margin-bottom:6px; }
+    .infoGroup .value{ color: var(--pill); font-weight:700; }
+    .socialRow{ display:flex; gap:12px; align-items:center; }
+  
+    /* Map darunter vollbreit */
+    .mapWrap{ margin-top:34px; }
+    .mapWrap iframe{ width:100%; height:420px; border:0; border-radius:14px; box-shadow: 0 10px 26px rgba(0,0,0,.08); }
+  </style>
+  
+  <!-- 🔧 HTML: Ersetze NUR deinen bisherigen #contact‑Block damit -->
   <section id="contact" class="section reveal">
     <div class="inner">
-      <h2>Contact</h2>
-      <p class="muted">Mail: oli@example.com</p>
+      <h2 class="contactTitle">Contact</h2>
+  
+      <div class="contactGrid">
+        <!-- Linke Spalte: Formular -->
+        <div>
+          <h3 class="contactSub">Connect with me</h3>
+          <p class="contactLead">If you want to know more about me or my work, or if you would just like to say hello, send me a message. I'd love to hear from you.</p>
+  
+          <form class="contactForm" action="#" method="post">
+            <div class="field">
+              <label for="cname">Name</label>
+              <input id="cname" name="name" type="text" placeholder="Enter your name" required>
+            </div>
+            <div class="field">
+              <label for="cemail">Email</label>
+              <input id="cemail" name="email" type="email" placeholder="Enter your email" required>
+            </div>
+            <div class="field">
+              <label for="cmsg">Message</label>
+              <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
+            </div>
+            <div class="contactActions">
+              <a class="mailDirect" href="mailto:urbanskioli@gmail.com">Send me email directly</a>
+              <a href="#" class="btn">Submit</a>
+            </div>
+          </form>
+        </div>
+  
+        <!-- Rechte Spalte: Info -->
+        <aside class="infoBlock">
+          <div class="infoGroup">
+            <div class="label">Email</div>
+            <a class="value" href="mailto:urbanskioli@gmail.com">URBANSKIOLI@GMAIL.COM</a>
+          </div>
+          <div class="infoGroup">
+            <div class="label">Address</div>
+            <div class="value">JHILMIL COLONY, DELHI<br>INDIA</div>
+          </div>
+          <div class="infoGroup">
+            <div class="label">Social</div>
+            <div class="socialRow">
+              <!-- du kannst hier deine echten Links setzen → Icons recycelt von oben oder Emojis -->
+              <a class="icon" href="#" aria-label="StackOverflow" title="StackOverflow">🧠</a>
+              <a class="icon" href="#" aria-label="Instagram" title="Instagram">📷</a>
+              <a class="icon" href="#" aria-label="GitHub" title="GitHub">🐙</a>
+              <a class="icon" href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+  
+      <!-- Google‑Maps (Berlin) als Iframe darunter, keine extra JS nötig -->
+      <div class="mapWrap">
+        <iframe src="https://www.google.com/maps?q=Berlin,+Germany&hl=de&z=12&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Berlin on Google Maps"></iframe>
+      </div>
     </div>
   </section>
+  
 
   <footer>
     <div class="foot">
