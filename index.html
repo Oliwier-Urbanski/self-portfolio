@@ -112,7 +112,26 @@
 
     /* Social Row + Button wie im Screenshot */
     .social{display:flex; gap:10px; margin:14px 0 18px}
-    .icon{width:36px; height:36px; display:grid; place-items:center; border-radius:10px; background:#fff; border:1px solid rgba(0,0,0,.06); box-shadow:var(--shadow)}
+    .icon{
+  width:auto;
+  height:auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  border:none;
+  box-shadow:none;
+  border-radius:0;
+  padding:0;
+  --icon-size: 44px; /* z.B. 20 | 24 | 28 */
+}
+
+.icon img,
+.icon svg{
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display:block;
+}
     .cta{margin-top:8px}
     .btn{display:inline-block; padding:12px 22px; border-radius:12px; background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; font-weight:700; box-shadow:var(--shadow)}
 
@@ -167,9 +186,13 @@
         <div class="social" aria-label="Social Links">
           <a class="icon" href="#" aria-label="StackOverflow" title="StackOverflow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h14v-6h2v8H1v-8h2v6z" fill="#f48024"/><path d="M6 19h8v-2H6v2zm.2-4.2l.4-1.9 7.8 1.6-.4 1.9L6.2 14.8zm1.8-5.4l.8-1.7 7.2 3.4-.8 1.7-7.2-3.4zM12 3l6 6-1.4 1.4-6-6L12 3z" fill="#111"/></svg></a>
           <a class="icon" href="#" aria-label="Instagram" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#111"/><circle cx="12" cy="12" r="4.2" stroke="#111"/><circle cx="17.5" cy="6.5" r="1" fill="#111"/></svg></a>
-          <a class="icon" href="https://github.com/Oliwier-Urbanski" aria-label="GitHub" title="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 00-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 3 .8.1-.7.4-1.1.7-1.3-2.2-.2-4.5-1.1-4.5-5 0-1.1.4-2 .9-2.8-.1-.2-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.8 9.8 0 015.2 0c2-1.3 2.8-1 2.8-1 .5 1.4.2 2.5.1 2.7.6.8.9 1.7.9 2.8 0 3.9-2.3 4.7-4.5 5 .4.3.8 1 .8 2v3c0 .3.2.6.7.5A10 10 0 0012 2z" fill="#111"/></svg></a>
-          <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" aria-label="LinkedIn" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" fill="#0a66c2"/><path d="M7.3 10.1h2.2v7H7.3v-7zm1.1-3.5a1.3 1.3 0 110 2.6 1.3 1.3 0 010-2.6zM11.7 10.1h2.1v1c.3-.6 1.1-1.2 2.3-1.2 2 0 3.5 1.3 3.5 4v3.2h-2.2v-2.8c0-1.1-.4-1.9-1.4-1.9-1 0-1.6.7-1.6 1.9v2.8h-2.2v-7z" fill="#fff"/></svg></a>
-        </div>
+          <a class="icon"
+          href="https://github.com/Oliwier-Urbanski"
+          aria-label="GitHub"
+          title="GitHub">
+         <img src="./github.png" alt="GitHub" width="18" height="18" loading="lazy">
+       </a>
+                 <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" aria-label="LinkedIn" title="LinkedIn"> <img src="./linkedin.png" alt="LinkedIn" width="18" height="18" loading="lazy"></a>        </div>
 
         <div class="cta"><a class="btn" href="#projects">Resume</a></div>
       </div>
@@ -490,7 +513,6 @@
     .field input::placeholder, .field textarea::placeholder{ color:#aeb7c2; }
     .contactActions{ display:flex; justify-content:space-between; align-items:center; margin-top:4px; }
     .mailDirect{ color:#6b7b8b; text-decoration:underline; }
-    .btnSubmit{ composes: btn; } /* nutzt deine vorhandene .btn Styles */
   
     /* Rechte Infospalte */
     .infoBlock{ display:flex; flex-direction:column; gap:26px; }
@@ -551,7 +573,11 @@
               <a class="icon" href="#" aria-label="StackOverflow" title="StackOverflow">🧠</a>
               <a class="icon" href="#" aria-label="Instagram" title="Instagram">📷</a>
               <a class="icon" href="#" aria-label="GitHub" title="GitHub">🐙</a>
-              <a class="icon" href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+              <!-- NEU (PNG) -->
+              <a class="icon" href="#" aria-label="LinkedIn" title="LinkedIn">
+                <img src="./linkedin.png" alt="LinkedIn" width="18" height="18">
+              </a>
+
             </div>
           </div>
         </aside>
@@ -568,7 +594,7 @@
   <footer>
     <div class="foot">
       <span>© <span id="year"></span> Oliwier Urbanski</span>
-      <a href="#top" class="muted">Back to top ↑</a>
+      <a href="" class="muted">Back to top ↑</a>
     </div>
   </footer>
 
