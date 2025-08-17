@@ -132,6 +132,9 @@
 
     footer{border-top:1px solid rgba(0,0,0,.06); background:#fff; color:#546879}
     .foot{max-width:var(--maxw); margin:0 auto; padding:26px 20px; display:flex; align-items:center; justify-content:space-between}
+    
+
+  
   </style>
 </head>
 <body>
@@ -165,7 +168,7 @@
           <a class="icon" href="#" aria-label="StackOverflow" title="StackOverflow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21h14v-6h2v8H1v-8h2v6z" fill="#f48024"/><path d="M6 19h8v-2H6v2zm.2-4.2l.4-1.9 7.8 1.6-.4 1.9L6.2 14.8zm1.8-5.4l.8-1.7 7.2 3.4-.8 1.7-7.2-3.4zM12 3l6 6-1.4 1.4-6-6L12 3z" fill="#111"/></svg></a>
           <a class="icon" href="#" aria-label="Instagram" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#111"/><circle cx="12" cy="12" r="4.2" stroke="#111"/><circle cx="17.5" cy="6.5" r="1" fill="#111"/></svg></a>
           <a class="icon" href="https://github.com/Oliwier-Urbanski" aria-label="GitHub" title="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a10 10 0 00-3.2 19.5c.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 3 .8.1-.7.4-1.1.7-1.3-2.2-.2-4.5-1.1-4.5-5 0-1.1.4-2 .9-2.8-.1-.2-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.8 9.8 0 015.2 0c2-1.3 2.8-1 2.8-1 .5 1.4.2 2.5.1 2.7.6.8.9 1.7.9 2.8 0 3.9-2.3 4.7-4.5 5 .4.3.8 1 .8 2v3c0 .3.2.6.7.5A10 10 0 0012 2z" fill="#111"/></svg></a>
-          <a class="icon" href="#" aria-label="LinkedIn" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" fill="#0a66c2"/><path d="M7.3 10.1h2.2v7H7.3v-7zm1.1-3.5a1.3 1.3 0 110 2.6 1.3 1.3 0 010-2.6zM11.7 10.1h2.1v1c.3-.6 1.1-1.2 2.3-1.2 2 0 3.5 1.3 3.5 4v3.2h-2.2v-2.8c0-1.1-.4-1.9-1.4-1.9-1 0-1.6.7-1.6 1.9v2.8h-2.2v-7z" fill="#fff"/></svg></a>
+          <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" aria-label="LinkedIn" title="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" fill="#0a66c2"/><path d="M7.3 10.1h2.2v7H7.3v-7zm1.1-3.5a1.3 1.3 0 110 2.6 1.3 1.3 0 010-2.6zM11.7 10.1h2.1v1c.3-.6 1.1-1.2 2.3-1.2 2 0 3.5 1.3 3.5 4v3.2h-2.2v-2.8c0-1.1-.4-1.9-1.4-1.9-1 0-1.6.7-1.6 1.9v2.8h-2.2v-7z" fill="#fff"/></svg></a>
         </div>
 
         <div class="cta"><a class="btn" href="#projects">Resume</a></div>
@@ -179,12 +182,117 @@
   </section>
 
   <!-- ===== Vollbild-Sektionen passend zur Nav ===== -->
-  <section id="about" class="section reveal">
-    <div class="inner">
-      <h2>About</h2>
-      <p class="muted">Kurzer Abschnitt zum Scrollen. Inhalte kommen später.</p>
-    </div>
-  </section>
+  <!-- 🔧 CSS ANS ENDE DEINES <style>-BLOCKS ANHÄNGEN -->
+<style>
+  /* === ABOUT: Layout & Typo === */
+  #about{ align-items: start; } /* statt vertikal zentriert → Top-Start wie im Screenshot */
+  #about .inner{ 
+    max-width: var(--maxw); 
+    margin: 0 auto; 
+    padding: calc(var(--header-h) + 32px) clamp(16px,3vw,40px) 72px; 
+  }
+  .aboutTitle{ text-align:center; margin: 0 0 28px; font-size: clamp(28px, 3.4vw, 48px); font-weight: 900; }
+  .aboutSub{ color: var(--pill); margin: 22px 0 10px; font-size: clamp(20px, 2.2vw, 28px); font-weight: 800; }
+  .aboutText{ color: var(--muted); max-width: 90ch; }
+
+  /* === Grid der Tech-Badges === */
+  .techGrid{ 
+    margin-top: 22px; 
+    display: grid; 
+    grid-template-columns: repeat(5, minmax(0,1fr)); /* 5 Spalten wie im Screenshot */
+    gap: 18px; 
+  }
+  @media (max-width: 1200px){ .techGrid{ grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 900px){  .techGrid{ grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 640px){  .techGrid{ grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 420px){  .techGrid{ grid-template-columns: 1fr; } }
+
+  .tech{
+    display:flex; align-items:center; gap:12px;
+    padding: 16px 18px; border-radius: 14px;
+    background: #f8fafc; 
+    border: 1px solid rgba(0,0,0,.06);
+    box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 6px 16px rgba(0,0,0,.04);
+  }
+  .techIcon{ 
+    width: 34px; height: 34px; border-radius: 10px; 
+    display:grid; place-items:center; font-weight: 800; font-size: 14px; color:#fff;
+  }
+  .techLabel{ color:#2a3a4a; font-weight: 600; }
+
+  /* Brandfarben (Monogramm-Icons) */
+  .ico-c{background:#283593}
+  .ico-ts{background:#3178c6}
+  .ico-express{background:#444}
+  .ico-node{background:#3c873a}
+  .ico-postman{background:#ff6c37}
+  .ico-dart{background:#0175c2}
+  .ico-flutter{background:#02569B}
+  .ico-rn{background:#61dafb; color:#0b1a2b}
+  .ico-html{background:#e34f26}
+  .ico-css{background:#1572b6}
+  .ico-bootstrap{background:#7952b3}
+  .ico-redux{background:#764abc}
+  .ico-sass{background:#cc6699}
+  .ico-js{background:#f7df1e; color:#111}
+  .ico-tailwind{background:#38b2ac}
+  .ico-react{background:#61dafb; color:#0b1a2b}
+  .ico-mysql{background:#00618a}
+  .ico-mongo{background:#13aa52}
+  .ico-heroku{background:#79589F}
+  .ico-git{background:#f34f29}
+  .ico-firebase{background:#ffca28; color:#6b4e00}
+</style>
+
+<!-- 🔧 HTML: ERSETZT den aktuellen About-Block in deiner index.html -->
+<section id="about" class="section reveal">
+  <div class="inner">
+    <h2 class="aboutTitle">About Me</h2>
+
+    <h3 class="aboutSub">A bit about me</h3>
+    <p class="aboutText">
+      I'm a self‑taught web developer and Mobile App Developer with experience in designing new features from ideation to production,
+      implementation of wireframes and design flows into high‑performance software applications. I take into consideration the user
+      experience while writing reusable and efficient code. I passionately combine good design, technology, and innovation in all my
+      projects, which I like to accompany from the first idea to release. Currently, I'm focused on backend development.
+    </p>
+
+    <h3 class="aboutSub">Technologies and Tools</h3>
+    <p class="aboutText">
+      Using a combination of cutting‑edge technologies and reliable open‑source software I build user‑focused, performant apps and
+      websites for smartphones, tablets, and desktops.
+    </p>
+
+    <ul class="techGrid" aria-label="Technologies and Tools">
+      <li class="tech"><span class="techIcon ico-c">C</span><span class="techLabel">C Language</span></li>
+      <li class="tech"><span class="techIcon ico-ts">TS</span><span class="techLabel">TypeScript</span></li>
+      <li class="tech"><span class="techIcon ico-express">ex</span><span class="techLabel">Express</span></li>
+      <li class="tech"><span class="techIcon ico-node">n</span><span class="techLabel">NodeJS</span></li>
+      <li class="tech"><span class="techIcon ico-postman">pm</span><span class="techLabel">Postman</span></li>
+
+      <li class="tech"><span class="techIcon ico-dart">D</span><span class="techLabel">Dart</span></li>
+      <li class="tech"><span class="techIcon ico-flutter">F</span><span class="techLabel">Flutter</span></li>
+      <li class="tech"><span class="techIcon ico-rn">RN</span><span class="techLabel">React Native</span></li>
+      <li class="tech"><span class="techIcon ico-html">H</span><span class="techLabel">HTML</span></li>
+      <li class="tech"><span class="techIcon ico-css">C</span><span class="techLabel">CSS</span></li>
+
+      <li class="tech"><span class="techIcon ico-bootstrap">B</span><span class="techLabel">Bootstrap</span></li>
+      <li class="tech"><span class="techIcon ico-redux">R</span><span class="techLabel">Redux</span></li>
+      <li class="tech"><span class="techIcon ico-sass">S</span><span class="techLabel">Sass</span></li>
+      <li class="tech"><span class="techIcon ico-js">JS</span><span class="techLabel">JavaScript</span></li>
+      <li class="tech"><span class="techIcon ico-tailwind">TW</span><span class="techLabel">Tailwind CSS</span></li>
+
+      <li class="tech"><span class="techIcon ico-react">R</span><span class="techLabel">React</span></li>
+      <li class="tech"><span class="techIcon ico-mysql">MY</span><span class="techLabel">MySQL</span></li>
+      <li class="tech"><span class="techIcon ico-mongo">MG</span><span class="techLabel">MongoDB</span></li>
+      <li class="tech"><span class="techIcon ico-heroku">H</span><span class="techLabel">Heroku</span></li>
+      <li class="tech"><span class="techIcon ico-git">G</span><span class="techLabel">Git</span></li>
+
+      <li class="tech"><span class="techIcon ico-firebase">Fb</span><span class="techLabel">Firebase</span></li>
+    </ul>
+  </div>
+</section>
+
 
   <section id="services" class="section reveal">
     <div class="inner">
