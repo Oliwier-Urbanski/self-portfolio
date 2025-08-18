@@ -37,7 +37,7 @@
     .menu{display:flex; gap:6px; align-items:center}
     .menu a{padding:8px 14px; border-radius:999px; color:#2b3a49}
     .menu a.active{background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; box-shadow:0 0 0 6px var(--ring)}
-    .sun{width:16px; height:16px; border-radius:50%; background:#ffcc4d; margin-left:8px; box-shadow:0 0 0 3px rgba(255,204,77,.28)}
+    .sun{width:22px; height:22px; border-radius:50%; background:#ffcc4d; margin-left:10px; box-shadow:0 0 0 4px rgba(255,204,77,.28); border:1px solid rgba(0,0,0,.08); cursor:pointer; flex-shrink:0}
 
     /* ===== Vollbild-Layout für JEDEN Abschnitt ===== */
     /* Füllt die sichtbare Höhe abzüglich Sticky-Header */
@@ -170,7 +170,8 @@
 
   
   </style>
-  <link rel="stylesheet" href="hover.css">  <!-- NEU: Zeile 173 -->
+  <link rel="stylesheet" href="hover.css">
+  <link rel="stylesheet" href="theme.css">  <!-- NEU: Zeile 173 -->
 </head>
 <body>
   <!-- ===== Navbar (weiß) ===== -->
@@ -736,6 +737,7 @@
       }
     })();
   </script>
-   <script src="reveal.js" defer></script>  
+   <script src="script.js" defer></script>
+   <script src="reveal.js" defer></script>
 </body>
 </html>

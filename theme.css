@@ -1,0 +1,149 @@
+/* theme.css — EIN Dark-Mode (Light bleibt unverändert)
+   Wirkung aktiv, sobald <html data-theme="dark"> gesetzt ist.
+   Benötigte Assets (relativ zum Projekt):
+   - bg-dark.jpg         → Hero (nur im Dark-Mode)
+   - about-dark.png      → About (nur im Dark-Mode)
+*/
+
+/* ====================
+   Design‑Tokens (Dark)
+   ==================== */
+   :root[data-theme="dark"]{
+    /* Flächen & Text */
+    --page:#0b1020;           /* Seitenhintergrund */
+    --text:#e6edf6;           /* Grundtext */
+    --muted:#9fb0c3;          /* Sekundärtext */
+  
+    /* Akzent / Verläufe (optional, falls im Light genutzt) */
+    --pill:#5b8dff;
+    --pill-2:#8fb1ff;
+    --ring:rgba(91,141,255,.26);
+  
+    /* Schatten */
+    --shadow:0 16px 40px rgba(0,0,0,.35);
+  }
+  
+  /* System UI (Form Controls etc.) */
+  :root[data-theme="dark"]{ color-scheme: dark; }
+  
+  /* Grundfläche & Text */
+  :root[data-theme="dark"] body{
+    background:var(--page);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    transition: background .25s ease, color .25s ease;
+  }
+  
+  /* Links (generisch) */
+  :root[data-theme="dark"] a{ color:#cfe0ff; }
+  :root[data-theme="dark"] a:hover{ color:#e6f0ff; }
+  
+  /* =================
+     Header / Navbar
+     ================= */
+  :root[data-theme="dark"] header{
+    background:#0f1626;
+    box-shadow:0 10px 28px rgba(0,0,0,.45);
+    backdrop-filter:saturate(1.1) blur(4px);
+  }
+  :root[data-theme="dark"] .menu a{ color:#c9d5e2; }
+  :root[data-theme="dark"] .menu a.active{ box-shadow:0 0 0 6px var(--ring); }
+  :root[data-theme="dark"] .sun{ box-shadow:0 0 0 6px var(--ring); }
+  
+  /* =============
+     HERO (Dark)
+     ============= */
+  :root[data-theme="dark"] .hero{
+    /* Relativer Pfad! */
+    background:#0e1526 url('bg-dark.jpg') center/cover no-repeat;
+  }
+  :root[data-theme="dark"] .hero .title,
+  :root[data-theme="dark"] .hero .subtitle{ color:var(--text); }
+  
+  /* ==============
+     ABOUT (Dark)
+     ============== */
+  :root[data-theme="dark"] #about{
+    /* Ersetze durch reine Farbe, falls kein eigenes About-Bild gewünscht: background:#0e1526; */
+    background:#0e1526 url('about-dark.png') center/cover no-repeat;
+  }
+  :root[data-theme="dark"] .aboutTitle{ color:#e6edf6; }
+  :root[data-theme="dark"] .aboutSub{ color:var(--pill); }
+  :root[data-theme="dark"] .aboutText{ color:var(--muted); }
+  
+  /* =================
+     Tech / Badges
+     ================= */
+  :root[data-theme="dark"] .tech{
+    background:#111a2b;
+    border:1px solid rgba(255,255,255,.06);
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+  }
+  :root[data-theme="dark"] .techLabel{ color:#d7e1ee; }
+  
+  /* =================
+     Services
+     ================= */
+  :root[data-theme="dark"] #services{ background:#0e1524; }
+  :root[data-theme="dark"] .svcCard{
+    background:#101a2b;
+    border:1px solid rgba(255,255,255,.07);
+    box-shadow:0 10px 26px rgba(0,0,0,.35);
+    color:#d2dceb;
+  }
+  :root[data-theme="dark"] .svcCard p{ color:#c4d0e0; }
+  
+  /* =================
+     Projects
+     ================= */
+  :root[data-theme="dark"] #projects{ background:#0b1020; }
+  :root[data-theme="dark"] .projCard{
+    background:#0f1728;
+    border:1px solid rgba(255,255,255,.07);
+    box-shadow:0 10px 26px rgba(0,0,0,.35);
+    color:#d2dceb;
+  }
+  :root[data-theme="dark"] .projThumb{ background:#0b111c; }
+  :root[data-theme="dark"] .projDesc{ color:#c6d2e1; }
+  :root[data-theme="dark"] .tag{
+    background:#121b2a;
+    border-color:rgba(255,255,255,.09);
+    color:#c9d5e2;
+  }
+  
+  /* =================
+     Contact
+     ================= */
+  :root[data-theme="dark"] #contact{ background:#0e1524; }
+  :root[data-theme="dark"] .contactTitle{ color:#e6edf6; }
+  :root[data-theme="dark"] .contactSub{ color:var(--pill); }
+  :root[data-theme="dark"] .contactLead{ color:#98a9bc; }
+  :root[data-theme="dark"] .field input,
+  :root[data-theme="dark"] .field textarea{
+    background:#1a2336;
+    color:#e8f0fa;
+    border-color:rgba(255,255,255,.08);
+  }
+  :root[data-theme="dark"] .field input::placeholder,
+  :root[data-theme="dark"] .field textarea::placeholder{ color:#9bb0c6; }
+  
+  /* =================
+     Footer
+     ================= */
+  :root[data-theme="dark"] footer{
+    background:#0f1626;
+    color:#9fb0c3;
+    border-top:1px solid rgba(255,255,255,.08);
+  }
+  
+  /* =================
+     Buttons / Icons
+     ================= */
+  :root[data-theme="dark"] .btn{ box-shadow:var(--shadow); }
+  :root[data-theme="dark"] .btnGhost{
+    background:#0f1728;
+    color:#e6edf6;
+    border-color:rgba(255,255,255,.12);
+  }
+  :root[data-theme="dark"] .icon{ filter:saturate(1.05) brightness(1.08); }
