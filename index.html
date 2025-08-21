@@ -446,37 +446,68 @@
 
 
   <!-- 🔧 CSS: ans **Ende** deines <style>-Blocks anhängen -->
-<style>
-  /* === PROJECTS: Section-Layout === */
-  #projects{ align-items:start; background:#ffffff; }
-  #projects .inner{ max-width: var(--maxw); margin:0 auto; padding: calc(var(--header-h) + 32px) clamp(16px,3vw,40px) 88px; }
-
-  .projTitle{ text-align:center; margin:0 0 26px; font-size: clamp(28px, 3.6vw, 48px); font-weight: 900; }
-  .projSub{ color: var(--pill); font-weight: 800; font-size: clamp(20px, 2.2vw, 28px); margin: 12px 0 22px; text-align:center; }
-
-  /* Grid */
-  .projGrid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 28px; }
-  @media (max-width: 1024px){ .projGrid{ grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px){ .projGrid{ grid-template-columns: 1fr; } }
-
-  /* Karte */
-  .projCard{ background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,.03), 0 14px 26px rgba(0,0,0,.06); display:flex; flex-direction:column; }
-  .projThumb{ position:relative; aspect-ratio: 16 / 9; background:#eef2f7; overflow:hidden; }
-  .projThumb img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .5s ease; }
-  .projCard:hover .projThumb img{ transform: scale(1.04); }
-
-  .projBody{ padding: 18px 18px 16px; display:flex; flex-direction:column; gap:12px; }
-  .projBody h3{ font-size: clamp(18px,1.8vw,22px); margin:0; font-weight:800; }
-  .projDesc{ color:#2a3a4a; line-height:1.6; }
-
-  .tags{ display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 6px; padding:0; list-style:none; }
-  .tag{ font-size:12px; padding:6px 10px; border-radius:999px; background:#f4f6fb; border:1px solid rgba(0,0,0,.06); color:#355; }
-
-  .projActions{ display:flex; gap:10px; margin-top:auto; }
-  .btnGhost{ display:inline-block; padding:10px 16px; border-radius:12px; border:1px solid rgba(0,0,0,.1); color:#203140; background:#fff; font-weight:700; }
-  .btnGhost:hover{ border-color: rgba(0,0,0,.2); }
-  /* vorhandene .btn (Gradient) recyceln für primäre Aktion */
-</style>
+    <style>
+      /* === PROJECTS: Section-Layout + Footer fix unten links === */
+      #projects{ align-items:start; background:#ffffff; }
+      #projects .inner{
+        max-width: var(--maxw);
+        margin:0 auto;
+        padding: calc(var(--header-h) + 32px) clamp(16px,3vw,40px) 88px;
+      }
+    
+      .projTitle{ text-align:center; margin:0 0 26px; font-size: clamp(28px, 3.6vw, 48px); font-weight: 900; }
+      .projSub{ color: var(--pill); font-weight: 800; font-size: clamp(20px, 2.2vw, 28px); margin: 12px 0 22px; text-align:center; }
+    
+      /* Grid */
+      .projGrid{
+        display:grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 28px;
+        align-items:stretch;
+        grid-auto-rows: 1fr;
+      }
+      @media (max-width: 1024px){ .projGrid{ grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 640px){  .projGrid{ grid-template-columns: 1fr; } }
+    
+      /* Karte */
+      .projCard{
+        position: relative; /* Bezug für absoluten Footer */
+        display:flex; flex-direction:column; height:100%;
+        background:#fff; border:1px solid rgba(0,0,0,.06);
+        border-radius:16px; overflow:hidden;
+        box-shadow:0 1px 0 rgba(0,0,0,.03), 0 14px 26px rgba(0,0,0,.06);
+      }
+      .projThumb{ position:relative; aspect-ratio: 16 / 9; background:#eef2f7; overflow:hidden; }
+      .projThumb img{ width:100%; height:100%; object-fit:cover; transition: transform .5s ease; }
+      .projCard:hover .projThumb img{ transform: scale(1.04); }
+    
+      /* Body mit zusätzlichem Bottom-Padding, damit nichts überlappt */
+      .projBody{
+        padding: 18px 18px 96px; /* <- wichtig: Platz für Footer */
+        display:flex; flex-direction:column; gap:12px; flex:1;
+      }
+      .projBody h3{ font-size: clamp(18px,1.8vw,22px); margin:0; font-weight:800; }
+      .projDesc{ color:#2a3a4a; line-height:1.6; }
+    
+      /* Footer (Tags + Project) hart unten links */
+      .projFooter{
+        position:absolute;
+        left:18px; bottom:18px;       /* bei Bedarf auf 0/0 setzen für bündig */
+        display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+      }
+    
+      /* Tags */
+      .tags{ display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
+      .tag{
+        font-size:12px; padding:6px 10px; border-radius:999px;
+        background:#f4f6fb; border:1px solid rgba(0,0,0,.06); color:#355;
+      }
+    
+      /* Button (nur einer) */
+      .projActions{ display:flex; }
+      .projActions .btn{ text-align:center; } /* bleibt links, Breite auto */
+    </style>
+    
 
 <!-- 🔧 HTML: Ersetzt deinen aktuellen Projects-Block in der index.html -->
 <section id="projects" class="section reveal">
@@ -488,20 +519,23 @@
       <!-- Projekt 1 -->
       <article class="projCard">
         <div class="projThumb">
-          <img
-            src="./assets/proji.jpg"  <!-- ← HIER dein Bild -->
-            alt="HiDrive E2E Test Automation"
-            width="1280" height="720" loading="lazy">
+          <img src="./assets/proji.jpg" alt="HiDrive E2E Test Automation" width="1280" height="720" loading="lazy">
         </div>
         <div class="projBody">
           <h3>HiDrive E2E Test Suite</h3>
-          <p class="projDesc">Appium (mac2) + Selenium SSO-Flow, I worked on test automation for the macOS HiDrive Next client using Appium and Python.</p>
-          <ul class="tags">
-            <li class="tag">Python</li><li class="tag">Selenium</li><li class="tag">Appium</li>
-          </ul>
-          <div class="projActions">
-            <a class="btnGhost" href="#" target="_blank" rel="noopener">Live</a>
-            <a class="btn" href="#" target="_blank" rel="noopener">Code</a>
+          <p class="projDesc">
+            Appium (mac2) + Selenium SSO-Flow. I worked on test automation for the macOS HiDrive Next client using Appium and Python.
+          </p>
+
+          <div class="projFooter">
+            <ul class="tags">
+              <li class="tag">Python</li>
+              <li class="tag">Selenium</li>
+              <li class="tag">Appium</li>
+            </ul>
+            <div class="projActions">
+              <a class="btn" href="#" aria-label="Open project">Project</a>
+            </div>
           </div>
         </div>
       </article>
@@ -509,20 +543,23 @@
       <!-- Projekt 2 -->
       <article class="projCard">
         <div class="projThumb">
-          <img
-            src="./assets/proji-yank.png"  <!-- ← HIER dein Bild -->
-            alt="YANKIFY – Desktop App UI"
-            width="1280" height="720" loading="lazy">
+          <img src="./assets/proji-yank.png" alt="YANKIFY – Desktop App UI" width="1280" height="720" loading="lazy">
         </div>
         <div class="projBody">
           <h3>YANKIFY UI</h3>
-          <p class="projDesc">I developed a Python-based YouTube downloader that extracts audio and downloads thumbnails.</p>
-          <ul class="tags">
-            <li class="tag">Python</li><li class="tag">GUI</li><li class="tag">UX</li>
-          </ul>
-          <div class="projActions">
-            <a class="btnGhost" href="#" target="_blank" rel="noopener">Live</a>
-            <a class="btn" href="#" target="_blank" rel="noopener">Code</a>
+          <p class="projDesc">
+            I developed a Python-based YouTube downloader that extracts audio and downloads thumbnails.
+          </p>
+
+          <div class="projFooter">
+            <ul class="tags">
+              <li class="tag">Python</li>
+              <li class="tag">GUI</li>
+              <li class="tag">UX</li>
+            </ul>
+            <div class="projActions">
+              <a class="btn" href="#" aria-label="Open project">Project</a>
+            </div>
           </div>
         </div>
       </article>
@@ -530,26 +567,31 @@
       <!-- Projekt 3 -->
       <article class="projCard">
         <div class="projThumb">
-          <img
-            src="assets/proji3.png"  <!-- ← HIER dein Bild -->
-            alt="Personal Portfolio – Apple-Style"
-            width="1280" height="720" loading="lazy">
+          <img src="./assets/proj-anime-login.png" alt="Anime Login Page" width="1280" height="720" loading="lazy">
         </div>
         <div class="projBody">
           <h3>Anime Login Page</h3>
-          <p class="projDesc">I designed an anime-themed login screen with a dynamic background.</p>
-          <ul class="tags">
-            <li class="tag">HTML</li><li class="tag">CSS</li><li
-          </ul>
-          <div class="projActions">
-            <a class="btnGhost" href="#" target="_blank" rel="noopener">Live</a>
-            <a class="btn" href="#" target="_blank" rel="noopener">Code</a>
+          <p class="projDesc">
+            I designed an anime-themed login screen with a dynamic background.
+          </p>
+
+          <div class="projFooter">
+            <ul class="tags">
+              <li class="tag">HTML</li>
+              <li class="tag">CSS</li>
+              <li class="tag">JavaScript</li>
+            </ul>
+            <div class="projActions">
+              <a class="btn" href="#" aria-label="Open project">Project</a>
+            </div>
           </div>
         </div>
       </article>
     </div>
   </div>
 </section>
+
+
 
 
 <!-- 🔧 CSS: Diesen Block ans **Ende** deines <style> in index.html einfügen -->
