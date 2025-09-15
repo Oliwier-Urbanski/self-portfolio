@@ -102,10 +102,28 @@
       letter-spacing: -0.5px;
     }
 
-    .titleLine{margin:0 0 18px; font-size:clamp(32px, 5.6vw, 88px); line-height:.98; font-weight:900;
-      background:linear-gradient(90deg, var(--pill), var(--pill-2)); -webkit-background-clip:text; background-clip:text; color:transparent;
-      letter-spacing:-.3px; text-shadow:0 10px 24px var(--ring)
-    }
+    .titleLine{
+  margin:0 0 18px;
+  font-size:clamp(32px, 5.6vw, 88px);
+  line-height:.98;
+  font-weight:900;
+  background:linear-gradient(90deg, var(--pill), var(--pill-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:-.3px; text-shadow:none;
+
+  /* NEU – verhindert Umbruch & Layout-Shift */
+  white-space: nowrap;          /* alles in eine Zeile */
+  overflow: hidden;             /* nichts läuft optisch raus */
+  text-overflow: ellipsis;      /* Sicherheit (kleine Screens) */
+}
+
+/* NEU – reserviert Platz für den längsten Titel */
+.titleLine #typed{
+  display:inline-block;
+  min-width: 21ch;              /* ~ Länge von "Automation Engineer" */
+  background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
 
     /* Stelle sicher, dass der getippte Text den Verlauf sicher erbt */
     .titleLine #typed{ background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent; }
