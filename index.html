@@ -102,10 +102,28 @@
       letter-spacing: -0.5px;
     }
 
-    .titleLine{margin:0 0 18px; font-size:clamp(32px, 5.6vw, 88px); line-height:.98; font-weight:900;
-      background:linear-gradient(90deg, var(--pill), var(--pill-2)); -webkit-background-clip:text; background-clip:text; color:transparent;
-      letter-spacing:-.3px; text-shadow:0 10px 24px var(--ring)
-    }
+    .titleLine{
+  margin:0 0 18px;
+  font-size:clamp(32px, 5.6vw, 88px);
+  line-height:.98;
+  font-weight:900;
+  background:linear-gradient(90deg, var(--pill), var(--pill-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:-.3px; text-shadow:none;
+
+  /* NEU – verhindert Umbruch & Layout-Shift */
+  white-space: nowrap;          /* alles in eine Zeile */
+  overflow: hidden;             /* nichts läuft optisch raus */
+  text-overflow: ellipsis;      /* Sicherheit (kleine Screens) */
+}
+
+/* NEU – reserviert Platz für den längsten Titel */
+.titleLine #typed{
+  display:inline-block;
+  min-width: 21ch;              /* ~ Länge von "Automation Engineer" */
+  background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
 
     /* Stelle sicher, dass der getippte Text den Verlauf sicher erbt */
     .titleLine #typed{ background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent; }
@@ -124,7 +142,7 @@
     }
     @keyframes blink{50%{opacity:0}}
 
-    .lead{max-width:60ch; color:#203140; font-size:clamp(18px, 2.2vw, 28px); line-height:1.35}
+    .lead{max-width:60ch; color:#2a2525; font-size:clamp(18px, 2.2vw, 28px); line-height:1.35}
 
     /* Social Row + Button wie im Screenshot */
     .social{display:flex; gap:20px; margin:14px 0 18px}
@@ -188,14 +206,17 @@
   </style>
   <link rel="stylesheet" href="hover.css">
   <link rel="stylesheet" href="theme.css">  <!-- NEU: Zeile 173 -->
+  <link rel="stylesheet" href="cursor.css">
+
 </head>
 <body>
   <!-- ===== Navbar (weiß) ===== -->
   <header id="top">
     <nav class="nav">
       <div class="brand">
-        <div class="logo">&lt;oliwier urbanski
-          /&gt;</div>
+        <a href="#home" class="logo">&lt;oliwier urbanski
+  /&gt;</a>
+
       </div>
       <div class="menu">
         <a href="#home" class="active">Home</a>
@@ -212,9 +233,9 @@
   <section id="home" class="hero">
     <div class="heroInner">
       <div class="intro">
-        <h1>Hi, I am Oli</h1>
+        <h1>Hi, I am Oli!</h1>
         <div class="titleLine"> <span id="typed"></span><span class="cursor"></span> </div>
-        <p class="lead">I am a Front‑End / Full‑Stack Developer. I am currently working at CloudStok Technologies as a Front‑End Developer</p>
+        <p class="lead">I am currently an apprentice Python Developer at Strato.</p>
 
         <div class="social" aria-label="Social Links">
           
@@ -655,7 +676,7 @@
               <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
             </div>
             <div class="contactActions">
-              <a class="mailDirect" href="mailto:urbanskioli@gmail.com">Send me email directly</a>
+              <a class="mailDirect" href="mail:urbanskioli@gmail.com">Send me an email directly</a>
               <a href="#" class="btn">Submit</a>
             </div>
           </form>
@@ -668,20 +689,40 @@
             <a class="value" href="mailto:urbanskioli@gmail.com">URBANSKIOLI@GMAIL.COM</a>
           </div>
           <div class="infoGroup">
-            <div class="label">Address</div>
-            <div class="value">Berlin<br>DEUTSCHLAND</div>
+            <div class="label">Location</div>
+            <div class="value">Berlin<br>GERMANY</div>
           </div>
           <div class="infoGroup">
             <div class="label">Social</div>
             <div class="socialRow">
-              <!-- du kannst hier deine echten Links setzen → Icons recycelt von oben oder Emojis -->
-              <a class="icon" href="#" aria-label="StackOverflow" title="StackOverflow">🧠</a>
-              <a class="icon" href="#" aria-label="Instagram" title="Instagram">📷</a>
-              <a class="icon" href="#" aria-label="GitHub" title="GitHub">🐙</a>
-              <!-- NEU (PNG) -->
-              <a class="icon" href="#" aria-label="LinkedIn" title="LinkedIn">
-                <img src="./linkedin.png" alt="LinkedIn" width="18" height="18">
-              </a>
+              
+          <!-- You can insert the Icons here -->
+              
+            <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" aria-label="LinkedIn" title="LinkedIn">
+              <img src="./linkedin.png" alt="LinkedIn" width="18" height="18">
+            </a> 
+              
+            <a class="icon" href="https://github.com/Oliwier-Urbanski" aria-label="GitHub" title="GitHub">
+              <img src="./github.png" alt="GitHub" width="18" height="18">
+            </a>
+              
+            <a class="icon" href="#" aria-label="Instagram" title="Instagram">
+              <img src="./instagram.png" alt="Instagram" width="18" height="18">
+            </a>  
+            
+            <a class="icon" href="#" aria-label="Discord" title="Discord">
+              <img src="./Discord.png" alt="Discord" width="18" height="18">
+            </a>
+              
+
+
+              
+
+              
+              
+
+              
+              
 
             </div>
           </div>
@@ -799,6 +840,7 @@
     })();
   </script>
    <script src="script.js" defer></script>
+   <script src="cursor.js" defer></script>
    <script src="reveal.js" defer></script>
 </body>
 </html>
