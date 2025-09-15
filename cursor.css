@@ -3,7 +3,7 @@
 
 html, body, *{
   /* Hotspot auf (8,8) — bei Bedarf anpassen, bis die Spitze „stimmt“ */
-  cursor: url('assets/cursor-normal.jpg') 8 8, auto !important;
+  cursor: url('assets/cursor-normal-white.png') 8 8, auto !important;
 }
 
 /* Beim Gedrückthalten der Maustaste */
