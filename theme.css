@@ -151,7 +151,7 @@
 /* Dark-Button (z. B. Mond) */
   :root[data-theme="dark"] .sun{
     background-color:#101a2b;
-    background-image:url('icon-moon.png'); /* <— dein Dark-Icon */
+    background-image:url('./assets/dark-light-icons/icon-moon.png'); /* <— dein Dark-Icon */
     box-shadow:0 0 0 6px var(--ring);
     border-color:rgba(255,255,255,.12);
 }
