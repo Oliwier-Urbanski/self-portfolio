@@ -37,15 +37,19 @@
     .menu{display:flex; gap:6px; align-items:center}
     .menu a{padding:8px 14px; border-radius:999px; color:#2b3a49}
     .menu a.active{background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; box-shadow:0 0 0 6px var(--ring)}
+    
     .sun{
-    width:28px; height:28px; border-radius:9999px;
-    background:#ffcc4d center/24px 24px no-repeat;
+    width:28px;
+    height:28px;
+    background:transparent center/contain no-repeat;
     background-image:url('assets/dark-light-icons/icon-sun.png'); /* Light-Icon */
-    border:1px solid rgba(0,0,0,.08);
-    box-shadow:0 0 0 4px rgba(255,204,77,.28);
-    cursor:pointer; margin-left:10px; flex-shrink:0;
-    transition:transform .15s ease, box-shadow .2s ease, background-color .2s ease;
-  }
+    cursor:pointer;
+    margin-left:10px;
+    flex-shrink:0;
+    border:none;
+    box-shadow:none;
+}
+
 
     :root[data-theme="dark"] .sun{
     background-color:#101a2b;
