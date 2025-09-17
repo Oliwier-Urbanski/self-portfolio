@@ -27,25 +27,31 @@
 
   // ===== Theme toggle (single dark option) =====
   (function themeToggle(){
-    const root = document.documentElement;
-    const key = 'theme';
+  const root = document.documentElement;
+  const key = 'theme';
+  const toggle = document.querySelector('.theme-toggle');
 
-    // initial: default to light unless user saved dark
-    const saved = localStorage.getItem(key);
-    const initial = saved || 'light';
-    root.setAttribute('data-theme', initial);
+  // initial: aus localStorage lesen (default light)
+  const saved = localStorage.getItem(key);
+  const initial = saved || 'light';
+  root.setAttribute('data-theme', initial);
+  if (toggle) toggle.checked = (initial === 'dark');
 
-    const sun = $('.sun');
-    if (sun) {
-      sun.setAttribute('title','Toggle Dark/Light');
-      sun.style.cursor = 'pointer';
-      sun.addEventListener('click', () => {
-        const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next);
-        localStorage.setItem(key, next);
-      });
-    }
-  })();
+  if (toggle){
+    // erste User-Interaktion → Animationen aktivieren
+    toggle.addEventListener('click', () => {
+      toggle.classList.remove('pristine');
+    }, { once:true });
+
+    // Wechsel des Themes per Checkbox
+    toggle.addEventListener('change', () => {
+      const next = toggle.checked ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      localStorage.setItem(key, next);
+    });
+  }
+})();
+
 
   // ===== Smooth scroll (accounts for fixed header) =====
   function scrollWithOffset(target){

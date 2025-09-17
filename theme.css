@@ -148,11 +148,5 @@
   }
   :root[data-theme="dark"] .icon{ filter:saturate(1.05) brightness(1.08); }
 
-/* Dark-Button (z. B. Mond) */
-:root[data-theme="dark"] .sun{
-    background:transparent center/contain no-repeat;
-    background-image:url('./assets/dark-light-icons/icon-moon.png'); /* Dark-Icon */
-    border:none;
-    box-shadow:none;
-}
+
 
