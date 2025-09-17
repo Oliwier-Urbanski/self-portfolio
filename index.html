@@ -336,6 +336,23 @@
     footer{border-top:1px solid rgba(0,0,0,.06); background:#fff; color:#546879}
     .foot{max-width:var(--maxw); margin:0 auto; padding:26px 20px; display:flex; align-items:center; justify-content:space-between}
     
+    /* ===== Parallax: Container vorbereiten (Hero) ===== */
+.hero.parallax-min{ position:relative; overflow:hidden; }
+
+/* ===== Vordergrund-Layer (SVG-Wolken) ===== */
+.parallax-min .layer.fg{
+  position:absolute; inset:0; z-index:2; pointer-events:none; will-change:transform;
+  background-image:url('assets/backgrounds/clouds_layer_5.svg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-size:180% auto;
+  background-position:center 35%;
+  transform:translate3d(0,0,0);
+
+}
+/* Inhalt sicher über dem Layer */
+.heroInner{ position:relative; z-index:3; }
+
     /* === Sparkle-Resume-Button (bläulich, scoped) === */
 /* === Sparkle-Resume-Button (bläulich, kompakt) === */
 .btnSparkle{
@@ -454,10 +471,12 @@
   </header>
 
   <!-- ===== Hero (Wolkenbild liegt als bg.jpg neben der Datei) ===== -->
-  <section id="home" class="hero">
-    <div class="heroInner">
-      <div class="intro">
-        <h1>Hi, I am Oli!</h1>
+  <section id="home" class="hero parallax-min">
+  <div class="layer fg" data-speed="0.18" aria-hidden="true"></div>
+  <div class="heroInner">
+    <div class="intro">
+      <h1>Hi, I am Oli!</h1>
+
         <div class="titleLine"> <span id="typed"></span><span class="cursor"></span> </div>
         <p class="lead">I am currently an apprentice Python Developer at Strato/IONOS.</p>
 
