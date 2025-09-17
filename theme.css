@@ -114,7 +114,7 @@
   
   /* =================
      Contact
-     ================= */
+  ================= */
   :root[data-theme="dark"] #contact{ background:#0e1524; }
   :root[data-theme="dark"] .contactTitle{ color:#e6edf6; }
   :root[data-theme="dark"] .contactSub{ color:var(--pill); }
