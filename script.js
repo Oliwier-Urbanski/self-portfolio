@@ -162,3 +162,64 @@
   addEventListener('scroll', onScroll, { passive:true });
   addEventListener('resize', apply);
 })();
+
+
+;document.addEventListener('DOMContentLoaded', function(){
+  const root = document.getElementById('jobs-list');
+  if(!root) return;
+
+  // === Deine Jobs: hier pflegst du Inhalte ===
+  const JOBS = [
+    {
+      title: "Application Developer Apprentice — STRATO / IONOS",
+      logo: "./assets/company/strato.png",         
+      website: "https://www.strato.de/",
+      date: "2024 - present",
+      detail: "Test Automation (Python, Selenium, Appium), Clean QA Flows, Early Frontend Development",
+      achievements: [
+        "Designed and executed Selenium-based test automation for mail archiving.",
+        "Built and stabilized Appium test flows for the HiDrive Next macOS client.",
+        "Streamlined Git workflows and enhanced overall project structure."
+      ]
+    },
+    {
+      title: "Volunteer Developer — Ulifyi",
+      logo: "./assets/company/uli.png",         
+      website: "https://www.uli.fyi/",
+      date: "2025 - present",
+      detail: "Contributed to frontend improvements and feature updates.",
+      achievements: [
+        " Implemented website changes using JavaScript to enhance user experience.",
+        " Supported iterative design adjustments and bug fixes across the platform. "
+
+      ]
+    }
+  ];
+
+  function jobCard(job){
+    const el = document.createElement('article');
+    el.className = 'job';
+    el.innerHTML = `
+      <div class="job-head">
+        <div class="job-title">
+          ${job.logo ? `<img class="logo" src="${job.logo}" alt="${job.title} Logo">`
+                      : `<span class="logo" aria-hidden="true"></span>`}
+          <span>${job.title}</span>
+        </div>
+        <div class="job-meta">
+          ${job.website ? `<a href="${job.website}" target="_blank" rel="noopener">Website</a> · ` : ``}
+          ${job.date || ``}
+        </div>
+      </div>
+      ${job.detail ? `<p style="margin-top:.5rem">${job.detail}</p>` : ``}
+      <div class="job-detail">
+        ${Array.isArray(job.achievements) && job.achievements.length
+          ? `<ul>${job.achievements.map(a => `<li>${a}</li>`).join('')}</ul>` : ``}
+      </div>
+    `;
+    el.addEventListener('click', () => el.classList.toggle('open'));
+    return el;
+  }
+
+  JOBS.forEach(j => root.appendChild(jobCard(j)));
+});
