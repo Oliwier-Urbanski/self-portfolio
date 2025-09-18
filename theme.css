@@ -168,5 +168,53 @@
   }
   :root[data-theme="dark"] .icon{ filter:saturate(1.05) brightness(1.08); }
 
+:root[data-theme="dark"] #jobs{ background:#0e1524; }
+:root[data-theme="dark"] .job{
+  background:#101a2b;
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 10px 26px rgba(0,0,0,.35);
+  color:#d2dceb;
+}
+:root[data-theme="dark"] .job .job-meta{ color:#9fb0c3; }
 
 
+
+/* === My Jobs (Layout & Cards) === */
+#jobs{ align-items:start; background:#f4f6fb; }
+#jobs .inner{
+  max-width: var(--maxw, 1100px);
+  margin: 0 auto;
+  padding: calc(var(--header-h, 72px) + 32px) clamp(16px,3vw,40px) 88px;
+}
+.jobsTitle{ text-align:center; margin:0 0 26px; font-size: clamp(28px, 3.6vw, 48px); font-weight: 900; }
+.jobsSub{ color: var(--pill, #4f7df0); font-weight: 800; font-size: clamp(20px, 2.2vw, 28px); margin: 12px 0 22px; text-align:center; }
+
+.jobsList{ display:grid; gap:18px; }
+.job{
+  background:#fff; border:1px solid rgba(0,0,0,.06);
+  border-radius:16px; padding:18px 20px;
+  box-shadow:0 1px 0 rgba(0,0,0,.03), 0 14px 26px rgba(0,0,0,.06);
+  cursor:pointer; transition:transform .2s ease, background .2s ease;
+}
+.job:hover{ transform: translateY(-1px); background:#fff; }
+.job-head{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; justify-content:space-between; }
+.job-title{ display:flex; gap:.5rem; align-items:center; font-weight:800; }
+.job-title .logo{ width:42px; height:42px; border-radius:.5rem; object-fit:cover; background:#e9eef7; display:inline-block; }
+.job-meta{ color:#6b7b8b; font-size:.9rem; }
+.job-detail{ margin-top:.75rem; display:none; }
+.job.open .job-detail{ display:block; }
+.job ul{ margin:.5rem 0 0 1.25rem; }
+.job a{ color: var(--pill, #4f7df0); text-decoration: none; }
+.job a:hover{ text-decoration: underline; }
+
+/* Dark-Mode */
+:root[data-theme="dark"] #jobs{ background:#0e1524; }
+:root[data-theme="dark"] .job{
+  background:#101a2b;
+  border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 10px 26px rgba(0,0,0,.35);
+  color:#d2dceb;
+}
+:root[data-theme="dark"] .job .job-meta{ color:#9fb0c3; }
+:root[data-theme="dark"] .job-title .logo{ background:#0b1220; }
+:root[data-theme="dark"] .job a{ color:#7aa2ff; }
