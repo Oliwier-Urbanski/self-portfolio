@@ -54,10 +54,30 @@
   /* =============
      HERO (Dark)
      ============= */
-  :root[data-theme="dark"] .hero{
-    /* Relativer Pfad! */
-    background:#0e1526 url('./assets/backgrounds/bg-dark.jpg') center/cover no-repeat;
-  }
+  /* =============
+   HERO (Dark)
+   ============= */
+:root[data-theme="dark"] .hero{
+  /* getrennt festlegen – sicherer als die shorthand "background:" */
+  background-color: #0e1526;
+  background-image: url('./assets/backgrounds/bg-dark.jpg'); /* Pfad hier prüfen! */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+  /* Dark-Variante für den Parallax-Vordergrund */
+:root[data-theme="dark"] .parallax-min .layer.fg{
+  /* Achtung: Web-Pfad mit Schrägstrichen, nicht Backslashes */
+  background-image: url('./assets/clouds-blue.svg');
+
+  /* Optional: gleiche Größe/Position wie im Light-Mode spiegeln */
+  /* Falls du im Light-Mode z. B. 180% nutzt, hier übernehmen: */
+  /* background-size: 180% auto; */
+  background-position: center 38%;
+}
+
+
   :root[data-theme="dark"] .hero .title,
   :root[data-theme="dark"] .hero .subtitle{ color:var(--text); }
   
