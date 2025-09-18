@@ -38,17 +38,144 @@
     .menu a{padding:8px 14px; border-radius:999px; color:#2b3a49}
     .menu a.active{background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; box-shadow:0 0 0 6px var(--ring)}
     
-    .sun{
-    width:28px;
-    height:28px;
-    background:transparent center/contain no-repeat;
-    background-image:url('assets/dark-light-icons/icon-sun.png'); /* Light-Icon */
-    cursor:pointer;
-    margin-left:10px;
-    flex-shrink:0;
-    border:none;
-    box-shadow:none;
+    /* === Header-Theme-Toggle (Checkbox) – kompakt & gescoped === */
+.menu .theme-toggle{
+  /* Größe über em → hier die Basis */
+  font-size: 26px;          /* Stell hier die Gesamtgröße ein (z. B. 14–18px) */
+  --off:#c7cad1;
+  --mid:#829ad6;
+  --on:#255ff4;
+  --transDur:.5s;
+  --timing:cubic-bezier(.6,0,.4,1);
+
+  width:2.25em; height:1.5em;
+  background-color:var(--off);
+  border-radius:.67em/.5em;
+  box-shadow:
+    0 0.05em 0.1em #00000007 inset,
+    0 -0.25em 0.25em #0001 inset,
+    0 -0.5em 0 #0001 inset,
+    0 0.1em 0.1em #0001;
+  cursor:pointer;
+  position:relative;
+  -webkit-appearance:none;
+  appearance:none;
+  -webkit-tap-highlight-color:transparent;
+
+  display:inline-block;
+  margin-left:10px;      /* entspricht deinem alten .sun spacing */
+  align-self:center;
+  animation:bgOff var(--transDur) var(--timing);
 }
+.menu .theme-toggle:before{
+  content:"";
+  position:absolute; top:.125em; left:.125em;
+  width:1em; height:.75em;
+  border-radius:.5em/.375em;
+  box-shadow:
+    0 .175em .175em 0 #0001 inset,
+    0 .375em 0 #0002 inset,
+    0 .375em 0 var(--off) inset,
+    0 .475em .1em #0001 inset;
+  background-image:
+    linear-gradient(90deg,#f1f2f3 2px,#f1f2f300 2px),
+    linear-gradient(#f1f2f3 2px,#fff 2px);
+  background-repeat:repeat;
+  background-size:.75em .375em;
+  background-position:50% calc(50% - .1875em);
+  animation:handleOff var(--transDur) var(--timing);
+}
+
+/* checked → an */
+.menu .theme-toggle:checked{
+  animation:bgOn var(--transDur) var(--timing) forwards;
+}
+.menu .theme-toggle:checked:before{
+  animation:handleOn var(--transDur) var(--timing) forwards;
+}
+
+/* Animationen erst nach erster User-Interaktion: */
+.menu .theme-toggle.pristine,
+.menu .theme-toggle.pristine:before{
+  animation:none;
+}
+
+/* Dark-Mode-Varianten über dein data-theme (nicht prefers-color-scheme) */
+:root[data-theme="dark"] .menu .theme-toggle{
+  --off:#5c6270;
+  --mid:#3d5fb6;
+  --on:#255ff4;
+}
+:root[data-theme="dark"] .menu .theme-toggle:before{
+  background-image:
+    linear-gradient(90deg,#3a3d46 2px,#3a3d4600 2px),
+    linear-gradient(#3a3d46 2px,#2e3138 2px);
+}
+
+/* Keyframes – unverändert, aber gescoped nutzbar */
+@keyframes bgOff{
+  from{ background-color:var(--on); }
+  50%{ background-color:var(--mid); }
+  to{ background-color:var(--off); }
+}
+@keyframes bgOn{
+  from{ background-color:var(--off); }
+  50%{ background-color:var(--mid); }
+  to{ background-color:var(--on); }
+}
+@keyframes handleOff{
+  from{
+    box-shadow:
+      0 .175em .175em 0 #0001 inset,
+      0 .375em 0 #0002 inset,
+      0 .375em 0 var(--on) inset,
+      0 .475em .1em #0001 inset;
+    left:1.125em; width:1em;
+  }
+  50%{
+    box-shadow:
+      0 .175em .175em 0 #0001 inset,
+      0 .375em 0 #0002 inset,
+      0 .375em 0 var(--mid) inset,
+      0 .475em .1em #0001 inset;
+    left:.125em; width:2em;
+  }
+  to{
+    box-shadow:
+      0 .175em .175em 0 #0001 inset,
+      0 .375em 0 #0002 inset,
+      0 .375em 0 var(--off) inset,
+      0 .475em .1em #0001 inset;
+    left:.125em; width:1em;
+  }
+}
+@keyframes handleOn{
+  from{
+    box-shadow:
+      0 .175em .175em 0 #0001 inset,
+      0 .375em 0 #0002 inset,
+      0 .375em 0 var(--off) inset,
+      0 .475em .1em #0001 inset;
+    left:.125em; width:1em;
+  }
+  50%{
+    box-shadow:
+      0 .175em .175em 0 #0001 inset,
+      0 .375em 0 #0002 inset,
+      0 .375em 0 var(--mid) inset,
+      0 .475em .1em #0001 inset;
+    left:.125em; width:2em;
+  }
+  to{
+    box-shadow:
+      0 .175em .175em 0 #0001 inset,
+      0 .375em 0 #0002 inset,
+      0 .375em 0 var(--on) inset,
+      0 .475em .1em #0001 inset;
+    left:1.125em; width:1em;
+  }
+}
+
 
 
     :root[data-theme="dark"] .sun{
@@ -149,7 +276,7 @@
     .lead{max-width:60ch; color:#2a2525; font-size:clamp(18px, 2.2vw, 28px); line-height:1.35}
 
     /* Social Row + Button wie im Screenshot */
-    .social{display:flex; gap:20px; margin:14px 0 18px}
+    .social{display:flex; gap:16px; margin:10px 0 6px}
     .icon{
   width:auto;
   height:auto;
@@ -170,7 +297,11 @@
   height: var(--icon-size);
   display:block;
 }
-    .cta{margin-top:8px}
+    .cta{
+  margin-top:4px;
+  margin-left:-8px;   /* hier spielst du: -4px bis -16px sieht meist gut aus */
+}
+
     .btn{
   display:inline-block;
   font-size: clamp(6px, 1.6vw, 20px);
@@ -205,6 +336,112 @@
     footer{border-top:1px solid rgba(0,0,0,.06); background:#fff; color:#546879}
     .foot{max-width:var(--maxw); margin:0 auto; padding:26px 20px; display:flex; align-items:center; justify-content:space-between}
     
+    /* ===== Parallax: Container vorbereiten (Hero) ===== */
+.hero.parallax-min{ position:relative; overflow:hidden; }
+
+/* ===== Vordergrund-Layer (SVG-Wolken) ===== */
+.parallax-min .layer.fg{
+  position:absolute; inset:0; z-index:2; pointer-events:none; will-change:transform;
+  background-image:url('assets/clouds-ultrawhite.svg');
+  background-repeat:no-repeat;
+  background-size: 120% auto !important;    
+  background-size:180% auto;
+  background-position:center 48%;
+  transform:translate3d(0,0,0);
+
+}
+/* Inhalt sicher über dem Layer */
+.heroInner{ position:relative; z-index:3; }
+
+    /* === Sparkle-Resume-Button (bläulich, scoped) === */
+/* === Sparkle-Resume-Button (bläulich, kompakt) === */
+.btnSparkle{
+  --fs: clamp(34px, 1.05vw, 17px);
+  --padY: 4px;
+  --padX: 10px;
+  --hover: .4;
+  --pos: 0;
+  --glare: rgba(255,255,255,.85);
+  --shadow: rgba(20,40,70,.18);
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  padding: var(--padY) var(--padX);
+  border-radius: 10px;
+  text-decoration:none;
+  line-height:1;
+  /* KEINE min-width mehr → Button wird so breit wie "Resume" */
+}
+.btnSparkle:hover{ --hover:1; --pos:1; }
+.btnSparkle:active{ --hover:0; }
+
+/* Text-Layer (unten = Schatten, oben = Verlauf + Glanz) */
+.btnSparkle > span{
+  display:inline-block;
+  font-size: var(--fs);           /* war 1.1× → jetzt exakt Textgröße */
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: transparent;
+  text-shadow:
+    calc(var(--hover) * (var(--fs) * -0.02)) calc(var(--hover) * (var(--fs) *  0.02)) var(--shadow),
+    calc(var(--hover) * (var(--fs) * -0.04)) calc(var(--hover) * (var(--fs) *  0.04)) var(--shadow);
+  transform: translate(
+    calc(var(--hover) * (var(--fs) *  0.06)),  /* weniger Versatz */
+    calc(var(--hover) * (var(--fs) * -0.06))
+  );
+}
+.btnSparkle > span:last-of-type{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding: var(--padY) var(--padX);
+  background:
+    linear-gradient(108deg,
+      transparent 0 55%,
+      rgba(255,255,255,.75) 55% 60%,
+      transparent 60% 70%,
+      rgba(255,255,255,.75) 70% 85%,
+      transparent 85%) calc(var(--pos) * -200%) 0 / 200% 100%,
+    /* dein blaues Label (zieht aus --pill/--pill-2) */
+    linear-gradient(90deg, var(--pill), var(--pill-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  transform: translate(
+    calc(var(--hover) * (var(--fs) *  0.06)),
+    calc(var(--hover) * (var(--fs) * -0.06))
+  );
+  transition: transform .2s, background-position 0s;
+}
+.btnSparkle:hover > span:last-of-type{
+  transition: transform .2s, background-position calc(var(--hover) * 1.1s) calc(var(--hover) * .2s);
+}
+
+/* Sparkles (kleiner & dezenter) */
+.btnSparkle svg{
+  position:absolute;
+  z-index:3;
+  width: calc(var(--fs) * .42);   /* war .6 → kompakter */
+  aspect-ratio:1;
+  left: calc(var(--x, 50) * 1%);
+  top:  calc(var(--y, 50) * 1%);
+  transform: translate(-50%,-50%) scale(0);
+}
+.btnSparkle svg path{ fill: var(--glare); }
+
+@keyframes sparkle { 50% { transform: translate(-50%,-50%) scale(var(--s,1)); } }
+.btnSparkle:hover svg{ animation: sparkle .6s calc((var(--delay-step, .12) * var(--d, 1)) * 1s) both; }
+
+.btnSparkle svg:nth-of-type(1){ --x:  0; --y:20; --s:.95; --d:1; }
+.btnSparkle svg:nth-of-type(2){ --x: 15; --y:80; --s:1.05; --d:2; }
+.btnSparkle svg:nth-of-type(3){ --x: 45; --y:40; --s:.95; --d:3; }
+.btnSparkle svg:nth-of-type(4){ --x: 75; --y:60; --s:.85; --d:2; }
+.btnSparkle svg:nth-of-type(5){ --x:100; --y:30; --s:.8;  --d:4; }
+
 
   
   </style>
@@ -228,16 +465,18 @@
         <a href="#services">Services</a>
         <a href="#projects">Projects</a>
         <a href="#contact">Contact</a>
-        <div class="sun" aria-hidden="true"></div>
+        <input class="theme-toggle pristine" type="checkbox" name="toggle" value="on" aria-label="Toggle dark mode">
       </div>
     </nav>
   </header>
 
   <!-- ===== Hero (Wolkenbild liegt als bg.jpg neben der Datei) ===== -->
-  <section id="home" class="hero">
-    <div class="heroInner">
-      <div class="intro">
-        <h1>Hi, I am Oli!</h1>
+  <section id="home" class="hero parallax-min">
+  <div class="layer fg" data-speed="0.18" aria-hidden="true"></div>
+  <div class="heroInner">
+    <div class="intro">
+      <h1>Hi, I am Oli!</h1>
+
         <div class="titleLine"> <span id="typed"></span><span class="cursor"></span> </div>
         <p class="lead">I am currently an apprentice Python Developer at Strato/IONOS.</p>
 
@@ -247,7 +486,30 @@
             <img src="./assets/social-icons/github.png" alt="GitHub" width="18" height="18" loading="lazy"></a>
           <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" target="_blank" rel="noopener noreferrer"  aria-label="LinkedIn" title="LinkedIn"> <img src="./assets/social-icons/linkedin.png" alt="LinkedIn" width="18" height="18" loading="lazy"></a>        </div>
 
-        <div class="cta"><a class="btn btn-wide" href="#contact" target="_blank" rel="noopener noreferrer" >Resume</a></div>
+        <div class="cta">
+  <a class="btnSparkle" href="#contact" target="_blank" rel="noopener noreferrer" aria-label="Resume">
+    <!-- Sparkles -->
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <!-- Text-Layer -->
+    <span>Resume</span>
+    <span aria-hidden="true">Resume</span>
+  </a>
+</div>
+
       </div>
 
       <div class="visual" aria-hidden="true">
@@ -736,7 +998,7 @@
   <footer>
     <div class="foot">
       <span>© <span id="year"></span> Oliwier Urbanski</span>
-      <a href="" class="muted">Back to top ↑</a>
+      <a href="#home" class="muted">Back to top ↑</a>
     </div>
   </footer>
 
