@@ -184,7 +184,8 @@
     },
     {
       title: "Volunteer Developer — Ulifyi",
-      logo: "./assets/company/uli.png",         
+      logo: "./assets/company/uli.png",        
+      logoDark: "./assets/company/uli-white.png", 
       website: "https://www.uli.fyi/",
       date: "2025 - present",
       detail: "Contributed to frontend improvements and feature updates.",
@@ -196,14 +197,49 @@
     }
   ];
 
+  const EDU = [
+  {
+    title: "STRATO / IONOS · Apprenticeship (practical training)",
+    logo: "./assets/company/strato.png",   
+    website: "https://www.ionos.de/",
+    date: "2024 – present",
+    detail: "Company-based apprenticeship",
+    achievements: [
+      "Hands-on QA automation (Selenium/Appium).",
+      "Daily use of Git, CI/CD, and clean code practices."
+    ]
+  },
+  {
+    title: "OSZ Information and Medical Technology · Apprenticeship school (theoretical training)",
+    logo: "./assets/company/osz-imt.png",     
+    website: "https://www.oszimt.de/",
+    date: "2024 – present",
+    detail: "Databases & SQL basics.",
+    achievements: [
+      "Java fundamentals & OOP.",
+      "Databases & SQL basics."
+    ]
+  }
+];
+
+
   function jobCard(job){
     const el = document.createElement('article');
     el.className = 'job';
     el.innerHTML = `
       <div class="job-head">
         <div class="job-title">
-          ${job.logo ? `<img class="logo" src="${job.logo}" alt="${job.title} Logo">`
-                      : `<span class="logo" aria-hidden="true"></span>`}
+${job.logoDark
+  ? `
+     <img class="logo light" src="${job.logo}" alt="${job.title} Logo">
+     <img class="logo dark"  src="${job.logoDark}" alt="${job.title} Dark Logo">
+    `
+  : (job.logo
+      ? `<img class="logo" src="${job.logo}" alt="${job.title} Logo">`
+      : `<span class="logo" aria-hidden="true"></span>`
+    )
+}
+
           <span>${job.title}</span>
         </div>
         <div class="job-meta">
@@ -222,4 +258,11 @@
   }
 
   JOBS.forEach(j => root.appendChild(jobCard(j)));
+  // === Educations rendern (gleiche Card-Logik)
+const eduRoot = document.getElementById('edu-list');
+if (eduRoot) {
+  EDU.forEach(e => eduRoot.appendChild(jobCard(e)));
+}
+
 });
+
