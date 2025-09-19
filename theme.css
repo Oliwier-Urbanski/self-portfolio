@@ -245,3 +245,17 @@
 /* Educations: gleiche Optik wie Jobs */
 #edu{ align-items:start; background:#f4f6fb; }
 :root[data-theme="dark"] #edu{ background:#0e1524; }
+
+
+/* Logo-Swap je nach Theme */
+.job-title .logo.light,
+.job-title .logo.dark{
+  width:42px; height:42px; border-radius:.5rem; object-fit:cover; display:inline-block;
+}
+
+/* Standard: Light-Logo sichtbar, Dark-Logo versteckt */
+.job-title .logo.dark{ display:none; }
+
+/* Dark-Mode: Switch */
+:root[data-theme="dark"] .job-title .logo.light{ display:none; }
+:root[data-theme="dark"] .job-title .logo.dark{ display:inline-block; }
