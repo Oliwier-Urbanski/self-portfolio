@@ -196,6 +196,32 @@
     }
   ];
 
+  const EDU = [
+  {
+    title: "STRATO / IONOS · Apprenticeship (practical training)",
+    logo: "./assets/company/strato.png",   
+    website: "https://www.ionos.de/",
+    date: "2024–heute",
+    detail: "Company-based apprenticeship",
+    achievements: [
+      "Hands-on QA automation (Selenium/Appium).",
+      "Daily use of Git, CI/CD, and clean code practices."
+    ]
+  },
+  {
+    title: "OSZ Information and Medical Technology · Apprenticeship school (theoretical training)",
+    logo: "./assets/company/osz-imt.png",     
+    website: "#",
+    date: "2024–heute",
+    detail: "Databases & SQL basics.",
+    achievements: [
+      "Java fundamentals & OOP.",
+      "Databases & SQL basics."
+    ]
+  }
+];
+
+
   function jobCard(job){
     const el = document.createElement('article');
     el.className = 'job';
@@ -222,4 +248,11 @@
   }
 
   JOBS.forEach(j => root.appendChild(jobCard(j)));
+  // === Educations rendern (gleiche Card-Logik)
+const eduRoot = document.getElementById('edu-list');
+if (eduRoot) {
+  EDU.forEach(e => eduRoot.appendChild(jobCard(e)));
+}
+
 });
+

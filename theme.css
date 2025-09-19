@@ -240,3 +240,8 @@
 :root[data-theme="dark"] .job .job-meta{ color:#9fb0c3; }
 :root[data-theme="dark"] .job-title .logo{ background:#0b1220; }
 :root[data-theme="dark"] .job a{ color:#7aa2ff; }
+
+
+/* Educations: gleiche Optik wie Jobs */
+#edu{ align-items:start; background:#f4f6fb; }
+:root[data-theme="dark"] #edu{ background:#0e1524; }
