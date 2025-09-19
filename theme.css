@@ -51,12 +51,10 @@
   :root[data-theme="dark"] .menu a.active{ box-shadow:0 0 0 6px var(--ring); }
   :root[data-theme="dark"] .sun{ box-shadow:0 0 0 6px var(--ring); }
   
-  /* =============
-     HERO (Dark)
-     ============= */
-  /* =============
-   HERO (Dark)
-   ============= */
+
+/* =============
+  HERO (Dark)
+  ============= */
 :root[data-theme="dark"] .hero{
   /* getrennt festlegen – sicherer als die shorthand "background:" */
   background-color: #0e1526;
@@ -201,8 +199,32 @@
 .job-title{ display:flex; gap:.5rem; align-items:center; font-weight:800; }
 .job-title .logo{ width:42px; height:42px; border-radius:.5rem; object-fit:cover; background:#e9eef7; display:inline-block; }
 .job-meta{ color:#6b7b8b; font-size:.9rem; }
-.job-detail{ margin-top:.75rem; display:none; }
-.job.open .job-detail{ display:block; }
+/* Smooth expand/collapse */
+.job-detail{
+  margin-top:.75rem;
+  overflow:hidden;
+  max-height:0;
+  opacity:0;
+  transform: translateY(-4px);
+  transition: max-height .35s ease, opacity .25s ease, transform .35s ease;
+}
+.job.open .job-detail{
+  /* Für reine CSS-Variante: ausreichend große Obergrenze wählen */
+  max-height: 800px;
+  opacity:1;
+  transform: translateY(0);
+}
+
+/* Optional: offener Card-State etwas „gehobener“ aussehen lassen */
+.job{ transition: transform .2s ease, background .2s ease, box-shadow .25s ease, border-color .25s ease; }
+.job.open{ box-shadow:0 12px 30px rgba(0,0,0,.10); border-color:rgba(0,0,0,.08); }
+
+/* Respektiere Nutzer, die reduzierte Bewegung wünschen */
+@media (prefers-reduced-motion: reduce){
+  .job-detail{ transition: none; }
+  .job{ transition:none; }
+}
+
 .job ul{ margin:.5rem 0 0 1.25rem; }
 .job a{ color: var(--pill, #4f7df0); text-decoration: none; }
 .job a:hover{ text-decoration: underline; }
