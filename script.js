@@ -140,30 +140,6 @@
 })();
 
 
-// === Minimaler Parallax für EIN Vordergrund-Layer (.parallax-min .layer.fg)
-(() => {
-  const fg = document.querySelector('.parallax-min .layer.fg');
-  if (!fg) return;
-
-  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const speed = parseFloat(fg.dataset.speed || '0.18');
-
-  let ticking = false;
-  function apply(){
-    const y = window.scrollY || 0;
-    fg.style.transform = prefersReduced ? 'translate3d(0,0,0)' : `translate3d(0, ${y * speed}px, 0)`;
-    ticking = false;
-  }
-  function onScroll(){
-    if (!ticking){ requestAnimationFrame(apply); ticking = true; }
-  }
-
-  apply();
-  addEventListener('scroll', onScroll, { passive:true });
-  addEventListener('resize', apply);
-})();
-
-
 ;document.addEventListener('DOMContentLoaded', function(){
   const root = document.getElementById('jobs-list');
   if(!root) return;
