@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="de">
 <head>
+  <script>
+  (function () {
+    var KEY = 'theme';
+    var saved = localStorage.getItem(KEY);
+    var system = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    var theme = saved || system;
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="assets/tab-logo/ou-2.png" type="image/png" size="32x32" />
@@ -39,153 +49,7 @@
     .menu a{padding:8px 14px; border-radius:999px; color:#2b3a49}
     .menu a.active{background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; box-shadow:0 0 0 6px var(--ring)}
     
-    /* === Header-Theme-Toggle (Checkbox) – kompakt & gescoped === */
-.menu .theme-toggle{
-  /* Größe über em → hier die Basis */
-  font-size: 26px;          /* Stell hier die Gesamtgröße ein (z. B. 14–18px) */
-  --off:#c7cad1;
-  --mid:#829ad6;
-  --on:#255ff4;
-  --transDur:.5s;
-  --timing:cubic-bezier(.6,0,.4,1);
-
-  width:2.25em; height:1.5em;
-  background-color:var(--off);
-  border-radius:.67em/.5em;
-  box-shadow:
-    0 0.05em 0.1em #00000007 inset,
-    0 -0.25em 0.25em #0001 inset,
-    0 -0.5em 0 #0001 inset,
-    0 0.1em 0.1em #0001;
-  cursor:pointer;
-  position:relative;
-  -webkit-appearance:none;
-  appearance:none;
-  -webkit-tap-highlight-color:transparent;
-
-  display:inline-block;
-  margin-left:10px;      /* entspricht deinem alten .sun spacing */
-  align-self:center;
-  animation:bgOff var(--transDur) var(--timing);
-}
-.menu .theme-toggle:before{
-  content:"";
-  position:absolute; top:.125em; left:.125em;
-  width:1em; height:.75em;
-  border-radius:.5em/.375em;
-  box-shadow:
-    0 .175em .175em 0 #0001 inset,
-    0 .375em 0 #0002 inset,
-    0 .375em 0 var(--off) inset,
-    0 .475em .1em #0001 inset;
-  background-image:
-    linear-gradient(90deg,#f1f2f3 2px,#f1f2f300 2px),
-    linear-gradient(#f1f2f3 2px,#fff 2px);
-  background-repeat:repeat;
-  background-size:.75em .375em;
-  background-position:50% calc(50% - .1875em);
-  animation:handleOff var(--transDur) var(--timing);
-}
-
-/* checked → an */
-.menu .theme-toggle:checked{
-  animation:bgOn var(--transDur) var(--timing) forwards;
-}
-.menu .theme-toggle:checked:before{
-  animation:handleOn var(--transDur) var(--timing) forwards;
-}
-
-/* Animationen erst nach erster User-Interaktion: */
-.menu .theme-toggle.pristine,
-.menu .theme-toggle.pristine:before{
-  animation:none;
-}
-
-/* Dark-Mode-Varianten über dein data-theme (nicht prefers-color-scheme) */
-:root[data-theme="dark"] .menu .theme-toggle{
-  --off:#5c6270;
-  --mid:#3d5fb6;
-  --on:#255ff4;
-}
-:root[data-theme="dark"] .menu .theme-toggle:before{
-  background-image:
-    linear-gradient(90deg,#3a3d46 2px,#3a3d4600 2px),
-    linear-gradient(#3a3d46 2px,#2e3138 2px);
-}
-
-/* Keyframes – unverändert, aber gescoped nutzbar */
-@keyframes bgOff{
-  from{ background-color:var(--on); }
-  50%{ background-color:var(--mid); }
-  to{ background-color:var(--off); }
-}
-@keyframes bgOn{
-  from{ background-color:var(--off); }
-  50%{ background-color:var(--mid); }
-  to{ background-color:var(--on); }
-}
-@keyframes handleOff{
-  from{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--on) inset,
-      0 .475em .1em #0001 inset;
-    left:1.125em; width:1em;
-  }
-  50%{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--mid) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:2em;
-  }
-  to{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--off) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:1em;
-  }
-}
-@keyframes handleOn{
-  from{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--off) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:1em;
-  }
-  50%{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--mid) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:2em;
-  }
-  to{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--on) inset,
-      0 .475em .1em #0001 inset;
-    left:1.125em; width:1em;
-  }
-}
-
-
-
-    :root[data-theme="dark"] .sun{
-    background-color:#101a2b;
-    background-image:url('assets/dark-light-icons/icon-moon.png'); /* Dark-Icon */
-    box-shadow:0 0 0 6px rgba(91,141,255,.26);
-    border-color:rgba(255,255,255,.12);
-  }
-
+ 
 
     /* ===== Vollbild-Layout für JEDEN Abschnitt ===== */
     /* Füllt die sichtbare Höhe abzüglich Sticky-Header */
@@ -468,7 +332,19 @@
         <a href="#jobs">My Jobs</a>
         <a href="#edu">Educations</a>
         <a href="#contact">Contact</a>
-        <input class="theme-toggle pristine" type="checkbox" name="toggle" value="on" aria-label="Toggle dark mode">
+      <button id="modeToggle" class="mode-toggle" aria-label="Toggle theme" title="Toggle theme">
+  <!-- Lucide Moon -->
+  <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+  </svg>
+  <!-- Lucide Sun -->
+  <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+  </svg>
+  <span class="sr-only">Toggle theme</span>
+</button>
+
       </div>
     </nav>
   </header>
