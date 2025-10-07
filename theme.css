@@ -43,10 +43,16 @@
      Header / Navbar
      ================= */
   :root[data-theme="dark"] header{
-    background:#0f1626;
-    box-shadow:0 10px 28px rgba(0,0,0,.45);
-    backdrop-filter:saturate(1.1) blur(4px);
-  }
+  background: rgba(15,22,38,.65);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 28px rgba(0,0,0,.35);
+  backdrop-filter: saturate(1.05) blur(8px);
+}
+
+
+
+
+
   :root[data-theme="dark"] .menu a{ color:#c9d5e2; }
   :root[data-theme="dark"] .menu a.active{ box-shadow:0 0 0 6px var(--ring); }
   :root[data-theme="dark"] .sun{ box-shadow:0 0 0 6px var(--ring); }

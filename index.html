@@ -41,8 +41,23 @@
     section{scroll-margin-top: calc(var(--header-h) + 10px)}
 
     /* ===== Navbar (weiß, Pill auf aktiv) ===== */
-    header{position:fixed; top:0; left:0; right:0; z-index:1000; background:#fff; box-shadow:0 6px 18px rgba(18,35,60,.06)}
-    .nav{width:100%; padding:14px clamp(10px,2vw,20px); display:flex; align-items:center; justify-content:space-between; gap:16px}
+    header{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  padding:10px 0;
+  background: rgba(255,255,255,.65);
+  backdrop-filter: saturate(1.05) blur(8px);
+  border-bottom: 1px solid rgba(20,40,70,.08);
+  box-shadow: 0 8px 24px rgba(18,35,60,.08);
+}
+
+  .nav{
+  width:100%;
+  /* korrigierte Innenabstände – deine aktuelle clamp ist versehentlich 100px minimal */
+  padding:14px clamp(10px,2vw,20px);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+
+
     .brand{display:flex; align-items:center; gap:10px}
     .brand .logo{font-weight:800; letter-spacing:.3px; font-size:clamp(14px,1.9vw,20px)}
     .menu{display:flex; gap:6px; align-items:center}
