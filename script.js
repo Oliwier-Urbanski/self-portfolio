@@ -276,3 +276,32 @@ if (eduRoot) {
 
 });
 
+function showPopup(message, title = 'Alles klar!') {
+  const root = document.getElementById('popup');
+  if (!root) return;
+  root.querySelector('#popup-title').textContent = title;
+  root.querySelector('#popup-msg').textContent = message;
+  root.classList.add('is-open');
+
+  // ESC schließt
+  const onKey = (e) => { if (e.key === 'Escape') hidePopup(); };
+  document.addEventListener('keydown', onKey, { once: true });
+
+  // Auto-Dismiss nach 3.2s
+  root._autoTimer && clearTimeout(root._autoTimer);
+  root._autoTimer = setTimeout(hidePopup, 3200);
+}
+
+function hidePopup() {
+  const root = document.getElementById('popup');
+  if (!root) return;
+  root.classList.remove('is-open');
+}
+
+(() => {
+  const root = document.getElementById('popup');
+  if (!root) return;
+  root.addEventListener('click', (e) => {
+    if (e.target.matches('[data-close]') || e.target.closest('[data-close]')) hidePopup();
+  });
+})();

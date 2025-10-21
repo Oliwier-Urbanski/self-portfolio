@@ -869,24 +869,40 @@
           <h3 class="contactSub">Connect with me</h3>
           <p class="contactLead">If you want to know more about me or my work, or if you would just like to say hello, send me a message. I'd love to hear from you.</p>
   
-          <form class="contactForm" action="#" method="post">
-            <div class="field">
-              <label for="cname">Name</label>
-              <input id="cname" name="name" type="text" placeholder="Enter your name" required>
-            </div>
-            <div class="field">
-              <label for="cemail">Email</label>
-              <input id="cemail" name="email" type="email" placeholder="Enter your email" required>
-            </div>
-            <div class="field">
-              <label for="cmsg">Message</label>
-              <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
-            </div>
-            <div class="contactActions">
-              <a class="mailDirect" href="mail:urbanskioli@gmail.com">Send me an email directly</a>
-              <a href="#" class="btn">Submit</a>
-            </div>
-          </form>
+          <form class="contactForm" action="https://api.web3forms.com/submit" method="POST">
+  <!-- Pflicht: Dein Web3Forms Access Key -->
+  <input type="hidden" name="access_key" value="3152af00-569c-4070-be06-e0e5bb34e5a5">
+
+  <!-- Optional, hübschere Mail-Header -->
+  <input type="hidden" name="from_name" value="Portfolio Kontaktformular">
+  <input type="hidden" name="replyto" value="email">
+
+  <!-- Honeypot gegen Bots -->
+  <input type="checkbox" name="botcheck" id="botcheck" style="display:none">
+
+  <div class="field">
+    <label for="cname">Name</label>
+    <input id="cname" name="name" type="text" placeholder="Enter your name" required>
+  </div>
+  <div class="field">
+    <label for="cemail">Email</label>
+    <input id="cemail" name="email" type="email" placeholder="Enter your email" required>
+  </div>
+  <div class="field">
+    <label for="cmsg">Message</label>
+    <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
+  </div>
+
+  <div class="contactActions">
+    <a class="mailDirect" href="mailto:urbanskioli@gmail.com">Send me an email directly</a>
+    <!-- WICHTIG: echter Submit-Button (kein <a>) -->
+    <button type="submit" class="btn">Submit</button>
+  </div>
+
+  <!-- Optional: eigene Danke-Seite -->
+  <!-- <input type="hidden" name="redirect" value="https://deine-domain.tld/danke.html"> -->
+</form>
+
         </div>
   
         <!-- Rechte Spalte: Info -->
@@ -1040,5 +1056,61 @@
    <script src="script.js" defer></script>
    <script src="cursor.js" defer></script>
    <script src="reveal.js" defer></script>
-</body>
+  <script>
+  (function(){
+    const form = document.querySelector('#contact .contactForm');
+    if(!form) return;
+
+    let statusEl = document.getElementById('form-status');
+    if(!statusEl){
+      statusEl = document.createElement('p');
+      statusEl.id = 'form-status';
+      statusEl.setAttribute('role','status');
+      statusEl.style.marginTop = '8px';
+      form.appendChild(statusEl);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = 'Sende...';
+
+      try {
+        const formData = new FormData(form);
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          statusEl.textContent = 'Danke! Deine Nachricht wurde versendet.';
+          form.reset();
+        } else {
+          statusEl.textContent = 'Konnte nicht senden. Bitte später erneut versuchen.';
+          console.error(data);
+        }
+      } catch (err) {
+        statusEl.textContent = 'Netzwerkfehler. Prüfe deine Verbindung.';
+        console.error(err);
+      }
+    });
+  })();
+</script>
+
+<!-- Success/Info Popup -->
+<div id="popup" class="popup" aria-hidden="true">
+  <div class="popup__backdrop" data-close></div>
+  <div class="popup__card" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-live="polite">
+    <div class="popup__icon" aria-hidden="true">
+      <!-- einfacher Check-Icon -->
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+        <path d="M7 12.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="popup__content">
+      <h3 id="popup-title">Alles klar!</h3>
+      <p id="popup-msg">Danke! Deine Nachricht wurde versendet.</p>
+    </div>
+    <button class="popup__close" type="button" data-close aria-label="Popup schließen">×</button>
+  </div>
+</div>
+
+  </body>
 </html>
