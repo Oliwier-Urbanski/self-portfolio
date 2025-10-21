@@ -1079,7 +1079,8 @@
         const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
         const data = await res.json();
         if (data.success) {
-          statusEl.textContent = 'Danke! Deine Nachricht wurde versendet.';
+          showPopup('Danke! Deine Nachricht wurde versendet.', 'Nachricht gesendet');
+
           form.reset();
         } else {
           statusEl.textContent = 'Konnte nicht senden. Bitte später erneut versuchen.';
