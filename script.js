@@ -25,32 +25,42 @@
   setHeaderHeight();
   window.addEventListener('resize', setHeaderHeight);
 
-  // ===== Theme toggle (single dark option) =====
-  (function themeToggle(){
+// ===== Theme Toggle (Next-themes-like) =====
+(function(){
+  const KEY = 'theme';
   const root = document.documentElement;
-  const key = 'theme';
-  const toggle = document.querySelector('.theme-toggle');
+  const btn  = document.getElementById('modeToggle'); // kommt aus Schritt 2 (Button in der Navbar)
+  if(!btn) return; // solange kein Button existiert, sauber aussteigen
 
-  // initial: aus localStorage lesen (default light)
-  const saved = localStorage.getItem(key);
-  const initial = saved || 'light';
-  root.setAttribute('data-theme', initial);
-  if (toggle) toggle.checked = (initial === 'dark');
-
-  if (toggle){
-    // erste User-Interaktion → Animationen aktivieren
-    toggle.addEventListener('click', () => {
-      toggle.classList.remove('pristine');
-    }, { once:true });
-
-    // Wechsel des Themes per Checkbox
-    toggle.addEventListener('change', () => {
-      const next = toggle.checked ? 'dark' : 'light';
-      root.setAttribute('data-theme', next);
-      localStorage.setItem(key, next);
-    });
+  // resolvedTheme: user saved OR system
+  function resolvedTheme(){
+    const saved = localStorage.getItem(KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
+
+  // initial sync (falls Pre-Paint-Script mal fehlt)
+  root.setAttribute('data-theme', resolvedTheme());
+
+  // click → toggle light/dark
+  btn.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem(KEY, next);
+  });
+
+  // system changes übernehmen, wenn User nichts gewählt hat
+  try{
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener?.('change', () => {
+      if(!localStorage.getItem(KEY)){
+        root.setAttribute('data-theme', mq.matches ? 'dark' : 'light');
+      }
+    });
+  }catch(_){}
 })();
+
 
 
   // ===== Smooth scroll (accounts for fixed header) =====
@@ -266,3 +276,32 @@ if (eduRoot) {
 
 });
 
+function showPopup(message, title = 'Alles klar!') {
+  const root = document.getElementById('popup');
+  if (!root) return;
+  root.querySelector('#popup-title').textContent = title;
+  root.querySelector('#popup-msg').textContent = message;
+  root.classList.add('is-open');
+
+  // ESC schließt
+  const onKey = (e) => { if (e.key === 'Escape') hidePopup(); };
+  document.addEventListener('keydown', onKey, { once: true });
+
+  // Auto-Dismiss nach 3.2s
+  root._autoTimer && clearTimeout(root._autoTimer);
+  root._autoTimer = setTimeout(hidePopup, 3200);
+}
+
+function hidePopup() {
+  const root = document.getElementById('popup');
+  if (!root) return;
+  root.classList.remove('is-open');
+}
+
+(() => {
+  const root = document.getElementById('popup');
+  if (!root) return;
+  root.addEventListener('click', (e) => {
+    if (e.target.matches('[data-close]') || e.target.closest('[data-close]')) hidePopup();
+  });
+})();

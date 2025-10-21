@@ -43,10 +43,12 @@
      Header / Navbar
      ================= */
   :root[data-theme="dark"] header{
-    background:#0f1626;
-    box-shadow:0 10px 28px rgba(0,0,0,.45);
-    backdrop-filter:saturate(1.1) blur(4px);
-  }
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
   :root[data-theme="dark"] .menu a{ color:#c9d5e2; }
   :root[data-theme="dark"] .menu a.active{ box-shadow:0 0 0 6px var(--ring); }
   :root[data-theme="dark"] .sun{ box-shadow:0 0 0 6px var(--ring); }
@@ -280,3 +282,151 @@
 }
 .btn.see-more:hover{ transform: translateY(-1px); opacity:.95; }
 .btn.see-more:active{ transform: translateY(0); }
+
+/* ===== Theme Toggle (Lucide + Motion-ähnlicher Effekt) ===== */
+.mode-toggle{
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  -webkit-tap-highlight-color: transparent; /* Safari/Chrome Tap-Highlight aus */
+  outline: none;
+
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform .15s ease, opacity .2s ease;
+}
+
+.mode-toggle:focus,
+.mode-toggle:active,
+.mode-toggle:focus-visible{
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.menu .mode-toggle{
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.mode-toggle::-moz-focus-inner{ border: 0; } /* Firefox-Kante */
+
+
+.mode-toggle:active{ transform:scale(.96); }
+
+/* Dark Variant wie im neuen Projekt */
+html[data-theme="dark"] .mode-toggle{
+  background:transparent;
+  border:0;
+  box-shadow:none;
+}
+
+
+/* Icons stapeln + Motion-ähnliches Ein-/Ausblenden */
+.mode-toggle .icon{
+  position:absolute; width:1.5rem; height:1.5rem;
+  transition:opacity .30s ease, transform .30s ease;
+  color:#1b2735; /* sichtbare Linie im Light */
+  box-shadow: none !important;
+  background: transparent !important;
+  pointer-events: none; /* nie Fokus aufs SVG selbst */
+
+}
+html[data-theme="dark"] .mode-toggle .icon{ color:#e6edf6; }
+
+/* Sichtbarkeit/Slide-Effekt */
+.mode-toggle .sun{ opacity:1; transform:translateY(0); }
+.mode-toggle .moon{ opacity:0; transform:translateY(-10px); }
+html[data-theme="dark"] .mode-toggle .sun{ opacity:0; transform:translateY(10px); }
+html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); }
+
+/* A11y helper */
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); border:0; white-space:nowrap;
+}
+
+/* === Contact Popup === */
+.popup{
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
+  pointer-events: none; opacity: 0;
+  transition: opacity .25s ease;
+  z-index: 9999;
+}
+.popup.is-open{ opacity: 1; pointer-events: auto; }
+
+.popup__backdrop{
+  position: absolute; inset: 0;
+  backdrop-filter: blur(6px) saturate(1.1);
+  background: rgba(0,0,0,.12);
+}
+
+:root[data-theme="dark"] .popup__backdrop{
+  background: rgba(0,0,0,.35);
+}
+
+.popup__card{
+  position: relative;
+  width: min(92vw, 500px);
+  border-radius: 20px;
+  padding: 18px 18px 18px 16px;
+  background: var(--surface, #ffffff);
+  color: var(--text, #0e1320);
+  box-shadow: 0 40px 70px rgba(0,0,0,.25), 0 4px 14px rgba(0,0,0,.18);
+  transform: scale(.94) translateY(6px);
+  opacity: 0;
+  animation: pop-enter .28s cubic-bezier(.2,.7,.2,1) forwards;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 14px;
+}
+
+:root[data-theme="dark"] .popup__card{
+  background: #0f1626;
+  color: #e6edf6;
+  box-shadow: 0 40px 70px rgba(0,0,0,.6), 0 4px 14px rgba(0,0,0,.5);
+}
+
+.popup__icon{
+  display: grid; place-items: center;
+  color: var(--accent, #2b8cff);
+  width: 36px; height: 36px;
+}
+
+.popup__content h3{
+  margin: 2px 0 4px; font-size: 1.05rem; font-weight: 700;
+}
+.popup__content p{
+  margin: 0; opacity: .9; line-height: 1.35;
+}
+
+.popup__close{
+  align-self: start;
+  width: 28px; height: 28px;
+  border-radius: 999px; border: none;
+  background: transparent; color: inherit; font-size: 20px;
+  line-height: 1; cursor: pointer;
+  transition: transform .15s ease, background .15s ease, opacity .15s ease;
+  opacity: .8;
+}
+.popup__close:hover{ transform: scale(1.08); background: rgba(0,0,0,.06); opacity: 1; }
+:root[data-theme="dark"] .popup__close:hover{ background: rgba(255,255,255,.06); }
+
+@keyframes pop-enter{
+  from{ transform: scale(.94) translateY(6px); opacity: 0; }
+  to  { transform: scale(1) translateY(0);    opacity: 1; }
+}
+
+/* optional: leichter „pulse“ Glow um das Icon */
+.popup__icon::after{
+  content:""; position:absolute; inset:auto;
+}

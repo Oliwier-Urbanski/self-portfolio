@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="de">
 <head>
+  <script>
+  (function () {
+    var KEY = 'theme';
+    var saved = localStorage.getItem(KEY);
+    var system = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    var theme = saved || system;
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" href="assets/tab-logo/ou-2.png" type="image/png" size="32x32" />
@@ -31,161 +41,30 @@
     section{scroll-margin-top: calc(var(--header-h) + 10px)}
 
     /* ===== Navbar (weiß, Pill auf aktiv) ===== */
-    header{position:fixed; top:0; left:0; right:0; z-index:1000; background:#fff; box-shadow:0 6px 18px rgba(18,35,60,.06)}
-    .nav{width:100%; padding:14px clamp(10px,2vw,20px); display:flex; align-items:center; justify-content:space-between; gap:16px}
+    header{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  padding:10px 0;
+  background: rgba(255,255,255,.65);
+  backdrop-filter: saturate(1.05) blur(8px);
+  border-bottom: 1px solid rgba(20,40,70,.08);
+  box-shadow: 0 8px 24px rgba(18,35,60,.08);
+}
+
+  .nav{
+  width:100%;
+  /* korrigierte Innenabstände – deine aktuelle clamp ist versehentlich 100px minimal */
+  padding:14px clamp(10px,2vw,20px);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+
+
     .brand{display:flex; align-items:center; gap:10px}
     .brand .logo{font-weight:800; letter-spacing:.3px; font-size:clamp(14px,1.9vw,20px)}
     .menu{display:flex; gap:6px; align-items:center}
     .menu a{padding:8px 14px; border-radius:999px; color:#2b3a49}
     .menu a.active{background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; box-shadow:0 0 0 6px var(--ring)}
     
-    /* === Header-Theme-Toggle (Checkbox) – kompakt & gescoped === */
-.menu .theme-toggle{
-  /* Größe über em → hier die Basis */
-  font-size: 26px;          /* Stell hier die Gesamtgröße ein (z. B. 14–18px) */
-  --off:#c7cad1;
-  --mid:#829ad6;
-  --on:#255ff4;
-  --transDur:.5s;
-  --timing:cubic-bezier(.6,0,.4,1);
-
-  width:2.25em; height:1.5em;
-  background-color:var(--off);
-  border-radius:.67em/.5em;
-  box-shadow:
-    0 0.05em 0.1em #00000007 inset,
-    0 -0.25em 0.25em #0001 inset,
-    0 -0.5em 0 #0001 inset,
-    0 0.1em 0.1em #0001;
-  cursor:pointer;
-  position:relative;
-  -webkit-appearance:none;
-  appearance:none;
-  -webkit-tap-highlight-color:transparent;
-
-  display:inline-block;
-  margin-left:10px;      /* entspricht deinem alten .sun spacing */
-  align-self:center;
-  animation:bgOff var(--transDur) var(--timing);
-}
-.menu .theme-toggle:before{
-  content:"";
-  position:absolute; top:.125em; left:.125em;
-  width:1em; height:.75em;
-  border-radius:.5em/.375em;
-  box-shadow:
-    0 .175em .175em 0 #0001 inset,
-    0 .375em 0 #0002 inset,
-    0 .375em 0 var(--off) inset,
-    0 .475em .1em #0001 inset;
-  background-image:
-    linear-gradient(90deg,#f1f2f3 2px,#f1f2f300 2px),
-    linear-gradient(#f1f2f3 2px,#fff 2px);
-  background-repeat:repeat;
-  background-size:.75em .375em;
-  background-position:50% calc(50% - .1875em);
-  animation:handleOff var(--transDur) var(--timing);
-}
-
-/* checked → an */
-.menu .theme-toggle:checked{
-  animation:bgOn var(--transDur) var(--timing) forwards;
-}
-.menu .theme-toggle:checked:before{
-  animation:handleOn var(--transDur) var(--timing) forwards;
-}
-
-/* Animationen erst nach erster User-Interaktion: */
-.menu .theme-toggle.pristine,
-.menu .theme-toggle.pristine:before{
-  animation:none;
-}
-
-/* Dark-Mode-Varianten über dein data-theme (nicht prefers-color-scheme) */
-:root[data-theme="dark"] .menu .theme-toggle{
-  --off:#5c6270;
-  --mid:#3d5fb6;
-  --on:#255ff4;
-}
-:root[data-theme="dark"] .menu .theme-toggle:before{
-  background-image:
-    linear-gradient(90deg,#3a3d46 2px,#3a3d4600 2px),
-    linear-gradient(#3a3d46 2px,#2e3138 2px);
-}
-
-/* Keyframes – unverändert, aber gescoped nutzbar */
-@keyframes bgOff{
-  from{ background-color:var(--on); }
-  50%{ background-color:var(--mid); }
-  to{ background-color:var(--off); }
-}
-@keyframes bgOn{
-  from{ background-color:var(--off); }
-  50%{ background-color:var(--mid); }
-  to{ background-color:var(--on); }
-}
-@keyframes handleOff{
-  from{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--on) inset,
-      0 .475em .1em #0001 inset;
-    left:1.125em; width:1em;
-  }
-  50%{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--mid) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:2em;
-  }
-  to{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--off) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:1em;
-  }
-}
-@keyframes handleOn{
-  from{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--off) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:1em;
-  }
-  50%{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--mid) inset,
-      0 .475em .1em #0001 inset;
-    left:.125em; width:2em;
-  }
-  to{
-    box-shadow:
-      0 .175em .175em 0 #0001 inset,
-      0 .375em 0 #0002 inset,
-      0 .375em 0 var(--on) inset,
-      0 .475em .1em #0001 inset;
-    left:1.125em; width:1em;
-  }
-}
-
-
-
-    :root[data-theme="dark"] .sun{
-    background-color:#101a2b;
-    background-image:url('assets/dark-light-icons/icon-moon.png'); /* Dark-Icon */
-    box-shadow:0 0 0 6px rgba(91,141,255,.26);
-    border-color:rgba(255,255,255,.12);
-  }
-
+ 
 
     /* ===== Vollbild-Layout für JEDEN Abschnitt ===== */
     /* Füllt die sichtbare Höhe abzüglich Sticky-Header */
@@ -468,7 +347,19 @@
         <a href="#jobs">My Jobs</a>
         <a href="#edu">Educations</a>
         <a href="#contact">Contact</a>
-        <input class="theme-toggle pristine" type="checkbox" name="toggle" value="on" aria-label="Toggle dark mode">
+      <button id="modeToggle" class="mode-toggle" aria-label="Toggle theme" title="Toggle theme">
+  <!-- Lucide Moon -->
+  <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+  </svg>
+  <!-- Lucide Sun -->
+  <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+  </svg>
+  <span class="sr-only">Toggle theme</span>
+</button>
+
       </div>
     </nav>
   </header>
@@ -825,7 +716,7 @@
               <li class="tag">Appium</li>
             </ul>
             <div class="projActions">
-              <a class="btn" href="#" aria-label="Open project">Project</a>
+              <a class="btn" href="#" aria-label="Open project" target="_blank" rel="noopener noreferrer">Project</a>
             </div>
           </div>
         </div>
@@ -849,7 +740,7 @@
               <li class="tag">UX</li>
             </ul>
             <div class="projActions">
-              <a class="btn" href="#" aria-label="Open project">Project</a>
+              <a class="btn" href="#" aria-label="Open project" target="_blank" rel="noopener noreferrer">Project</a>
             </div>
           </div>
         </div>
@@ -858,7 +749,7 @@
       <!-- Projekt 3 -->
       <article class="projCard">
         <div class="projThumb">
-          <img src="./assets/project-icons/proj-anime-login.png" alt="Anime Login Page" width="1280" height="720" loading="lazy">
+          <img src="./assets/project-icons/image.png" alt="Anime Login Page" width="1280" height="720" loading="lazy">
         </div>
         <div class="projBody">
           <h3>Anime Login Page</h3>
@@ -873,7 +764,7 @@
               <li class="tag">JavaScript</li>
             </ul>
             <div class="projActions">
-              <a class="btn" href="#" aria-label="Open project">Project</a>
+              <a class="btn" href="https://github.com/Oliwier-Urbanski/Anime-Login-Interface" aria-label="Open project" target="_blank" rel="noopener noreferrer">Project</a>
             </div>
           </div>
         </div>
@@ -881,7 +772,22 @@
     </div>
     <!-- CTA unter den Projects -->
 <div class="projects-cta reveal">
-  <a class="btn see-more" href="https://github.com/Oliwier-Urbanski?tab=repositories" aria-label="See all projects" target="_blank" rel="noopener noreferrer">See More</a>
+  <div class="ctaBlock">
+    <a class="btnSparkle"
+       href="https://github.com/Oliwier-Urbanski?tab=repositories"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="See all projects">
+      <!-- Sparkles -->
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <!-- Text -->
+      <span>See more !</span>
+      <span aria-hidden="true">See more !</span>
+    </a>
+  </div>
 </div>
 
   </div>
@@ -963,24 +869,40 @@
           <h3 class="contactSub">Connect with me</h3>
           <p class="contactLead">If you want to know more about me or my work, or if you would just like to say hello, send me a message. I'd love to hear from you.</p>
   
-          <form class="contactForm" action="#" method="post">
-            <div class="field">
-              <label for="cname">Name</label>
-              <input id="cname" name="name" type="text" placeholder="Enter your name" required>
-            </div>
-            <div class="field">
-              <label for="cemail">Email</label>
-              <input id="cemail" name="email" type="email" placeholder="Enter your email" required>
-            </div>
-            <div class="field">
-              <label for="cmsg">Message</label>
-              <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
-            </div>
-            <div class="contactActions">
-              <a class="mailDirect" href="mail:urbanskioli@gmail.com">Send me an email directly</a>
-              <a href="#" class="btn">Submit</a>
-            </div>
-          </form>
+          <form class="contactForm" action="https://api.web3forms.com/submit" method="POST">
+  <!-- Pflicht: Dein Web3Forms Access Key -->
+  <input type="hidden" name="access_key" value="3152af00-569c-4070-be06-e0e5bb34e5a5">
+
+  <!-- Optional, hübschere Mail-Header -->
+  <input type="hidden" name="from_name" value="Portfolio Kontaktformular">
+  <input type="hidden" name="replyto" value="email">
+
+  <!-- Honeypot gegen Bots -->
+  <input type="checkbox" name="botcheck" id="botcheck" style="display:none">
+
+  <div class="field">
+    <label for="cname">Name</label>
+    <input id="cname" name="name" type="text" placeholder="Enter your name" required>
+  </div>
+  <div class="field">
+    <label for="cemail">Email</label>
+    <input id="cemail" name="email" type="email" placeholder="Enter your email" required>
+  </div>
+  <div class="field">
+    <label for="cmsg">Message</label>
+    <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
+  </div>
+
+  <div class="contactActions">
+    <a class="mailDirect" href="mailto:urbanskioli@gmail.com">Send me an email directly</a>
+    <!-- WICHTIG: echter Submit-Button (kein <a>) -->
+    <button type="submit" class="btn">Submit</button>
+  </div>
+
+  <!-- Optional: eigene Danke-Seite -->
+  <!-- <input type="hidden" name="redirect" value="https://deine-domain.tld/danke.html"> -->
+</form>
+
         </div>
   
         <!-- Rechte Spalte: Info -->
@@ -1031,7 +953,7 @@
 
   <footer>
     <div class="foot">
-      <span>© <span id="year"></span> Oliwier Urbanski</span>
+      <span>© <span id="year"></span> Oliwier Urbanski - Designed with ❤️</span>
       <a href="#home" class="muted">Back to top ↑</a>
     </div>
   </footer>
@@ -1090,7 +1012,9 @@
   
     // ===== Typewriter im Gradient-Titel (langsamer) =====
     const typedEl = document.getElementById('typed');
-    const phrases = ['Automation Engineer','Python QA Engineer','Front-End Developer'];
+    const phrases = ['Junior Developer', 'Automation Apprentice','Python Apprentice',];
+
+    // 'Automation Engineer','Python QA Engineer','Front-End Developer'
   
     // Geschwindigkeiten (einfach hier anpassen):
     const TYPE_MIN = 30;   // ms pro Zeichen (min)
@@ -1134,5 +1058,62 @@
    <script src="script.js" defer></script>
    <script src="cursor.js" defer></script>
    <script src="reveal.js" defer></script>
-</body>
+  <script>
+  (function(){
+    const form = document.querySelector('#contact .contactForm');
+    if(!form) return;
+
+    let statusEl = document.getElementById('form-status');
+    if(!statusEl){
+      statusEl = document.createElement('p');
+      statusEl.id = 'form-status';
+      statusEl.setAttribute('role','status');
+      statusEl.style.marginTop = '8px';
+      form.appendChild(statusEl);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = 'Sende...';
+
+      try {
+        const formData = new FormData(form);
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          showPopup('Danke! Deine Nachricht wurde versendet.', 'Nachricht gesendet');
+
+          form.reset();
+        } else {
+          statusEl.textContent = 'Konnte nicht senden. Bitte später erneut versuchen.';
+          console.error(data);
+        }
+      } catch (err) {
+        statusEl.textContent = 'Netzwerkfehler. Prüfe deine Verbindung.';
+        console.error(err);
+      }
+    });
+  })();
+</script>
+
+<!-- Success/Info Popup -->
+<div id="popup" class="popup" aria-hidden="true">
+  <div class="popup__backdrop" data-close></div>
+  <div class="popup__card" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-live="polite">
+    <div class="popup__icon" aria-hidden="true">
+      <!-- einfacher Check-Icon -->
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+        <path d="M7 12.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="popup__content">
+      <h3 id="popup-title">Alles klar!</h3>
+      <p id="popup-msg">Danke! Deine Nachricht wurde versendet.</p>
+    </div>
+    <button class="popup__close" type="button" data-close aria-label="Popup schließen">×</button>
+  </div>
+</div>
+
+  </body>
 </html>
