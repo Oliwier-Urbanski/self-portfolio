@@ -433,7 +433,7 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
 
 /* === FORCE LEFT RAIL ON DESKTOP === */
 :root{
-  --rail: clamp(26px, 5vw, 68px); /* linker/rechter Seiten-Gutter */
+   --rail: clamp(20px, 5.5vw, 48px); /* linker/rechter Seiten-Gutter */
   --textw: 1680px;                 /* max Breite deiner Intro-Textspalte */
 }
 
