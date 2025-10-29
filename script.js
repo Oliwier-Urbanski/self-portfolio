@@ -182,7 +182,7 @@
   const JOBS = [
     {
       title: "Application Developer Apprentice — STRATO / IONOS",
-      logo: "./assets/company/strato.png",         
+      logo: "./assets/company/Strato.png",         
       website: "https://www.strato.de/",
       date: "2024 - present",
       detail: "Test Automation (Python, Selenium, Appium), Clean QA Flows, Early Frontend Development",
@@ -210,7 +210,7 @@
   const EDU = [
   {
     title: "STRATO / IONOS · Apprenticeship (practical training)",
-    logo: "./assets/company/strato.png",   
+    logo: "./assets/company/Strato.png",   
     website: "https://www.ionos.de/",
     date: "2024 – present",
     detail: "Company-based apprenticeship",
