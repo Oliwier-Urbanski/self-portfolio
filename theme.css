@@ -477,3 +477,76 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
     grid-template-columns: 1fr !important;
   }
 }
+
+
+@media (max-width: 900px){
+  .menu{
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0; right: 0;
+    display: none;               /* bleibt zu, bis .open gesetzt wird */
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px clamp(18px, 6vw, 24px);
+
+    /* 👇 Jetzt deckend + hoher Kontrast */
+    background: var(--page);   
+                            /* voll deckend */
+    border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0,0,0,.28);
+    z-index: 1000;
+  }
+  
+
+  .menu.open{ display:flex; }
+
+  /* Tap-Ziele und Text sicher lesbar */
+  .menu a{
+    display:block;
+    width:100%;
+    padding: 12px 10px;
+    border-radius: 10px;
+    font-size: clamp(14px, 4.2vw, 16px);
+    color: var(--text);
+    background: transparent;
+  }
+}
+
+
+
+/* Overlay NUR mobil */
+@media (max-width: 900px){
+  body.nav-open::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(4px) saturate(1.05);
+  }
+  header{ z-index: 1000; } /* Menü über dem Overlay */
+}
+
+/* Desktop-Schutz: falls doch 'nav-open' gesetzt ist */
+@media (min-width: 901px){
+  body.nav-open::before{ content:none !important; }
+}
+
+
+/* Desktop-Reset für Menü */
+@media (min-width: 901px){
+  .menu{
+    position: static !important;
+    display: flex !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Desktop: Toggle komplett verstecken */
+@media (min-width: 901px){
+  #navToggle{ display: none !important; }
+}
