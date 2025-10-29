@@ -430,3 +430,50 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
 .popup__icon::after{
   content:""; position:absolute; inset:auto;
 }
+
+/* === FORCE LEFT RAIL ON DESKTOP === */
+:root{
+  --rail: clamp(126px, 15vw, 198px); /* linker/rechter Seiten-Gutter */
+  --textw: 1680px;                 /* max Breite deiner Intro-Textspalte */
+}
+
+/* Hero-Container soll NICHT zentrieren, sondern volle Breite nutzen */
+.heroInner{
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding-left: var(--rail) !important;
+  padding-right: var(--rail) !important;
+
+  /* Links die Textspalte (fixe Maxbreite), rechts der Rest */
+  display: grid !important;
+  grid-template-columns: minmax(0, var(--textw)) 1fr !important;
+  justify-items: start !important;  /* Inhalt in Zellen links halten */
+}
+
+/* Sicherheitsnetz: alle direkten Kinder im Grid links ankern */
+.heroInner > *{
+  justify-self: start !important;
+  text-align: left !important;
+}
+
+/* Die eigentliche Intro-Spalte: Breite begrenzen, nicht zentrieren */
+.intro{
+  max-width: var(--textw) !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+/* Falls ein übergeordneter Wrapper den Hero zentriert: entkoppeln */
+.hero, .hero > .wrap, .hero > .container{
+  max-width: none !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+/* Mobile bleibt 1-spaltig – die Rail bleibt gleich */
+@media (max-width: 900px){
+  .heroInner{
+    grid-template-columns: 1fr !important;
+  }
+}
