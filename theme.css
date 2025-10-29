@@ -568,12 +568,21 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
   /* Vordergrund-Layer (Wolken) */
   .parallax-min .layer.fg{
     /* größer und tiefer, damit die Wolken erst später ins Bild “fahren” */
-    background-size: 240% auto !important;
+    background-size: 310% auto !important;
     background-position: center 62% !important;
   }
   :root[data-theme="dark"] .parallax-min .layer.fg{
     /* Dark-Variante nutzt clouds-blue.svg – leicht andere Sweet-Spot-Position */
-    background-size: 260% auto !important;
+    background-size: 310% auto !important;
     background-position: center 66% !important;
+  }
+}
+
+
+/* Mobile: Lead-Satz in weiß */
+@media (max-width: 900px){
+  .intro .lead{
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,.35); /* leichte Lesbarkeit auf Bild */
   }
 }
