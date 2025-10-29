@@ -586,3 +586,90 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
     text-shadow: 0 1px 2px rgba(0,0,0,.35); /* leichte Lesbarkeit auf Bild */
   }
 }
+
+
+/* === Mobile: NavToggle als Icon statt Bars === */
+@media (max-width: 900px){
+  #navToggle{
+    display: inline-flex;          /* nur mobil sichtbar */
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    border-radius: 12px;
+  }
+  /* Bars ausblenden */
+  #navToggle .bar{ display: none !important; }
+
+  /* Icon (Light-Mode) */
+  #navToggle::before{
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: center / contain no-repeat url("/assets/icons/menu-for-light.png");
+  }
+
+  /* Icon (Dark-Mode) */
+  :root[data-theme="dark"] #navToggle::before{
+    background-image: url("/assets/icons/menu-for-dark.png");
+  }
+
+  /* Optional: anderes Icon, wenn geöffnet (falls du Close-Icons hast) */
+  #navToggle.active::before{
+    background-image: url("./assets/menu-for-light.png");
+  }
+  :root[data-theme="dark"] #navToggle.active::before{
+    background-image: url("./assets/menu-for-dark.png");
+  }
+
+  /* Fokus sichtbar für Keyboard-Nutzer */
+  #navToggle:focus-visible{
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+
+@media (max-width: 900px){
+  /* Button selbst sichtbar & tappbar machen */
+  #navToggle{
+    display: inline-flex !important;
+    align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    position: relative; z-index: 1001;  /* über allem */
+    border: 0; padding: 0;
+    background: color-mix(in oklab, var(--page) 78%, transparent); /* dezente Kachel */
+    border-radius: 12px;
+  }
+  /* alte Hamburger-Bars ausblenden */
+  #navToggle .bar{ display: none !important; }
+
+  /* ICON VOR DEM KLICK – IMMER ZEIGEN */
+  #navToggle::before{
+    content: "";
+    display: block;
+    width: 24px; height: 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 1 !important;
+    /* Pfad anpassen, falls dein Ordner anders heißt */
+    background-image: url("/assets/menu-for-light.png");
+  }
+  /* Dark-Mode-Icon */
+  :root[data-theme="dark"] #navToggle::before{
+    background-image: url("/assets/menu-for-dark.png");
+  }
+
+  /* Optional: Wenn du KEIN Close-Icon hast, lass das Menü-Icon auch im offenen Zustand */
+  #navToggle.active::before{
+    background-image: url("/assets/menu-for-light.png");
+  }
+  :root[data-theme="dark"] #navToggle.active::before{
+    background-image: url("/assets/menu-for-dark.png");
+  }
+}
