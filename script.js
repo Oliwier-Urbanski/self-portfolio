@@ -182,7 +182,7 @@
   const JOBS = [
     {
       title: "Application Developer Apprentice — STRATO / IONOS",
-      logo: "./assets/company/strato.png",         
+      logo: "./assets/company/Strato.png",         
       website: "https://www.strato.de/",
       date: "2024 - present",
       detail: "Test Automation (Python, Selenium, Appium), Clean QA Flows, Early Frontend Development",
@@ -210,7 +210,7 @@
   const EDU = [
   {
     title: "STRATO / IONOS · Apprenticeship (practical training)",
-    logo: "./assets/company/strato.png",   
+    logo: "./assets/company/Strato.png",   
     website: "https://www.ionos.de/",
     date: "2024 – present",
     detail: "Company-based apprenticeship",
@@ -303,5 +303,40 @@ function hidePopup() {
   if (!root) return;
   root.addEventListener('click', (e) => {
     if (e.target.matches('[data-close]') || e.target.closest('[data-close]')) hidePopup();
+  });
+})();
+
+// ===== Mobile Navbar Toggle =====
+(function(){
+  const btn  = document.getElementById('navToggle');
+  const menu = document.getElementById('siteMenu');
+  if(!btn || !menu) return;
+
+  btn.addEventListener('click', () => {
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('active', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.classList.toggle('nav-open', open);
+  });
+
+  // Schließe das Menü beim Klicken auf einen Link
+  menu.addEventListener('click', (e) => {
+    if(e.target.matches('a')){
+      menu.classList.remove('open');
+      btn.classList.remove('active');
+      btn.setAttribute('aria-expanded','false');
+      document.body.classList.remove('nav-open');
+    }
+  });
+
+  // Optional: Schließe bei Resize > 900px
+  const mql = window.matchMedia('(min-width: 901px)');
+  mql.addEventListener('change', (ev) => {
+    if(ev.matches){
+      menu.classList.remove('open');
+      btn.classList.remove('active');
+      btn.setAttribute('aria-expanded','false');
+      document.body.classList.remove('nav-open');
+    }
   });
 })();

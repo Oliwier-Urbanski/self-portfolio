@@ -430,3 +430,246 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
 .popup__icon::after{
   content:""; position:absolute; inset:auto;
 }
+
+/* === FORCE LEFT RAIL ON DESKTOP === */
+:root{
+   --rail: clamp(20px, 5.5vw, 48px); /* linker/rechter Seiten-Gutter */
+  --textw: 1680px;                 /* max Breite deiner Intro-Textspalte */
+}
+
+/* Hero-Container soll NICHT zentrieren, sondern volle Breite nutzen */
+.heroInner{
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding-left: var(--rail) !important;
+  padding-right: var(--rail) !important;
+
+  /* Links die Textspalte (fixe Maxbreite), rechts der Rest */
+  display: grid !important;
+  grid-template-columns: minmax(0, var(--textw)) 1fr !important;
+  justify-items: start !important;  /* Inhalt in Zellen links halten */
+}
+
+/* Sicherheitsnetz: alle direkten Kinder im Grid links ankern */
+.heroInner > *{
+  justify-self: start !important;
+  text-align: left !important;
+}
+
+/* Die eigentliche Intro-Spalte: Breite begrenzen, nicht zentrieren */
+.intro{
+  max-width: var(--textw) !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+/* Falls ein übergeordneter Wrapper den Hero zentriert: entkoppeln */
+.hero, .hero > .wrap, .hero > .container{
+  max-width: none !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+/* Mobile bleibt 1-spaltig – die Rail bleibt gleich */
+@media (max-width: 900px){
+  .heroInner{
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+@media (max-width: 900px){
+  .menu{
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0; right: 0;
+    display: none;               /* bleibt zu, bis .open gesetzt wird */
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px clamp(18px, 6vw, 24px);
+
+    /* 👇 Jetzt deckend + hoher Kontrast */
+    background: var(--page);   
+                            /* voll deckend */
+    border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(0,0,0,.28);
+    z-index: 1000;
+  }
+  
+
+  .menu.open{ display:flex; }
+
+  /* Tap-Ziele und Text sicher lesbar */
+  .menu a{
+    display:block;
+    width:100%;
+    padding: 12px 10px;
+    border-radius: 10px;
+    font-size: clamp(14px, 4.2vw, 16px);
+    color: var(--text);
+    background: transparent;
+  }
+}
+
+
+
+/* Overlay NUR mobil */
+@media (max-width: 900px){
+  body.nav-open::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(4px) saturate(1.05);
+  }
+  header{ z-index: 1000; } /* Menü über dem Overlay */
+}
+
+/* Desktop-Schutz: falls doch 'nav-open' gesetzt ist */
+@media (min-width: 901px){
+  body.nav-open::before{ content:none !important; }
+}
+
+
+/* Desktop-Reset für Menü */
+@media (min-width: 901px){
+  .menu{
+    position: static !important;
+    display: flex !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* Desktop: Toggle komplett verstecken */
+@media (min-width: 901px){
+  #navToggle{ display: none !important; }
+}
+
+
+/* === Parallax Mobile-Fix (<= 900px) === */
+@media (max-width: 900px){
+  /* Hero-Hintergrund (Light & Dark) */
+  .hero{
+    /* weiter runter schieben, damit oben nichts abgeschnitten wirkt */
+    background-position: center 30% !important;
+    background-size: cover !important;
+  }
+  :root[data-theme="dark"] .hero{
+    /* im Dark-Mode meistens etwas höher skaliert → noch etwas tiefer setzen */
+    background-position: center 36% !important;
+  }
+
+  /* Vordergrund-Layer (Wolken) */
+  .parallax-min .layer.fg{
+    /* größer und tiefer, damit die Wolken erst später ins Bild “fahren” */
+    background-size: 310% auto !important;
+    background-position: center 62% !important;
+  }
+  :root[data-theme="dark"] .parallax-min .layer.fg{
+    /* Dark-Variante nutzt clouds-blue.svg – leicht andere Sweet-Spot-Position */
+    background-size: 310% auto !important;
+    background-position: center 66% !important;
+  }
+}
+
+
+/* Mobile: Lead-Satz in weiß */
+@media (max-width: 900px){
+  .intro .lead{
+    color: #fff !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,.35); /* leichte Lesbarkeit auf Bild */
+  }
+}
+
+
+/* === Mobile: NavToggle als Icon statt Bars === */
+@media (max-width: 900px){
+  #navToggle{
+    display: inline-flex;          /* nur mobil sichtbar */
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    border-radius: 12px;
+  }
+  /* Bars ausblenden */
+  #navToggle .bar{ display: none !important; }
+
+  /* Icon (Light-Mode) */
+  #navToggle::before{
+    content: "";
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: center / contain no-repeat url("/assets/icons/menu-for-light.png");
+  }
+
+  /* Icon (Dark-Mode) */
+  :root[data-theme="dark"] #navToggle::before{
+    background-image: url("/assets/icons/menu-for-dark.png");
+  }
+
+  /* Optional: anderes Icon, wenn geöffnet (falls du Close-Icons hast) */
+  #navToggle.active::before{
+    background-image: url("./assets/menu-for-light.png");
+  }
+  :root[data-theme="dark"] #navToggle.active::before{
+    background-image: url("./assets/menu-for-dark.png");
+  }
+
+  /* Fokus sichtbar für Keyboard-Nutzer */
+  #navToggle:focus-visible{
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+
+@media (max-width: 900px){
+  /* Button selbst sichtbar & tappbar machen */
+  #navToggle{
+    display: inline-flex !important;
+    align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    position: relative; z-index: 1001;  /* über allem */
+    border: 0; padding: 0;
+    background: color-mix(in oklab, var(--page) 78%, transparent); /* dezente Kachel */
+    border-radius: 12px;
+  }
+  /* alte Hamburger-Bars ausblenden */
+  #navToggle .bar{ display: none !important; }
+
+  /* ICON VOR DEM KLICK – IMMER ZEIGEN */
+  #navToggle::before{
+    content: "";
+    display: block;
+    width: 24px; height: 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 1 !important;
+    /* Pfad anpassen, falls dein Ordner anders heißt */
+    background-image: url("/assets/menu-for-light.png");
+  }
+  /* Dark-Mode-Icon */
+  :root[data-theme="dark"] #navToggle::before{
+    background-image: url("/assets/menu-for-dark.png");
+  }
+
+  /* Optional: Wenn du KEIN Close-Icon hast, lass das Menü-Icon auch im offenen Zustand */
+  #navToggle.active::before{
+    background-image: url("/assets/menu-for-light.png");
+  }
+  :root[data-theme="dark"] #navToggle.active::before{
+    background-image: url("/assets/menu-for-dark.png");
+  }
+}
