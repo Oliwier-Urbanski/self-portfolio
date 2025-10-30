@@ -246,6 +246,103 @@
 
     /* === Sparkle-Resume-Button (bläulich, scoped) === */
 /* === Sparkle-Resume-Button (bläulich, kompakt) === */
+
+/* ——— Sparkle: SOLID (voll-blau, Effekt bleibt) ——— */
+.btnSparkle.solid {
+  isolation: isolate;            /* eigener Stacking-Context */
+}
+
+.btnSparkle.solid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--pill, #4f7df0), var(--pill-2, #3b72ff));
+  box-shadow: 0 0 0 6px var(--ring, rgba(79,125,240,.25));
+  z-index: 0;                    /* unter Text & Sparkles */
+}
+
+/* Inhalte über den blauen Layer */
+.btnSparkle.solid > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Text sichtbar/weiß statt transparent + keine Blend-Modes */
+.btnSparkle.solid span {
+  color: #fff !important;
+  text-shadow: none !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Sparkles normal rendern (keine Mischmodi) */
+.btnSparkle.solid svg {
+  mix-blend-mode: normal;
+}
+
+/* dezente Hover/Active-Abstufung */
+.btnSparkle.solid:hover::before { filter: brightness(1.06); }
+.btnSparkle.solid:active::before { filter: brightness(0.95); }
+
+/* In der SOLID-Variante nur einen Text-Layer zeigen */
+.btnSparkle.solid > span:last-of-type{
+  display: none !important;
+}
+/* In SOLID: Text wirklich zentrieren */
+.btnSparkle.solid > span {
+  transform: none !important;     /* Verschiebung des Schatten-Spans aufheben */
+  display: block;                 /* volle Breite im Flex-Container */
+  text-align: center;             /* zentriert */
+}
+
+/* SOLID-Button: exakte Zentrierung via Grid */
+.btnSparkle.solid{
+  display: inline-grid !important;
+  place-items: center !important;   /* horizontal + vertikal mittig */
+  text-align: center;
+}
+
+/* Der sichtbare Text liegt in der Grid-Mitte */
+.btnSparkle.solid > span{
+  grid-area: 1 / 1;                 /* in die Mitte legen */
+  width: 100%;
+  transform: none !important;
+  text-shadow: none !important;
+}
+
+/* Der zweite Textlayer bleibt aus (gegen Doppel-Text) */
+.btnSparkle.solid > span:last-of-type{
+  display: none !important;
+}
+
+/* Sparkles bleiben absolut positioniert, stören das Grid nicht */
+.btnSparkle.solid svg{ position: absolute; }
+
+/* Ring/Glow bei solid-Button komplett aus */
+.btnSparkle.solid::before{
+  box-shadow: none !important;   /* <- Schimmer weg */
+}
+
+/* Falls noch Outline/Focus-Rand stört */
+.btnSparkle.solid:focus,
+.btnSparkle.solid:focus-visible{
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Falls die Sparkle-SVGs selbst einen Glow/Dropshadow haben */
+.btnSparkle.solid svg{
+  filter: none !important;       /* evtl. entfernte drop-shadow-Filter */
+}
+
+
+/* Schriftgröße nur für den Resume-Button */
+.btnSparkle.solid.resume-lg > span{
+  font-size: 1.65rem;   /* hier anpassen */
+  line-height: 1.1;
+  font-weight: 600;     /* optional: kräftiger */
+}
+
 .btnSparkle{
   --fs: clamp(34px, 1.05vw, 17px);
   --padY: 4px;
@@ -263,10 +360,16 @@
   border-radius: 10px;
   text-decoration:none;
   line-height:1;
-  /* KEINE min-width mehr → Button wird so breit wie "Resume" */
+  /* KEINE min-width mehr → Button wird so breit wie "Resume" */  
+
 }
+
+
+
 .btnSparkle:hover{ --hover:1; --pos:1; }
 .btnSparkle:active{ --hover:0; }
+
+
 
 /* Text-Layer (unten = Schatten, oben = Verlauf + Glanz) */
 .btnSparkle > span{
@@ -399,7 +502,7 @@
           <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" target="_blank" rel="noopener noreferrer"  aria-label="LinkedIn" title="LinkedIn"> <img src="./assets/social-icons/linkedin.png" alt="LinkedIn" width="18" height="18" loading="lazy"></a>        </div>
 
         <div class="cta">
-  <a class="btnSparkle" href="./assets/Resume/Resume-Urbanski.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume">
+  <a class="btnSparkle solid resume-lg" href="./assets/Resume/Resume-Urbanski.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume">
     <!-- Sparkles -->
     <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
