@@ -1,0 +1,23 @@
+/* cursor.css */
+/* Hinweis: JPGs haben keine Transparenz. Für „keine Box“ nimm besser PNG. */
+
+html, body, *{
+  /* Hotspot auf (8,8) — bei Bedarf anpassen, bis die Spitze „stimmt“ */
+  cursor: url('assets/cursor-normal-white.png') 8 8, auto !important;
+}
+
+/* Beim Gedrückthalten der Maustaste */
+body.is-down, body.is-down *{
+  cursor: url('assets/cursor-down.jpg') 8 8, auto !important;
+}
+
+/* Textfelder sollen weiter die Text-Einfügemarke zeigen */
+input[type="text"], input[type="search"], input[type="email"],
+input[type="password"], input[type="number"], textarea{
+  cursor: text !important;
+}
+
+/* Optional: Nur für feine Zeiger (Desktop). Auf Touch-Geräten Standard lassen */
+@media (pointer: coarse){
+  html, body, *{ cursor: auto !important; }
+}

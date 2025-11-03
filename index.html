@@ -1,10 +1,21 @@
 <!doctype html>
 <html lang="de">
 <head>
+  <script>
+  (function () {
+    var KEY = 'theme';
+    var saved = localStorage.getItem(KEY);
+    var system = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    var theme = saved || system;
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="assets/tab-logo/ou-2.png" type="image/png" size="32x32" />
   <title>Oliwier Urbanski – Portfolio</title>
-  <meta name="description" content="Hero mit Hi, I am Oli und getipptem Titel (Mobile/Full‑Stack/Front‑End Developer). UI wie im Screenshot. Keine externen Libraries." />
+  <meta name="description" content="Hero mit Hi, I am Oli und getipptem Titel (Mobile/Full‑Stack/Front‑End Developer)." />
   <style>
     /* ===== Design Tokens (hell, blau) ===== */
     :root{
@@ -30,14 +41,30 @@
     section{scroll-margin-top: calc(var(--header-h) + 10px)}
 
     /* ===== Navbar (weiß, Pill auf aktiv) ===== */
-    header{position:fixed; top:0; left:0; right:0; z-index:1000; background:#fff; box-shadow:0 6px 18px rgba(18,35,60,.06)}
-    .nav{width:100%; padding:14px clamp(10px,2vw,20px); display:flex; align-items:center; justify-content:space-between; gap:16px}
+    header{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  padding:10px 0;
+  background: rgba(255,255,255,.65);
+  backdrop-filter: saturate(1.05) blur(8px);
+  border-bottom: 1px solid rgba(20,40,70,.08);
+  box-shadow: 0 8px 24px rgba(18,35,60,.08);
+}
+
+  .nav{
+  width:100%;
+  /* korrigierte Innenabstände – deine aktuelle clamp ist versehentlich 100px minimal */
+  padding:14px clamp(10px,2vw,20px);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+}
+
+
     .brand{display:flex; align-items:center; gap:10px}
     .brand .logo{font-weight:800; letter-spacing:.3px; font-size:clamp(14px,1.9vw,20px)}
     .menu{display:flex; gap:6px; align-items:center}
     .menu a{padding:8px 14px; border-radius:999px; color:#2b3a49}
     .menu a.active{background:linear-gradient(90deg, var(--pill), var(--pill-2)); color:#fff; box-shadow:0 0 0 6px var(--ring)}
-    .sun{width:16px; height:16px; border-radius:50%; background:#ffcc4d; margin-left:8px; box-shadow:0 0 0 3px rgba(255,204,77,.28)}
+    
+ 
 
     /* ===== Vollbild-Layout für JEDEN Abschnitt ===== */
     /* Füllt die sichtbare Höhe abzüglich Sticky-Header */
@@ -50,29 +77,40 @@
     }
 
     /* ===== Hero mit Wolken‑BG ===== */
-    .hero{ position:relative; isolation:isolate; background:url('bg.jpg') center/cover no-repeat; }
+    .hero{ position:relative; isolation:isolate; background:url('./assets/backgrounds/bg.jpg') center/cover no-repeat; }
         /* === 1) Hero-Container: linksbündig, vertikal mittig, 2‑Spalten behalten === */
-    .heroInner{
-      /* VOLLBREITE statt zentriertem Container */
-      max-width:none; width:100%; margin:0;
-      /* Wenig linken Rand ⇒ Text sitzt weiter links; rechts etwas Luft */
-      /* FIX: linker Innenabstand war 300/400px durch clamp(400px,2vw,28px) → hier unverändert lassen, falls gewünscht */
-      padding:170px clamp(16px,3vw,40px) 110px clamp(400px,2.2vw,28px);
-      display:grid; gap:28px; align-items:center; min-height:100%; justify-items:start;
-      /* Linke Spalte breiter für fetten Titel */
-      grid-template-columns:minmax(360px,900px) 1fr;
-    }
+.heroInner{
+  /* Einheitlicher, zentrierter Content-Container */
+  max-width: var(--maxw);
+  margin: 0 auto;
 
-    /* === 2) Breakpoint: Desktop = 2 Spalten, Mobile = 1 Spalte === */
-    @media (max-width: 900px){
-      .heroInner{ grid-template-columns:1fr; }
-    }
+  /* Immer gleiche “linke Schiene” via Gutter – auf allen Geräten */
+  padding: clamp(96px, 14vh, 160px) clamp(16px, 5vw, 40px) clamp(56px, 10vh, 110px);
+
+  display:grid;
+  gap:28px;
+  align-items:center;
+  min-height:100%;
+  justify-items:start;
+
+  /* Breite Textspalte + Bildspalte (Desktop) */
+  grid-template-columns: minmax(0, 680px) 1fr;
+}
+
+
+@media (max-width: 900px){
+  .heroInner{ grid-template-columns: 1fr; }
+}
+
 
     /* === 3) Feintuning nur für den Textblock === */
-    .intro{
-      max-width:1060px; /* mehr Breite, damit der fette Titel nicht zu früh umbrecht */
-      margin-left:0; /* optional Feinschliff */
-    }
+.intro{
+  max-width:1060px;
+  margin:0;           /* keine ungewollten auto-Margen */
+  text-align:left;    /* Sicherheit: bleibt linksbündig */
+  justify-self:start; /* in der Grid-Zelle links an die Rail */
+}
+
 
     /* Optional: Wenn die Illustration zu viel zieht, kleiner machen */
     .visual img{ width:min(520px, 88%); }
@@ -86,10 +124,28 @@
       letter-spacing: -0.5px;
     }
 
-    .titleLine{margin:0 0 18px; font-size:clamp(32px, 5.6vw, 88px); line-height:.98; font-weight:900;
-      background:linear-gradient(90deg, var(--pill), var(--pill-2)); -webkit-background-clip:text; background-clip:text; color:transparent;
-      letter-spacing:-.3px; text-shadow:0 10px 24px var(--ring)
-    }
+    .titleLine{
+  margin:0 0 18px;
+  font-size:clamp(32px, 5.6vw, 88px);
+  line-height:.98;
+  font-weight:900;
+  background:linear-gradient(90deg, var(--pill), var(--pill-2));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:-.3px; text-shadow:none;
+
+  /* NEU – verhindert Umbruch & Layout-Shift */
+  white-space: nowrap;          /* alles in eine Zeile */
+  overflow: hidden;             /* nichts läuft optisch raus */
+  text-overflow: ellipsis;      /* Sicherheit (kleine Screens) */
+}
+
+/* NEU – reserviert Platz für den längsten Titel */
+.titleLine #typed{
+  display:inline;                  /* inline reicht – keine feste Box */
+  background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+
+
 
     /* Stelle sicher, dass der getippte Text den Verlauf sicher erbt */
     .titleLine #typed{ background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent; }
@@ -108,10 +164,10 @@
     }
     @keyframes blink{50%{opacity:0}}
 
-    .lead{max-width:60ch; color:#203140; font-size:clamp(18px, 2.2vw, 28px); line-height:1.35}
+    .lead{max-width:60ch; color:#2a2525; font-size:clamp(18px, 2.2vw, 28px); line-height:1.35}
 
     /* Social Row + Button wie im Screenshot */
-    .social{display:flex; gap:20px; margin:14px 0 18px}
+    .social{display:flex; gap:16px; margin:10px 0 6px}
     .icon{
   width:auto;
   height:auto;
@@ -132,7 +188,11 @@
   height: var(--icon-size);
   display:block;
 }
-    .cta{margin-top:8px}
+    .cta{
+  margin-top:4px;
+  margin-left:-8px;   /* hier spielst du: -4px bis -16px sieht meist gut aus */
+}
+
     .btn{
   display:inline-block;
   font-size: clamp(6px, 1.6vw, 20px);
@@ -167,43 +227,201 @@
     footer{border-top:1px solid rgba(0,0,0,.06); background:#fff; color:#546879}
     .foot{max-width:var(--maxw); margin:0 auto; padding:26px 20px; display:flex; align-items:center; justify-content:space-between}
     
+    /* ===== Parallax: Container vorbereiten (Hero) ===== */
+.hero.parallax-min{ position:relative; overflow:hidden; }
+
+/* ===== Vordergrund-Layer (SVG-Wolken) ===== */
+.parallax-min .layer.fg{
+  position:absolute; inset:0; z-index:2; pointer-events:none; will-change:transform;
+  background-image:url('assets/clouds-ultrawhite.svg');
+  background-repeat:no-repeat;
+  background-size: 120% auto !important;    
+  background-size:180% auto;
+  background-position:center 48%;
+  transform:translate3d(0,0,0);
+
+}
+/* Inhalt sicher über dem Layer */
+.heroInner{ position:relative; z-index:3; }
+
+    /* === Sparkle-Resume-Button (bläulich, scoped) === */
+/* === Sparkle-Resume-Button (bläulich, kompakt) === */
+.btnSparkle{
+  --fs: clamp(34px, 1.05vw, 17px);
+  --padY: 4px;
+  --padX: 10px;
+  --hover: .4;
+  --pos: 0;
+  --glare: rgba(255,255,255,.85);
+  --shadow: rgba(20,40,70,.18);
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  padding: var(--padY) var(--padX);
+  border-radius: 10px;
+  text-decoration:none;
+  line-height:1;
+  /* KEINE min-width mehr → Button wird so breit wie "Resume" */
+}
+.btnSparkle:hover{ --hover:1; --pos:1; }
+.btnSparkle:active{ --hover:0; }
+
+/* Text-Layer (unten = Schatten, oben = Verlauf + Glanz) */
+.btnSparkle > span{
+  display:inline-block;
+  font-size: var(--fs);           /* war 1.1× → jetzt exakt Textgröße */
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: transparent;
+  text-shadow:
+    calc(var(--hover) * (var(--fs) * -0.02)) calc(var(--hover) * (var(--fs) *  0.02)) var(--shadow),
+    calc(var(--hover) * (var(--fs) * -0.04)) calc(var(--hover) * (var(--fs) *  0.04)) var(--shadow);
+  transform: translate(
+    calc(var(--hover) * (var(--fs) *  0.06)),  /* weniger Versatz */
+    calc(var(--hover) * (var(--fs) * -0.06))
+  );
+}
+.btnSparkle > span:last-of-type{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding: var(--padY) var(--padX);
+  background:
+    linear-gradient(108deg,
+      transparent 0 55%,
+      rgba(255,255,255,.75) 55% 60%,
+      transparent 60% 70%,
+      rgba(255,255,255,.75) 70% 85%,
+      transparent 85%) calc(var(--pos) * -200%) 0 / 200% 100%,
+    /* dein blaues Label (zieht aus --pill/--pill-2) */
+    linear-gradient(90deg, var(--pill), var(--pill-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  transform: translate(
+    calc(var(--hover) * (var(--fs) *  0.06)),
+    calc(var(--hover) * (var(--fs) * -0.06))
+  );
+  transition: transform .2s, background-position 0s;
+}
+.btnSparkle:hover > span:last-of-type{
+  transition: transform .2s, background-position calc(var(--hover) * 1.1s) calc(var(--hover) * .2s);
+}
+
+/* Sparkles (kleiner & dezenter) */
+.btnSparkle svg{
+  position:absolute;
+  z-index:3;
+  width: calc(var(--fs) * .42);   /* war .6 → kompakter */
+  aspect-ratio:1;
+  left: calc(var(--x, 50) * 1%);
+  top:  calc(var(--y, 50) * 1%);
+  transform: translate(-50%,-50%) scale(0);
+}
+.btnSparkle svg path{ fill: var(--glare); }
+
+@keyframes sparkle { 50% { transform: translate(-50%,-50%) scale(var(--s,1)); } }
+.btnSparkle:hover svg{ animation: sparkle .6s calc((var(--delay-step, .12) * var(--d, 1)) * 1s) both; }
+
+.btnSparkle svg:nth-of-type(1){ --x:  0; --y:20; --s:.95; --d:1; }
+.btnSparkle svg:nth-of-type(2){ --x: 15; --y:80; --s:1.05; --d:2; }
+.btnSparkle svg:nth-of-type(3){ --x: 45; --y:40; --s:.95; --d:3; }
+.btnSparkle svg:nth-of-type(4){ --x: 75; --y:60; --s:.85; --d:2; }
+.btnSparkle svg:nth-of-type(5){ --x:100; --y:30; --s:.8;  --d:4; }
+
 
   
   </style>
+  <link rel="stylesheet" href="hover.css">
+  <link rel="stylesheet" href="theme.css">  <!-- NEU: Zeile 173 -->
+  <link rel="stylesheet" href="cursor.css">
+
 </head>
 <body>
   <!-- ===== Navbar (weiß) ===== -->
   <header id="top">
     <nav class="nav">
       <div class="brand">
-        <div class="logo">&lt;oliwier urbanski
-          /&gt;</div>
-      </div>
-      <div class="menu">
+        <a href="#home" class="logo">&lt;oliwier urbanski
+  /&gt;</a>
+
+</div>
+
+<!-- Mobile Toggle -->
+<button class="navToggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="siteMenu">
+  <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+</button>
+
+<div class="menu" id="siteMenu">
+
         <a href="#home" class="active">Home</a>
         <a href="#about">About</a>
         <a href="#services">Services</a>
         <a href="#projects">Projects</a>
+        <a href="#jobs">My Jobs</a>
+        <a href="#edu">Educations</a>
         <a href="#contact">Contact</a>
-        <div class="sun" aria-hidden="true"></div>
+      <button id="modeToggle" class="mode-toggle" aria-label="Toggle theme" title="Toggle theme">
+  <!-- Lucide Moon -->
+  <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path>
+  </svg>
+  <!-- Lucide Sun -->
+  <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+  </svg>
+  <span class="sr-only">Toggle theme</span>
+</button>
+
       </div>
     </nav>
   </header>
 
   <!-- ===== Hero (Wolkenbild liegt als bg.jpg neben der Datei) ===== -->
-  <section id="home" class="hero">
-    <div class="heroInner">
-      <div class="intro">
-        <h1>Hi, I am Oli</h1>
+  <section id="home" class="hero parallax-min">
+  <div class="layer fg" data-speed="0.18" aria-hidden="true"></div>
+  <div class="heroInner">
+    <div class="intro">
+      <h1>Hi, I am Oli!</h1>
+
         <div class="titleLine"> <span id="typed"></span><span class="cursor"></span> </div>
-        <p class="lead">I am a Front‑End / Full‑Stack Developer. I am currently working at CloudStok Technologies as a Front‑End Developer</p>
+        <p class="lead">I am currently an apprentice Python Developer at Strato/IONOS.</p>
 
         <div class="social" aria-label="Social Links">
           
-          <a class="icon" href= "https://github.com/Oliwier-Urbanski" aria-label="GitHub" title="GitHub"> <img src="./github.png" alt="GitHub" width="18" height="18" loading="lazy"></a>
-          <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" aria-label="LinkedIn" title="LinkedIn"> <img src="./linkedin.png" alt="LinkedIn" width="18" height="18" loading="lazy"></a>        </div>
+          <a class="icon" href= "https://github.com/Oliwier-Urbanski"  target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub"> 
+            <img src="./assets/social-icons/github.png" alt="GitHub" width="18" height="18" loading="lazy"></a>
+          <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" target="_blank" rel="noopener noreferrer"  aria-label="LinkedIn" title="LinkedIn"> <img src="./assets/social-icons/linkedin.png" alt="LinkedIn" width="18" height="18" loading="lazy"></a>        </div>
 
-        <div class="cta"><a class="btn btn-wide" href="#projects">Resume</a></div>
+        <div class="cta">
+  <a class="btnSparkle" href="./assets/Resume/Resume-Urbanski.pdf" target="_blank" rel="noopener noreferrer" aria-label="Resume">
+    <!-- Sparkles -->
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z" />
+    </svg>
+    <!-- Text-Layer -->
+    <span>Resume</span>
+    <span aria-hidden="true">Resume</span>
+  </a>
+</div>
+
       </div>
 
       <div class="visual" aria-hidden="true">
@@ -292,33 +510,64 @@
     <h3 class="aboutSub">Technologies and Tools</h3>
     <p class="aboutText">
       Using a combination of cutting‑edge technologies and reliable open‑source software I build user‑focused, performant apps and
-      websites for smartphones, tablets, and desktops.
+      websites.
     </p>
 
     <ul class="techGrid" aria-label="Technologies and Tools">
-      <li class="tech"><span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-plain.svg" alt="Python" width="48" height="48" loading="lazy"></span><span class="techLabel">Python</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript logo" width="48" height="48" loading="lazy"></span><span class="techLabel">JavaScript</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5 logo" width="48" height="48" loading="lazy"></span><span class="techLabel">HTML</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain.svg" alt="CSS3 logo" width="48" height="48" loading="lazy"></span><span class="techLabel">CSS</span></li>
-      <!--<li class="tech"><span class="techIcon"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original-wordmark.svg" alt="React logo" width="48" height="48" loading="lazy"></span><span class="techLabel">React</span></li> -->
-
-      <li class="tech"><span class="techIcon"><img src="https://www.svgrepo.com/show/353413/appium.svg" alt="Appium" width="48" height="48" loading="lazy"></span><span class="techLabel">Appium</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://www.svgrepo.com/show/354321/selenium.svg" alt="Selenium" width="48" height="48" loading="lazy"></span><span class="techLabel">Selenium</span></li>
-
-      <!--<li class="tech"><span class="techIcon"><img src="https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/NodeJS-Light.svg" alt="Node.js logo" width="48" height="48" loading="lazy"></span><span class="techLabel">NodeJS</span></li> -->
-
-      <!--<li class="tech"><span class="techIcon"><img src="https://raw.githubusercontent.com/tandpfun/skill-icons/65dea6c4eaca7da319e552c09f4cf5a9a8dab2c8/icons/TailwindCSS-Dark.svg" alt="Tailwind CSS logo" width="48" height="48" loading="lazy"></span><span class="techLabel">Tailwind CSS</span></li> -->
-      <li class="tech"><span class="techIcon"><img src="https://raw.githubusercontent.com/devicons/devicon/54cfe13ac10eaa1ef817a343ab0a9437eb3c2e08/icons/mysql/mysql-original.svg" alt="MySQL logo" width="48" height="48" loading="lazy"></span><span class="techLabel">MySQL</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-plain.svg" alt="MongoDB logo" width="48" height="48" loading="lazy"></span><span class="techLabel">MongoDB</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://raw.githubusercontent.com/devicons/devicon/54cfe13ac10eaa1ef817a343ab0a9437eb3c2e08/icons/aftereffects/aftereffects-plain.svg" alt="AE logo" width="48" height="48" loading="lazy"></span><span class="techLabel">AE</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://raw.githubusercontent.com/devicons/devicon/54cfe13ac10eaa1ef817a343ab0a9437eb3c2e08/icons/figma/figma-original.svg" alt="Figma" width="48" height="48" loading="lazy"></span><span class="techLabel">Figma</span></li>
-      
-      <li class="tech"><span class="techIcon"><img src="https://www.svgrepo.com/show/374171/vscode.svg" alt="vscode" width="48" height="48" loading="lazy"></span><span class="techLabel">vscode</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-plain.svg" alt="Git logo" width="48" height="48" loading="lazy"></span><span class="techLabel">Git</span></li>
-      <li class="tech"><span class="techIcon"><img src="https://raw.githubusercontent.com/devicons/devicon/54cfe13ac10eaa1ef817a343ab0a9437eb3c2e08/icons/github/github-original.svg" alt="Github" width="48" height="48" loading="lazy"></span><span class="techLabel">Github</span></li>
-
-
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-plain.svg" alt="Python" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">Python</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">JavaScript</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">HTML</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain.svg" alt="CSS" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">CSS</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://www.svgrepo.com/show/353413/appium.svg" alt="Appium" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">Appium</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="./assets/selenium.svg" alt="Selenium" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">Selenium</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">MySQL</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-plain.svg" alt="MongoDB" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">MongoDB</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aftereffects/aftereffects-plain.svg" alt="After Effects" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">AE</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">Figma</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://www.svgrepo.com/show/374171/vscode.svg" alt="VS Code" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">VS Code</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-plain.svg" alt="Git" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">Git</span>
+      </li>
+      <li class="tech">
+        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="48" height="48" loading="lazy"></span>
+        <span class="techLabel">GitHub</span>
+      </li>
     </ul>
+    
   </div>
 </section>
 
@@ -365,7 +614,7 @@
     <div class="svcGrid">
       <article class="svcCard">
         <div class="svcIcon ico-web">
-          <img src="./test_auto.png" alt="Test Automation" />
+          <img src="./assets/services-icons/test_auto.png" alt="Test Automation" />
         </div>
         
         <h3>Test Automation</h3>
@@ -374,7 +623,7 @@
 
       <article class="svcCard">
         <div class="svcIcon ico-web">
-          <img src="./pythonweb.png" alt="Test Automation" />
+          <img src="./assets/services-icons/pythonweb.png" alt="Test Automation" />
         </div>
         <h3>Python Development</h3>
         <p>
@@ -384,7 +633,7 @@
 
       <article class="svcCard">
         <div class="svcIcon ico-web">
-          <img src="./frontend.png" alt="Test Automation" />
+          <img src="./assets/services-icons/frontend.png" alt="Test Automation" />
         </div>
         <h3>Frontend Development</h3>
         <p>
@@ -397,37 +646,68 @@
 
 
   <!-- 🔧 CSS: ans **Ende** deines <style>-Blocks anhängen -->
-<style>
-  /* === PROJECTS: Section-Layout === */
-  #projects{ align-items:start; background:#ffffff; }
-  #projects .inner{ max-width: var(--maxw); margin:0 auto; padding: calc(var(--header-h) + 32px) clamp(16px,3vw,40px) 88px; }
-
-  .projTitle{ text-align:center; margin:0 0 26px; font-size: clamp(28px, 3.6vw, 48px); font-weight: 900; }
-  .projSub{ color: var(--pill); font-weight: 800; font-size: clamp(20px, 2.2vw, 28px); margin: 12px 0 22px; text-align:center; }
-
-  /* Grid */
-  .projGrid{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 28px; }
-  @media (max-width: 1024px){ .projGrid{ grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 640px){ .projGrid{ grid-template-columns: 1fr; } }
-
-  /* Karte */
-  .projCard{ background:#fff; border:1px solid rgba(0,0,0,.06); border-radius:16px; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,.03), 0 14px 26px rgba(0,0,0,.06); display:flex; flex-direction:column; }
-  .projThumb{ position:relative; aspect-ratio: 16 / 9; background:#eef2f7; overflow:hidden; }
-  .projThumb img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .5s ease; }
-  .projCard:hover .projThumb img{ transform: scale(1.04); }
-
-  .projBody{ padding: 18px 18px 16px; display:flex; flex-direction:column; gap:12px; }
-  .projBody h3{ font-size: clamp(18px,1.8vw,22px); margin:0; font-weight:800; }
-  .projDesc{ color:#2a3a4a; line-height:1.6; }
-
-  .tags{ display:flex; flex-wrap:wrap; gap:8px; margin:2px 0 6px; padding:0; list-style:none; }
-  .tag{ font-size:12px; padding:6px 10px; border-radius:999px; background:#f4f6fb; border:1px solid rgba(0,0,0,.06); color:#355; }
-
-  .projActions{ display:flex; gap:10px; margin-top:auto; }
-  .btnGhost{ display:inline-block; padding:10px 16px; border-radius:12px; border:1px solid rgba(0,0,0,.1); color:#203140; background:#fff; font-weight:700; }
-  .btnGhost:hover{ border-color: rgba(0,0,0,.2); }
-  /* vorhandene .btn (Gradient) recyceln für primäre Aktion */
-</style>
+    <style>
+      /* === PROJECTS: Section-Layout + Footer fix unten links === */
+      #projects{ align-items:start; background:#ffffff; }
+      #projects .inner{
+        max-width: var(--maxw);
+        margin:0 auto;
+        padding: calc(var(--header-h) + 32px) clamp(16px,3vw,40px) 88px;
+      }
+    
+      .projTitle{ text-align:center; margin:0 0 26px; font-size: clamp(28px, 3.6vw, 48px); font-weight: 900; }
+      .projSub{ color: var(--pill); font-weight: 800; font-size: clamp(20px, 2.2vw, 28px); margin: 12px 0 22px; text-align:center; }
+    
+      /* Grid */
+      .projGrid{
+        display:grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 28px;
+        align-items:stretch;
+        grid-auto-rows: 1fr;
+      }
+      @media (max-width: 1024px){ .projGrid{ grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 640px){  .projGrid{ grid-template-columns: 1fr; } }
+    
+      /* Karte */
+      .projCard{
+        position: relative; /* Bezug für absoluten Footer */
+        display:flex; flex-direction:column; height:100%;
+        background:#fff; border:1px solid rgba(0,0,0,.06);
+        border-radius:16px; overflow:hidden;
+        box-shadow:0 1px 0 rgba(0,0,0,.03), 0 14px 26px rgba(0,0,0,.06);
+      }
+      .projThumb{ position:relative; aspect-ratio: 16 / 9; background:#eef2f7; overflow:hidden; }
+      .projThumb img{ width:100%; height:100%; object-fit:cover; transition: transform .5s ease; }
+      .projCard:hover .projThumb img{ transform: scale(1.04); }
+    
+      /* Body mit zusätzlichem Bottom-Padding, damit nichts überlappt */
+      .projBody{
+        padding: 18px 18px 96px; /* <- wichtig: Platz für Footer */
+        display:flex; flex-direction:column; gap:12px; flex:1;
+      }
+      .projBody h3{ font-size: clamp(18px,1.8vw,22px); margin:0; font-weight:800; }
+      .projDesc{ color:#2a3a4a; line-height:1.6; }
+    
+      /* Footer (Tags + Project) hart unten links */
+      .projFooter{
+        position:absolute;
+        left:18px; bottom:18px;       /* bei Bedarf auf 0/0 setzen für bündig */
+        display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+      }
+    
+      /* Tags */
+      .tags{ display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
+      .tag{
+        font-size:12px; padding:6px 10px; border-radius:999px;
+        background:#f4f6fb; border:1px solid rgba(0,0,0,.06); color:#355;
+      }
+    
+      /* Button (nur einer) */
+      .projActions{ display:flex; }
+      .projActions .btn{ text-align:center; } /* bleibt links, Breite auto */
+    </style>
+    
 
 <!-- 🔧 HTML: Ersetzt deinen aktuellen Projects-Block in der index.html -->
 <section id="projects" class="section reveal">
@@ -439,20 +719,23 @@
       <!-- Projekt 1 -->
       <article class="projCard">
         <div class="projThumb">
-          <img src="./project-1.jpg" alt="Dashboard UI – React + Node">
+          <img src="./assets/project-icons/proji.jpg" alt="HiDrive E2E Test Automation" width="1280" height="720" loading="lazy">
         </div>
         <div class="projBody">
-          <h3>Analytics Dashboard</h3>
-          <p class="projDesc">Responsive dashboard with charts, authentication and role-based access. Server-side REST API with caching.</p>
-          <ul class="tags">
-            <li class="tag">React</li>
-            <li class="tag">Node</li>
-            <li class="tag">MongoDB</li>
-            <li class="tag">JWT</li>
-          </ul>
-          <div class="projActions">
-            <a class="btnGhost" href="#" target="_blank" rel="noopener">Live</a>
-            <a class="btn" href="#" target="_blank" rel="noopener">Code</a>
+          <h3>HiDrive E2E Test Suite</h3>
+          <p class="projDesc">
+            Appium (mac2) + Selenium SSO-Flow. I worked on test automation for the macOS HiDrive Next client using Appium and Python.
+          </p>
+
+          <div class="projFooter">
+            <ul class="tags">
+              <li class="tag">Python</li>
+              <li class="tag">Selenium</li>
+              <li class="tag">Appium</li>
+            </ul>
+            <div class="projActions">
+              <a class="btn" href="#" aria-label="Open project" target="_blank" rel="noopener noreferrer">Project</a>
+            </div>
           </div>
         </div>
       </article>
@@ -460,19 +743,23 @@
       <!-- Projekt 2 -->
       <article class="projCard">
         <div class="projThumb">
-          <img src="./project-2.jpg" alt="Mobile App – Flutter">
+          <img src="./assets/project-icons/proji-yank.png" alt="YANKIFY – Desktop App UI" width="1280" height="720" loading="lazy">
         </div>
         <div class="projBody">
-          <h3>Fitness Tracker App</h3>
-          <p class="projDesc">Cross‑platform mobile app with workouts, timers, offline storage and theming. Built with Flutter.</p>
-          <ul class="tags">
-            <li class="tag">Flutter</li>
-            <li class="tag">Dart</li>
-            <li class="tag">SQLite</li>
-          </ul>
-          <div class="projActions">
-            <a class="btnGhost" href="#" target="_blank" rel="noopener">Live</a>
-            <a class="btn" href="#" target="_blank" rel="noopener">Code</a>
+          <h3>YANKIFY UI</h3>
+          <p class="projDesc">
+            I developed a Python-based YouTube downloader that extracts audio and downloads thumbnails.
+          </p>
+
+          <div class="projFooter">
+            <ul class="tags">
+              <li class="tag">Python</li>
+              <li class="tag">GUI</li>
+              <li class="tag">UX</li>
+            </ul>
+            <div class="projActions">
+              <a class="btn" href="#" aria-label="Open project" target="_blank" rel="noopener noreferrer">Project</a>
+            </div>
           </div>
         </div>
       </article>
@@ -480,25 +767,78 @@
       <!-- Projekt 3 -->
       <article class="projCard">
         <div class="projThumb">
-          <img src="./project-3.jpg" alt="E‑Commerce – Next.js">
+          <img src="./assets/project-icons/image.png" alt="Anime Login Page" width="1280" height="720" loading="lazy">
         </div>
         <div class="projBody">
-          <h3>E‑Commerce Store</h3>
-          <p class="projDesc">Modern storefront with product filters, cart, checkout and Stripe payments. SEO‑optimized pages.</p>
-          <ul class="tags">
-            <li class="tag">Next.js</li>
-            <li class="tag">TypeScript</li>
-            <li class="tag">Stripe</li>
-          </ul>
-          <div class="projActions">
-            <a class="btnGhost" href="#" target="_blank" rel="noopener">Live</a>
-            <a class="btn" href="#" target="_blank" rel="noopener">Code</a>
+          <h3>Anime Login Page</h3>
+          <p class="projDesc">
+            I designed an anime-themed login screen with a dynamic background.
+          </p>
+
+          <div class="projFooter">
+            <ul class="tags">
+              <li class="tag">HTML</li>
+              <li class="tag">CSS</li>
+              <li class="tag">JavaScript</li>
+            </ul>
+            <div class="projActions">
+              <a class="btn" href="https://github.com/Oliwier-Urbanski/Anime-Login-Interface" aria-label="Open project" target="_blank" rel="noopener noreferrer">Project</a>
+            </div>
           </div>
         </div>
       </article>
     </div>
+    <!-- CTA unter den Projects -->
+<div class="projects-cta reveal">
+  <div class="ctaBlock">
+    <a class="btnSparkle"
+       href="https://github.com/Oliwier-Urbanski?tab=repositories"
+       target="_blank" rel="noopener noreferrer"
+       aria-label="See all projects">
+      <!-- Sparkles -->
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M93.781 51.578C95 50.969 96 49.359 96 48c0-1.375-1-2.969-2.219-3.578 0 0-22.868-1.514-31.781-10.422-8.915-8.91-10.438-31.781-10.438-31.781C50.969 1 49.375 0 48 0s-2.969 1-3.594 2.219c0 0-1.5 22.87-10.406 31.781-8.908 8.913-31.781 10.422-31.781 10.422C1 45.031 0 46.625 0 48c0 1.359 1 2.969 2.219 3.578 0 0 22.873 1.51 31.781 10.422 8.906 8.911 10.406 31.781 10.406 31.781C45.031 95 46.625 96 48 96s2.969-1 3.562-2.219c0 0 1.523-22.871 10.438-31.781 8.913-8.908 31.781-10.422 31.781-10.422Z"/></svg>
+      <!-- Text -->
+      <span>See more !</span>
+      <span aria-hidden="true">See more !</span>
+    </a>
+  </div>
+</div>
+
   </div>
 </section>
+
+
+<!-- 🔧 CSS: ans **Ende** deines <style>-Blocks anhängen -->
+
+
+<section id="jobs" class="section reveal">
+  <div class="inner">
+    <h2 class="jobsTitle">My Jobs</h2>
+    <h3 class="jobsSub">Experience</h3>
+
+    <div id="jobs-list" class="jobsList" aria-label="Job history">
+    </div>
+  </div>
+</section>
+
+
+<section id="edu" class="section reveal">
+  <div class="inner">
+    <h2 class="jobsTitle">Educations</h2>
+    <h3 class="jobsSub">Degrees & Certificates</h3>
+
+    <!-- Cards werden per JS gerendert -->
+    <div id="edu-list" class="jobsList" aria-label="Education history"></div>
+  </div>
+</section>
+
+
+
+
 
 <!-- 🔧 CSS: Diesen Block ans **Ende** deines <style> in index.html einfügen -->
   <style>
@@ -547,47 +887,72 @@
           <h3 class="contactSub">Connect with me</h3>
           <p class="contactLead">If you want to know more about me or my work, or if you would just like to say hello, send me a message. I'd love to hear from you.</p>
   
-          <form class="contactForm" action="#" method="post">
-            <div class="field">
-              <label for="cname">Name</label>
-              <input id="cname" name="name" type="text" placeholder="Enter your name" required>
-            </div>
-            <div class="field">
-              <label for="cemail">Email</label>
-              <input id="cemail" name="email" type="email" placeholder="Enter your email" required>
-            </div>
-            <div class="field">
-              <label for="cmsg">Message</label>
-              <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
-            </div>
-            <div class="contactActions">
-              <a class="mailDirect" href="mailto:urbanskioli@gmail.com">Send me email directly</a>
-              <a href="#" class="btn">Submit</a>
-            </div>
-          </form>
+          <form class="contactForm" action="https://api.web3forms.com/submit" method="POST">
+  <!-- Pflicht: Dein Web3Forms Access Key -->
+  <input type="hidden" name="access_key" value="3152af00-569c-4070-be06-e0e5bb34e5a5">
+
+  <!-- Optional, hübschere Mail-Header -->
+  <input type="hidden" name="from_name" value="Portfolio Kontaktformular">
+  <input type="hidden" name="replyto" value="email">
+
+  <!-- Honeypot gegen Bots -->
+  <input type="checkbox" name="botcheck" id="botcheck" style="display:none">
+
+  <div class="field">
+    <label for="cname">Name</label>
+    <input id="cname" name="name" type="text" placeholder="Enter your name" required>
+  </div>
+  <div class="field">
+    <label for="cemail">Email</label>
+    <input id="cemail" name="email" type="email" placeholder="Enter your email" required>
+  </div>
+  <div class="field">
+    <label for="cmsg">Message</label>
+    <textarea id="cmsg" name="message" placeholder="Enter your message" required></textarea>
+  </div>
+
+  <div class="contactActions">
+    <a class="mailDirect" href="mailto:contact@oliwier-urbanski.com">Send me an email directly</a>
+    <!-- WICHTIG: echter Submit-Button (kein <a>) -->
+    <button type="submit" class="btn">Submit</button>
+  </div>
+
+  <!-- Optional: eigene Danke-Seite -->
+  <!-- <input type="hidden" name="redirect" value="https://deine-domain.tld/danke.html"> -->
+</form>
+
         </div>
   
         <!-- Rechte Spalte: Info -->
         <aside class="infoBlock">
           <div class="infoGroup">
             <div class="label">Email</div>
-            <a class="value" href="mailto:urbanskioli@gmail.com">URBANSKIOLI@GMAIL.COM</a>
+            <a class="value" href="mailto:contact@oliwier-urbanski.com">contact@oliwier-urbanski.com</a>
           </div>
           <div class="infoGroup">
-            <div class="label">Address</div>
-            <div class="value">Berlin<br>DEUTSCHLAND</div>
+            <div class="label">Location</div>
+            <div class="value">Berlin<br>GERMANY</div>
           </div>
           <div class="infoGroup">
             <div class="label">Social</div>
             <div class="socialRow">
-              <!-- du kannst hier deine echten Links setzen → Icons recycelt von oben oder Emojis -->
-              <a class="icon" href="#" aria-label="StackOverflow" title="StackOverflow">🧠</a>
-              <a class="icon" href="#" aria-label="Instagram" title="Instagram">📷</a>
-              <a class="icon" href="#" aria-label="GitHub" title="GitHub">🐙</a>
-              <!-- NEU (PNG) -->
-              <a class="icon" href="#" aria-label="LinkedIn" title="LinkedIn">
-                <img src="./linkedin.png" alt="LinkedIn" width="18" height="18">
-              </a>
+              
+          <!-- You can insert the Icons here -->
+              
+            <a class="icon" href="https://www.linkedin.com/in/oliwier-urbanski/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">
+              <img src="./assets/social-icons/linkedin.png" alt="LinkedIn" width="18" height="18">
+            </a> 
+              
+            <a class="icon" href="https://github.com/Oliwier-Urbanski" target="_blank" rel="noopener noreferrer" aria-label="GitHub" title="GitHub">
+              <img src="./assets/social-icons/github.png" alt="GitHub" width="18" height="18">
+            </a>
+              
+            <a class="icon" href="https://www.instagram.com/artichiha/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" title="Instagram">
+              <img src="./assets/social-icons/instagram.png" alt="Instagram" width="18" height="18">
+            </a>  
+            
+
+
 
             </div>
           </div>
@@ -604,8 +969,8 @@
 
   <footer>
     <div class="foot">
-      <span>© <span id="year"></span> Oliwier Urbanski</span>
-      <a href="" class="muted">Back to top ↑</a>
+      <span>© <span id="year"></span> Oliwier Urbanski - Designed with ❤️</span>
+      <a href="#home" class="muted">Back to top ↑</a>
     </div>
   </footer>
 
@@ -663,7 +1028,9 @@
   
     // ===== Typewriter im Gradient-Titel (langsamer) =====
     const typedEl = document.getElementById('typed');
-    const phrases = ['Automation Engineer','Python QA Engineer','Front-End Developer'];
+    const phrases = ['Junior Developer', 'Automation Apprentice','Python Apprentice',];
+
+    // 'Automation Engineer','Python QA Engineer','Front-End Developer'
   
     // Geschwindigkeiten (einfach hier anpassen):
     const TYPE_MIN = 30;   // ms pro Zeichen (min)
@@ -704,5 +1071,65 @@
       }
     })();
   </script>
-</body>
+   <script src="script.js" defer></script>
+   <script src="cursor.js" defer></script>
+   <script src="reveal.js" defer></script>
+  <script>
+  (function(){
+    const form = document.querySelector('#contact .contactForm');
+    if(!form) return;
+
+    let statusEl = document.getElementById('form-status');
+    if(!statusEl){
+      statusEl = document.createElement('p');
+      statusEl.id = 'form-status';
+      statusEl.setAttribute('role','status');
+      statusEl.style.marginTop = '8px';
+      form.appendChild(statusEl);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = 'Sende...';
+
+      try {
+        const formData = new FormData(form);
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          showPopup('Danke! Deine Nachricht wurde versendet.', 'Nachricht gesendet');
+
+          form.reset();
+        } else {
+          statusEl.textContent = 'Konnte nicht senden. Bitte später erneut versuchen.';
+          console.error(data);
+        }
+      } catch (err) {
+        statusEl.textContent = 'Netzwerkfehler. Prüfe deine Verbindung.';
+        console.error(err);
+      }
+    });
+  })();
+</script>
+
+<!-- Success/Info Popup -->
+<div id="popup" class="popup" aria-hidden="true">
+  <div class="popup__backdrop" data-close></div>
+  <div class="popup__card" role="dialog" aria-modal="true" aria-labelledby="popup-title" aria-live="polite">
+    <div class="popup__icon" aria-hidden="true">
+      <!-- einfacher Check-Icon -->
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+        <path d="M7 12.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="popup__content">
+      <h3 id="popup-title">Alles klar!</h3>
+      <p id="popup-msg">Danke! Deine Nachricht wurde versendet.</p>
+    </div>
+    <button class="popup__close" type="button" data-close aria-label="Popup schließen">×</button>
+  </div>
+</div>
+
+  </body>
 </html>

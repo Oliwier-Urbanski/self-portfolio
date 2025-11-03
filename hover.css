@@ -1,0 +1,130 @@
+/* === Hover Grow Pack ===========================
+   Unauffälliges Scale-Up für alle wichtigen UI-Elemente.
+   Passt die Intensität über --hover-scale an.
+   ============================================== */
+
+   :root{
+    --hover-scale: 1.12;       /* globale Vergrößerung */
+    --hover-speed: .22s;       /* Dauer */
+    --hover-ease: cubic-bezier(.2,.6,.2,1); /* Kurve */
+  }
+  
+  /* Barrierefreiheit: Animationen aus, wenn gewünscht */
+  @media (prefers-reduced-motion: reduce){
+    .hover-grow,
+    .menu a,
+    .btn,
+    .btnGhost,
+    .icon,
+    .svcCard,
+    .projCard,
+    .tech,
+    .logo { transition: none !important; transform: none !important; }
+  }
+  
+  /* Nur auf Geräten, die Hover wirklich haben (keine Touch-Faux-Hovers) */
+  @media (hover:hover) and (pointer:fine){
+  
+    /* Utility: Opt-in für beliebige Elemente */
+    .hover-grow{
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease),
+                  box-shadow var(--hover-speed) var(--hover-ease),
+                  filter var(--hover-speed) var(--hover-ease);
+      will-change: transform;
+      backface-visibility: hidden;
+    }
+    .hover-grow:hover,
+    .hover-grow:focus-visible{
+      transform: translateZ(0) scale(var(--hover-scale));
+    }
+  
+    /* ====== Globale Defaults für deine bestehenden Komponenten ====== */
+  
+    /* Nav-Links */
+    .menu a{
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease);
+    }
+    .menu a:hover,
+    .menu a:focus-visible{
+      transform: scale(1.06);
+    }
+  
+    /* Buttons */
+    .btn,
+    .btnGhost{
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease),
+                  box-shadow var(--hover-speed) var(--hover-ease);
+    }
+    .btn:hover, .btn:focus-visible,
+    .btnGhost:hover, .btnGhost:focus-visible{
+      transform: scale(var(--hover-scale));
+      box-shadow: 0 12px 28px rgba(20,40,70,.14);
+    }
+  
+    /* Social/Icon-Buttons */
+    .icon{
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease),
+                  filter var(--hover-speed) var(--hover-ease);
+    }
+    .icon:hover,
+    .icon:focus-visible{
+      transform: scale(1.12);
+      filter: saturate(1.1);
+    }
+  
+    /* Service-Karten */
+    .svcCard{
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease),
+                  box-shadow var(--hover-speed) var(--hover-ease);
+    }
+    .svcCard:hover,
+    .svcCard:focus-within{
+      transform: scale(1.03);
+      box-shadow: 0 14px 36px rgba(0,0,0,.10);
+    }
+  
+    /* Tech-Badges */
+    .tech{
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease),
+                  box-shadow var(--hover-speed) var(--hover-ease);
+    }
+    .tech:hover,
+    .tech:focus-within{
+      transform: scale(1.03);
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    }
+  
+    /* Projektkarten (Thumbnail zoomt bereits leicht – Karte selbst auch) */
+    .projCard{
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease),
+                  box-shadow var(--hover-speed) var(--hover-ease);
+    }
+    .projCard:hover,
+    .projCard:focus-within{
+      transform: scale(1.03);
+      box-shadow: 0 16px 38px rgba(0,0,0,.10);
+    }
+  
+    /* Logo in der Brand */
+    .logo{
+      display:inline-block; /* für transform nötig */
+      transform: translateZ(0) scale(1);
+      transition: transform var(--hover-speed) var(--hover-ease);
+    }
+    .logo:hover,
+    .logo:focus-visible{
+      transform: scale(1.06);
+    }
+  }
+  
+  /* ===== Opt-out: Falls etwas NICHT wachsen soll ===== */
+  .no-hover-grow:hover,
+  .no-hover-grow:focus-visible{ transform: none !important; }
+  
