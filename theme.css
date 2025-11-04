@@ -50,7 +50,6 @@
 
 
   :root[data-theme="dark"] .menu a{ color:#c9d5e2; }
-  :root[data-theme="dark"] .menu a.active{ box-shadow:0 0 0 6px var(--ring); }
   :root[data-theme="dark"] .sun{ box-shadow:0 0 0 6px var(--ring); }
   
 
@@ -490,7 +489,7 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
 
     /* 👇 Jetzt deckend + hoher Kontrast */
     background: var(--page);   
-                            /* voll deckend */
+     /* voll deckend */
     border: 1px solid color-mix(in oklab, var(--text) 12%, transparent);
     border-radius: 14px;
     box-shadow: 0 12px 32px rgba(0,0,0,.28);
@@ -782,4 +781,134 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
   color: #ffffff !important;
   font-weight: 800 !important;
   text-shadow: 0 1px 2px rgba(0,0,0,.55) !important;
+}
+
+
+
+/* === Ink Nav (animated highlight) ======================================= */
+/* Farb-Tokens, greifen deine data-theme-Logik auf */
+/* Aktiver Link: Schrift immer sichtbar, niemals übermalt */
+.nav-ink .nav-ink-list a[data-active="true"] span {
+  color: #fff !important;
+  background: transparent !important;  /* falls irgendwo Hover-Background greift */
+  position: relative;                  /* Safety: Z-Layer für Text */
+  z-index: 2;
+}
+
+/* Auch beim Hover/Fokus den Active-Text nicht übermalen */
+.nav-ink .nav-ink-list a[data-active="true"]:is(:hover, :focus-visible) span {
+  background: transparent !important;
+}
+
+
+:root {
+  /* helle Akzent-Verläufe passend zu deinem Blau/Violett */
+  --ink-bg-light: linear-gradient(90deg, #4f7df0, #7a5af8);
+  --ink-text-light: #0e1526;
+  --ink-hover-light: hsl(0 0% 85% / 1);
+}
+[data-theme="dark"] {
+  /* dunkle Variante: etwas kräftiger, bessere Kontraste */
+  --ink-bg-dark: linear-gradient(90deg, #7a5af8, #4f7df0);
+  --ink-text-dark: #ffffff;
+  --ink-hover-dark: hsl(0 0% 30% / 1);
+}
+
+/* Alias, so musst du oben nichts doppelt ändern */
+:root {
+  --ink-bg: var(--ink-bg-light, linear-gradient(90deg, #4f7df0, #7a5af8));
+  --ink-fg: var(--ink-text-light, #0e1526);
+  --ink-hover: var(--ink-hover-light, hsl(0 0% 85%));
+}
+[data-theme="dark"] {
+  --ink-bg: var(--ink-bg-dark, linear-gradient(90deg, #7a5af8, #4f7df0));
+  --ink-fg: var(--ink-text-dark, #fff);
+  --ink-hover: var(--ink-hover-dark, hsl(0 0% 30%));
+}
+
+/* Layout der Liste – neutral, kein globales body-Reset */
+.nav-ink .nav-ink-list {
+  --gutter: .25rem;
+  display: flex;
+  gap: var(--gutter);
+  list-style: none;
+  margin: 0;
+  padding: .75rem 1rem;
+  position: relative; /* Ankerfläche fürs ::after */
+  overflow: auto;
+  scrollbar-width: none;
+  isolation: isolate;
+
+}
+.nav-ink .nav-ink-list::-webkit-scrollbar { display: none; }
+
+/* Links + Kapsel für bessere Klickfläche */
+.nav-ink .nav-ink-list a {
+  text-decoration: none;
+  color: var(--ink-fg);
+  display: inline-block;
+  padding: 0 .125rem;
+}
+.nav-ink .nav-ink-list a span {
+  transition: background .12s ease-out;
+  border-radius: 999px;
+  padding: .375rem .85rem;
+  pointer-events: none;
+  display: inline-block;
+}
+
+/* Hover, nur wenn NICHT aktiv */
+.nav-ink .nav-ink-list a:is(:hover, :focus-visible):not([data-active="true"]) span {
+  background: var(--ink-hover);
+  outline: none;
+}
+
+/* ---- Magie: Active-Anchor meldet eine Anker-Box ----------------------- */
+/* Das ist die “exakte” Technik aus deiner Demo: der aktive Link setzt einen Ankernamen … */
+.nav-ink .nav-ink-list a[data-active="true"] span {
+  anchor-name: --active;
+}
+/* … und das ::after positioniert sich per position-anchor dort hin und animiert dorthin. */
+.nav-ink .nav-ink-list::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  /* Diese Werte lesen die Box von --active aus */
+  top: anchor(top);
+  bottom: anchor(bottom);
+  left: anchor(left);
+  right: anchor(right);
+  position-anchor: --active;
+
+  background: var(--ink-bg);
+  border-radius: 999px;
+  mix-blend-mode: normal;
+  transition: all .26s ease-out;
+  pointer-events: none;
+}
+
+/* Text über die Tinten-Kapsel */
+.nav-ink .nav-ink-list a span { position: relative; z-index: 2; }
+
+/* ---- Progressive Fallback (wenn Anchor Positioning fehlt) -------------- */
+@supports not (position-anchor: --x) {
+  .nav-ink .nav-ink-list { position: relative; }
+  .nav-ink .nav-ink-list::after { content: none; } /* aus */
+  .nav-ink .nav-ink-list .ink {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    border-radius: 999px;
+    background: var(--ink-bg);
+    transition: transform .26s ease-out, width .26s ease-out, height .26s ease-out;
+    pointer-events: none;
+    isolation: isolate; /* eigener Stacking-Context: Text kann sicher drüber liegen */
+
+  }
+}
+
+/* Aktiver Link: Schrift oben auf der Pill immer klar sichtbar */
+.nav-ink .nav-ink-list a[data-active="true"] { 
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0,0,0,.12); /* minimaler Kontrast-Boost */
 }
