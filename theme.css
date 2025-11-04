@@ -572,7 +572,7 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
   :root[data-theme="dark"] .parallax-min .layer.fg{
     /* Dark-Variante nutzt clouds-blue.svg – leicht andere Sweet-Spot-Position */
     background-size: 310% auto !important;
-    background-position: center 66% !important;
+    background-position: center 166% !important;
   }
 }
 
