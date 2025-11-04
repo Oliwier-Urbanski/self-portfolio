@@ -567,7 +567,7 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
   .parallax-min .layer.fg{
     /* größer und tiefer, damit die Wolken erst später ins Bild “fahren” */
     background-size: 310% auto !important;
-    background-position: center 62% !important;
+    background-position: center 162% !important;
   }
   :root[data-theme="dark"] .parallax-min .layer.fg{
     /* Dark-Variante nutzt clouds-blue.svg – leicht andere Sweet-Spot-Position */
