@@ -85,7 +85,6 @@
      ABOUT (Dark)
      ============== */
   :root[data-theme="dark"] #about{
-    /* Ersetze durch reine Farbe, falls kein eigenes About-Bild gewünscht: background:#0e1526; */
     background:#0e1526 url('about-dark.png') center/cover no-repeat;
   }
   :root[data-theme="dark"] .aboutTitle{ color:#e6edf6; }
@@ -657,7 +656,6 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
     background-repeat: no-repeat;
     background-size: contain;
     opacity: 1 !important;
-    /* Pfad anpassen, falls dein Ordner anders heißt */
     background-image: url("/assets/menu-for-light.png");
   }
   /* Dark-Mode-Icon */
@@ -665,7 +663,6 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
     background-image: url("/assets/menu-for-dark.png");
   }
 
-  /* Optional: Wenn du KEIN Close-Icon hast, lass das Menü-Icon auch im offenen Zustand */
   #navToggle.active::before{
     background-image: url("/assets/menu-for-light.png");
   }
@@ -763,7 +760,6 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
 }
 
 
-/* === OVERRIDE: Tools-Belt sofort sichtbar machen === */
 .tools-belt{
   -webkit-mask-image: none !important;
   mask-image: none !important;
