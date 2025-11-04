@@ -340,3 +340,83 @@ function hidePopup() {
     }
   });
 })();
+
+// ===== Tools-Belt: lokale SVGs + Label, nahtloser Loop =====
+(() => {
+  const basePath = './assets/tool-icons/';  // ggf. anpassen
+  const ITEMS = [
+    ['python.svg',     'Python'],
+    ['javascript.svg', 'JavaScript'],
+    ['html5.svg',      'HTML5'],
+    ['css3.svg',       'CSS3'],
+    ['appium.svg',     'Appium'],
+    ['selenium.svg',   'Selenium'],
+    ['mysql.svg',      'MySQL'],
+    ['mongodb.svg',    'MongoDB'],
+    ['vscode.svg',     'VS Code'],
+    ['git.svg',        'Git'],
+    ['github.svg',     'GitHub'],
+    ['figma.svg',      'Figma'],
+  ];
+
+  const belt = document.querySelector('.tools-belt .belt');
+  if (!belt) return;
+
+  // Track A
+  let trackA = belt.querySelector('.belt-track');
+  if (!trackA) {
+    trackA = document.createElement('ul');
+    trackA.className = 'belt-track';
+    belt.appendChild(trackA);
+  }
+
+  // Füllen: Icon + Label
+  trackA.innerHTML = ITEMS.map(([file,label]) => `
+    <li>
+      <img src="${basePath}${file}" alt="${label}" onerror="this.closest('li').remove()">
+      <span class="label">${label}</span>
+    </li>
+  `).join('');
+
+  // Bilder laden/abwarten (auch Cache)
+  const imagesReady = (root) => {
+    const imgs = Array.from(root.querySelectorAll('img'));
+    return Promise.all(imgs.map(img => img.complete
+      ? Promise.resolve()
+      : new Promise(res => img.addEventListener('load', res, { once: true }))
+    ));
+  };
+
+  // Track A mindestens so breit wie Container
+  const ensureWidth = () => {
+    let guard = 0;
+    while (trackA.scrollWidth < belt.clientWidth && guard < 6) {
+      trackA.innerHTML += trackA.innerHTML; // verdoppeln = super simpel & stabil
+      guard++;
+    }
+  };
+
+  // Track B exakt hinter Track A platzieren (px-genau)
+  const placeTrackB = () => {
+    let trackB = belt.querySelectorAll('.belt-track')[1];
+    if (!trackB) {
+      trackB = trackA.cloneNode(true);
+      trackB.setAttribute('aria-hidden', 'true');
+      belt.appendChild(trackB);
+    } else {
+      trackB.innerHTML = trackA.innerHTML;
+    }
+    trackA.style.left = '0px';
+    trackB.style.left = trackA.scrollWidth + 'px';
+  };
+
+  const init = () => imagesReady(trackA).then(() => { ensureWidth(); placeTrackB(); });
+  init();
+
+  // bei Resize neu berechnen (debounced)
+  let t;
+  addEventListener('resize', () => {
+    clearTimeout(t);
+    t = setTimeout(() => { ensureWidth(); placeTrackB(); }, 80);
+  });
+})();

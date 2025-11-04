@@ -17,6 +17,7 @@
   <title>Oliwier Urbanski – Portfolio</title>
   <meta name="description" content="Hero mit Hi, I am Oli und getipptem Titel (Mobile/Full‑Stack/Front‑End Developer)." />
   <style>
+
     /* ===== Design Tokens (hell, blau) ===== */
     :root{
       --page:#ffffff;             /* Seitenhintergrund unter der Wolke */
@@ -52,7 +53,6 @@
 
   .nav{
   width:100%;
-  /* korrigierte Innenabstände – deine aktuelle clamp ist versehentlich 100px minimal */
   padding:14px clamp(10px,2vw,20px);
   display:flex; align-items:center; justify-content:space-between; gap:16px;
 }
@@ -66,8 +66,6 @@
     
  
 
-    /* ===== Vollbild-Layout für JEDEN Abschnitt ===== */
-    /* Füllt die sichtbare Höhe abzüglich Sticky-Header */
     .hero, .section{
       min-height: calc(100svh - var(--header-h)); /* moderne Viewport-Einheit */
       display:grid; align-items:center; /* vertikal zentrieren */
@@ -76,15 +74,11 @@
       .hero, .section{ min-height: calc(100vh - var(--header-h)); }
     }
 
-    /* ===== Hero mit Wolken‑BG ===== */
     .hero{ position:relative; isolation:isolate; background:url('./assets/backgrounds/bg.jpg') center/cover no-repeat; }
-        /* === 1) Hero-Container: linksbündig, vertikal mittig, 2‑Spalten behalten === */
 .heroInner{
-  /* Einheitlicher, zentrierter Content-Container */
   max-width: var(--maxw);
   margin: 0 auto;
 
-  /* Immer gleiche “linke Schiene” via Gutter – auf allen Geräten */
   padding: clamp(96px, 14vh, 160px) clamp(16px, 5vw, 40px) clamp(56px, 10vh, 110px);
 
   display:grid;
@@ -93,7 +87,6 @@
   min-height:100%;
   justify-items:start;
 
-  /* Breite Textspalte + Bildspalte (Desktop) */
   grid-template-columns: minmax(0, 680px) 1fr;
 }
 
@@ -103,7 +96,6 @@
 }
 
 
-    /* === 3) Feintuning nur für den Textblock === */
 .intro{
   max-width:1060px;
   margin:0;           /* keine ungewollten auto-Margen */
@@ -112,7 +104,6 @@
 }
 
 
-    /* Optional: Wenn die Illustration zu viel zieht, kleiner machen */
     .visual img{ width:min(520px, 88%); }
 
     .intro h1{
@@ -132,24 +123,18 @@
   -webkit-background-clip:text; background-clip:text; color:transparent;
   letter-spacing:-.3px; text-shadow:none;
 
-  /* NEU – verhindert Umbruch & Layout-Shift */
   white-space: nowrap;          /* alles in eine Zeile */
   overflow: hidden;             /* nichts läuft optisch raus */
   text-overflow: ellipsis;      /* Sicherheit (kleine Screens) */
 }
 
-/* NEU – reserviert Platz für den längsten Titel */
 .titleLine #typed{
   display:inline;                  /* inline reicht – keine feste Box */
   background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent;
 }
 
-
-
-    /* Stelle sicher, dass der getippte Text den Verlauf sicher erbt */
     .titleLine #typed{ background:inherit; -webkit-background-clip:text; background-clip:text; color:transparent; }
 
-    /* Cursor: dicker und mit demselben Farbverlauf wie die Schrift */
     .titleLine .cursor{
       display:inline-block;
       width:0.12em;           /* dicker */
@@ -212,7 +197,6 @@
     .visual{display:flex; align-items:center; justify-content:center}
     .visual img{width:min(560px, 92%)}
 
-    /* ===== Sektionen (vollbild + zentriert) ===== */
     section.section{max-width:none; margin:0; padding:32px 20px} /* weniger vertikal, damit wirklich in 1 Screen passt */
     .section > .inner{max-width:var(--maxw); margin:0 auto; width:100%}
     h2{font-size:28px; margin:0 0 12px}
@@ -242,7 +226,6 @@
 /* Inhalt sicher über dem Layer */
 .heroInner{ position:relative; z-index:3; }
 
-    /* === Sparkle-Resume-Button (bläulich, scoped) === */
 /* === Sparkle-Resume-Button (bläulich, kompakt) === */
 .btnSparkle{
   --fs: clamp(34px, 1.05vw, 17px);
@@ -261,12 +244,10 @@
   border-radius: 10px;
   text-decoration:none;
   line-height:1;
-  /* KEINE min-width mehr → Button wird so breit wie "Resume" */
 }
 .btnSparkle:hover{ --hover:1; --pos:1; }
 .btnSparkle:active{ --hover:0; }
 
-/* Text-Layer (unten = Schatten, oben = Verlauf + Glanz) */
 .btnSparkle > span{
   display:inline-block;
   font-size: var(--fs);           /* war 1.1× → jetzt exakt Textgröße */
@@ -380,7 +361,6 @@
     </nav>
   </header>
 
-  <!-- ===== Hero (Wolkenbild liegt als bg.jpg neben der Datei) ===== -->
   <section id="home" class="hero parallax-min">
   <div class="layer fg" data-speed="0.18" aria-hidden="true"></div>
   <div class="heroInner">
@@ -428,10 +408,7 @@
     </div>
   </section>
 
-  <!-- ===== Vollbild-Sektionen passend zur Nav ===== -->
-  <!-- 🔧 CSS ANS ENDE DEINES <style>-BLOCKS ANHÄNGEN -->
 <style>
-  /* === ABOUT: Layout & Typo === */
   #about{ align-items: start; } 
   #about .inner{ 
     max-width: var(--maxw); 
@@ -490,7 +467,6 @@
   .ico-firebase{background:#ffca28; color:#6b4e00}
 </style>
 
-<!-- 🔧 HTML: ERSETZT den aktuellen About-Block in deiner index.html -->
 <section id="about" class="section reveal">
   <div class="inner">
     <h2 class="aboutTitle">About Me</h2>
@@ -506,70 +482,28 @@
 
     <h3 class="aboutSub">Technologies and Tools</h3>
     <p class="aboutText">
-      Using a combination of cutting‑edge technologies and reliable open‑source software I build user‑focused, performant apps and
-      websites.
+      Here are the powerful tools and technologies I use to bring your ideas to life.
     </p>
 
-    <ul class="techGrid" aria-label="Technologies and Tools">
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-plain.svg" alt="Python" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">Python</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">JavaScript</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">HTML</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain.svg" alt="CSS" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">CSS</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://www.svgrepo.com/show/353413/appium.svg" alt="Appium" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">Appium</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="./assets/selenium.svg" alt="Selenium" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">Selenium</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">MySQL</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-plain.svg" alt="MongoDB" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">MongoDB</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/aftereffects/aftereffects-plain.svg" alt="After Effects" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">AE</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">Figma</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://www.svgrepo.com/show/374171/vscode.svg" alt="VS Code" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">VS Code</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-plain.svg" alt="Git" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">Git</span>
-      </li>
-      <li class="tech">
-        <span class="techIcon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" width="48" height="48" loading="lazy"></span>
-        <span class="techLabel">GitHub</span>
-      </li>
-    </ul>
+
+
+<!-- === Rolling Tools Belt (nur lokale SVGs) === -->
+<div class="tools-belt reveal" aria-label="Technologies and Tools (rolling)">
+  <div class="belt">
+    <!-- Leer: wird per JS mit ./assets/*.svg befüllt -->
+    <ul class="belt-track"></ul>
+  </div>
+</div>
+
+
+    
+
     
   </div>
+  
 </section>
 
 
-  <!-- 🔧 CSS: ans **Ende** deines <style>-Blocks anhängen -->
 <style>
   /* === SERVICES: Section-Layout === */
   #services{ background:#f4f6fb; align-items:start; } 
@@ -602,7 +536,7 @@
   .svcCard p{ color:#2a3a4a; line-height:1.65; text-align:justify; text-justify: inter-word; }
 </style>
 
-<!-- 🔧 HTML: Ersetzt deinen aktuellen Services-Block in der index.html -->
+
 <section id="services" class="section reveal">
   <div class="inner">
     <h2 class="svcTitle">Services</h2>
@@ -642,7 +576,6 @@
 </section>
 
 
-  <!-- 🔧 CSS: ans **Ende** deines <style>-Blocks anhängen -->
     <style>
       /* === PROJECTS: Section-Layout + Footer fix unten links === */
       #projects{ align-items:start; background:#ffffff; }
@@ -700,13 +633,11 @@
         background:#f4f6fb; border:1px solid rgba(0,0,0,.06); color:#355;
       }
     
-      /* Button (nur einer) */
       .projActions{ display:flex; }
       .projActions .btn{ text-align:center; } /* bleibt links, Breite auto */
     </style>
     
 
-<!-- 🔧 HTML: Ersetzt deinen aktuellen Projects-Block in der index.html -->
 <section id="projects" class="section reveal">
   <div class="inner">
     <h2 class="projTitle">Projects</h2>
@@ -808,10 +739,6 @@
   </div>
 </section>
 
-
-<!-- 🔧 CSS: ans **Ende** deines <style>-Blocks anhängen -->
-
-
 <section id="jobs" class="section reveal">
   <div class="inner">
     <h2 class="jobsTitle">My Jobs</h2>
@@ -821,7 +748,6 @@
     </div>
   </div>
 </section>
-
 
 <section id="edu" class="section reveal">
   <div class="inner">
@@ -837,7 +763,6 @@
 
 
 
-<!-- 🔧 CSS: Diesen Block ans **Ende** deines <style> in index.html einfügen -->
   <style>
     /* Contact: oben starten & grauer Hintergrund wie im Beispiel */
     #contact{ align-items:start; background:#f4f6fb; }
@@ -873,7 +798,6 @@
     .mapWrap iframe{ width:100%; height:420px; border:0; border-radius:14px; box-shadow: 0 10px 26px rgba(0,0,0,.08); }
   </style>
   
-  <!-- 🔧 HTML: Ersetze NUR deinen bisherigen #contact‑Block damit -->
   <section id="contact" class="section reveal">
     <div class="inner">
       <h2 class="contactTitle">Contact</h2>
@@ -885,14 +809,11 @@
           <p class="contactLead">If you want to know more about me or my work, or if you would just like to say hello, send me a message. I'd love to hear from you.</p>
   
           <form class="contactForm" action="https://api.web3forms.com/submit" method="POST">
-  <!-- Pflicht: Dein Web3Forms Access Key -->
   <input type="hidden" name="access_key" value="3152af00-569c-4070-be06-e0e5bb34e5a5">
 
-  <!-- Optional, hübschere Mail-Header -->
   <input type="hidden" name="from_name" value="Portfolio Kontaktformular">
   <input type="hidden" name="replyto" value="email">
 
-  <!-- Honeypot gegen Bots -->
   <input type="checkbox" name="botcheck" id="botcheck" style="display:none">
 
   <div class="field">
@@ -910,11 +831,9 @@
 
   <div class="contactActions">
     <a class="mailDirect" href="mailto:contact@oliwier-urbanski.com">Send me an email directly</a>
-    <!-- WICHTIG: echter Submit-Button (kein <a>) -->
     <button type="submit" class="btn">Submit</button>
   </div>
 
-  <!-- Optional: eigene Danke-Seite -->
   <!-- <input type="hidden" name="redirect" value="https://deine-domain.tld/danke.html"> -->
 </form>
 
