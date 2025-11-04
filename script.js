@@ -84,31 +84,44 @@
   });
 
   // ===== Active nav state on scroll =====
-  (function activeNav(){
-    const links = $$('nav a[href^="#"]');
-    if (!links.length) return;
-    const map = new Map(); // sectionEl -> linkEl
-    links.forEach(link => {
-      const id = link.getAttribute('href');
-      const sec = id ? $(id) : null;
-      if (sec) map.set(sec, link);
+// ===== Active nav state on scroll (Ink-Nav aware) =====
+(function activeNav(){
+  // Nur Ink-Nav-Links beobachten
+  const links = Array.from(document.querySelectorAll('#site-nav .nav-ink-list a'));
+  if (!links.length) return;
+
+  const map = new Map(); // sectionEl -> linkEl
+  links.forEach(link => {
+    const id = link.getAttribute('href');
+    const sec = id ? document.querySelector(id) : null;
+    if (sec) map.set(sec, link);
+  });
+
+  function setActive(link){
+    links.forEach(l => {
+      // optional: falls du .active weiterhin irgendwo nutzt
+l.dataset.active = (l === link);
+
     });
+    // Fallback (ohne CSS Anchor Positioning) neu positionieren
+    if (window.__inkUpdate) window.__inkUpdate();
+  }
 
-    function setActive(link){
-      links.forEach(l => l.classList.toggle('active', l === link));
+const io = new IntersectionObserver((entries) => {
+  const locked = () => (window.__inkClickLockUntil && Date.now() < window.__inkClickLockUntil);
+  if (locked()) return; // während des Smooth-Scrolls nix umschalten
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const link = map.get(entry.target);
+      if (link) setActive(link);
     }
+  });
+}, { root: null, threshold: 0.35, rootMargin: '-20% 0px -70% 0px' });
 
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const link = map.get(entry.target);
-          if (link) setActive(link);
-        }
-      });
-    }, { root: null, threshold: 0.35, rootMargin: '-15% 0px -50% 0px' });
 
-    map.forEach((_, sec) => io.observe(sec));
-  })();
+  map.forEach((_, sec) => io.observe(sec));
+})();
+
 
   // ===== Reveal-on-Scroll =====
   (function reveal(){
@@ -419,4 +432,60 @@ function hidePopup() {
     clearTimeout(t);
     t = setTimeout(() => { ensureWidth(); placeTrackB(); }, 80);
   });
+})();
+
+
+
+// === Ink-Nav ==============================================================
+(function () {
+  const nav = document.querySelector('#site-nav .nav-ink-list');
+  if (!nav) return;
+  const links = Array.from(nav.querySelectorAll('a'));
+
+  // 1) Active toggeln – identisch zur Demo-Logik
+nav.addEventListener('click', (ev) => {
+  const a = ev.target.closest('a');
+  if (!a) return;
+  links.forEach(l => l.dataset.active = (l === a));
+  // 450 ms lang IntersectionObserver-Updates ignorieren
+  window.__inkClickLockUntil = Date.now() + 450;
+  if (!CSS.supports('position-anchor: --x')) updateInk();
+});
+
+// globaler Trigger für Observer & Co.
+window.__inkUpdate = () => { try { updateInk(); } catch(_){} };
+
+  // 2) Progressive Fallback: bewegliche .ink-Kapsel via Transform
+  let inkEl = null;
+  const ensureInk = () => {
+    if (inkEl) return inkEl;
+    inkEl = document.createElement('span');
+    inkEl.className = 'ink';
+    nav.appendChild(inkEl);
+    return inkEl;
+  };
+  const updateInk = () => {
+    if (CSS.supports('position-anchor: --x')) return; // moderner Weg aktiv, nix tun
+    const active = nav.querySelector('a[data-active="true"] span');
+    if (!active) return;
+    const hostRect = nav.getBoundingClientRect();
+    const r = active.getBoundingClientRect();
+    const el = ensureInk();
+    const w = r.width;
+    const h = r.height;
+    const x = r.left - hostRect.left + nav.scrollLeft;
+    const y = r.top  - hostRect.top  + nav.scrollTop;
+    el.style.width = `${w}px`;
+    el.style.height = `${h}px`;
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  };
+
+  // Initial & on resize/scroll
+  if (!CSS.supports('position-anchor: --x')) {
+    updateInk();
+    addEventListener('resize', updateInk, { passive: true });
+    nav.addEventListener('scroll', updateInk, { passive: true });
+    // falls beim Load schon ein anderer Link aktiv ist:
+    document.addEventListener('DOMContentLoaded', updateInk);
+  }
 })();
