@@ -912,3 +912,21 @@ html[data-theme="dark"] .mode-toggle .moon{ opacity:1; transform:translateY(0); 
   color: #fff;
   text-shadow: 0 1px 1px rgba(0,0,0,.12); /* minimaler Kontrast-Boost */
 }
+
+
+
+
+
+/* === FORCE TRUE FULLSCREEN HERO (no peeking) =================== */
+.hero{
+  height: 100svh !important;   /* exakt eine Viewport-Höhe */
+  min-height: 0 !important;    /* Sicherheitsnetz: keine min-height erben */
+}
+
+@supports not (height: 1svh){
+  /* Fallback: dynamische oder normale Viewporthöhe */
+  .hero{ height: 100dvh !important; }
+}
+@supports not (height: 1dvh){
+  .hero{ height: 100vh !important; }
+}

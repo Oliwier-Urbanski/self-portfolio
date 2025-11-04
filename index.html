@@ -66,13 +66,16 @@
     
  
 
-    .hero, .section{
-      min-height: calc(100svh - var(--header-h)); /* moderne Viewport-Einheit */
-      display:grid; align-items:center; /* vertikal zentrieren */
-    }
-    @supports not (height: 1svh){
-      .hero, .section{ min-height: calc(100vh - var(--header-h)); }
-    }
+/* Nur Sections bekommen min-height, Hero regeln wir via theme.css exakt */
+.section{
+  min-height: calc(100svh - var(--header-h));
+  display:grid; align-items:center;
+}
+
+@supports not (height: 1svh){
+  .section{ min-height: calc(100vh - var(--header-h)); }
+}
+
 
     .hero{ position:relative; isolation:isolate; background:url('./assets/backgrounds/bg.jpg') center/cover no-repeat; }
 .heroInner{
@@ -385,6 +388,8 @@
 <nav id="site-nav" class="nav-ink">
   <ul class="nav-ink-list" role="menubar">
     <li role="none"><a role="menuitem" href="#home" data-active="true"><span>Home</span></a></li>
+    <li role="none"><a role="menuitem" href="#about"><span>About</span></a></li>
+    <li role="none"><a role="menuitem" href="#services"><span>Services</span></a></li>
     <li role="none"><a role="menuitem" href="#projects"><span>Projects</span></a></li>
     <li role="none"><a role="menuitem" href="#jobs"><span>Jobs</span></a></li>
     <li role="none"><a role="menuitem" href="#edu"><span>Education</span></a></li>
@@ -583,6 +588,8 @@
   .svcCard h3{ font-size: clamp(18px, 1.8vw, 22px); font-weight: 800; margin:8px 0 12px; }
   .svcCard p{ color:#2a3a4a; line-height:1.65; text-align:justify; text-justify: inter-word; }
 </style>
+
+
 
 
 <section id="services" class="section reveal">
